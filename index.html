@@ -10,6 +10,10 @@
   <meta property="og:description" content="We help founders and leadership teams make high-stakes decisions with clarity using proprietary analytical frameworks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://signalyzesolutions.com" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="favicon-512.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -17,16 +21,16 @@
     html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     body {
       font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #070B1A;
+      background: #121923;
       color: #D1D5DB;
       line-height: 1.7;
       overflow-x: hidden;
     }
     :root {
-      --navy: #0A1F44;
-      --navy-deep: #070B1A;
-      --teal: #1CA7A2;
-      --teal-glow: rgba(28, 167, 162, 0.3);
+      --navy: #141E2B;
+      --navy-deep: #121923;
+      --teal: #337383;
+      --teal-glow: rgba(51, 115, 131, 0.35);
       --silver: #D1D5DB;
       --gold: #CDA434;
       --glass-border: rgba(255, 255, 255, 0.08);
@@ -43,7 +47,7 @@
     /* ── Navigation ─────────────────────────── */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(7, 11, 26, 0.85);
+      background: rgba(18, 25, 35, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
     }
@@ -65,7 +69,7 @@
       padding: 0.5rem 0.65rem; border-radius: 6px; transition: color 0.2s, background 0.2s; letter-spacing: 0.1px;
       white-space: nowrap;
     }
-    .nav-links a:hover, .nav-links a.active { color: var(--teal); background: rgba(28, 167, 162, 0.08); }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); background: rgba(51, 115, 131, 0.08); }
     .nav-right { display: flex; align-items: center; gap: 0.6rem; }
     .lang-switcher { display: flex; gap: 4px; align-items: center; }
     .lang-btn {
@@ -74,7 +78,7 @@
       cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; text-transform: uppercase;
     }
     .lang-btn:hover { color: var(--text-secondary); border-color: var(--glass-border); }
-    .lang-btn.active { color: var(--teal); border-color: var(--teal); background: rgba(28, 167, 162, 0.08); }
+    .lang-btn.active { color: var(--teal); border-color: var(--teal); background: rgba(51, 115, 131, 0.08); }
     .nav-cta {
       display: inline-flex; align-items: center; gap: 6px; padding: 0.5rem 1.1rem;
       background: transparent; border: 1.5px solid var(--teal); border-radius: 50px;
@@ -93,8 +97,8 @@
     .hero {
       min-height: 100vh; display: flex; align-items: center; justify-content: center;
       text-align: center; padding: 8rem 2rem 6rem;
-      background: radial-gradient(ellipse at 50% 30%, rgba(28, 167, 162, 0.06) 0%, transparent 60%),
-                  radial-gradient(ellipse at 80% 80%, rgba(10, 31, 68, 0.4) 0%, transparent 50%);
+      background: radial-gradient(ellipse at 50% 30%, rgba(51, 115, 131, 0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 80%, rgba(20, 30, 43, 0.4) 0%, transparent 50%);
     }
     .hero-content { max-width: 800px; }
     .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 600; color: var(--text-primary); line-height: 1.15; margin-bottom: 1.5rem; }
@@ -113,23 +117,23 @@
     .what-we-do-text .highlight { color: var(--teal); font-weight: 500; }
     .differentiators { display: flex; flex-direction: column; gap: 1.2rem; }
     .diff-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; transition: border-color 0.3s; }
-    .diff-item:hover { border-color: rgba(28, 167, 162, 0.2); }
-    .diff-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(28, 167, 162, 0.1); display: flex; align-items: center; justify-content: center; color: var(--teal); font-size: 1.1rem; }
+    .diff-item:hover { border-color: rgba(51, 115, 131, 0.2); }
+    .diff-icon { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; background: rgba(51, 115, 131, 0.1); display: flex; align-items: center; justify-content: center; color: var(--teal); font-size: 1.1rem; }
     .diff-item h4 { font-size: 0.95rem; color: var(--text-primary); font-weight: 600; margin-bottom: 0.3rem; }
     .diff-item p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
     /* ── How It Works ───────────────────────── */
-    .how-bg { background: linear-gradient(180deg, transparent 0%, rgba(10, 31, 68, 0.15) 50%, transparent 100%); }
+    .how-bg { background: linear-gradient(180deg, transparent 0%, rgba(20, 30, 43, 0.15) 50%, transparent 100%); }
     .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
     .step-card { padding: 2rem 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; text-align: center; transition: border-color 0.3s, transform 0.3s; }
-    .step-card:hover { border-color: rgba(28, 167, 162, 0.25); transform: translateY(-4px); }
+    .step-card:hover { border-color: rgba(51, 115, 131, 0.25); transform: translateY(-4px); }
     .step-number { font-size: 2.5rem; font-weight: 700; color: var(--teal); opacity: 0.4; margin-bottom: 0.8rem; font-family: 'Playfair Display', serif; }
     .step-card h3 { font-size: 1rem; color: var(--text-primary); font-weight: 600; margin-bottom: 0.8rem; }
     .step-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
     /* ── Tiers ──────────────────────────────── */
     .tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
     .tier-card { padding: 2.5rem 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; transition: border-color 0.3s, transform 0.3s; display: flex; flex-direction: column; }
-    .tier-card:hover { border-color: rgba(28, 167, 162, 0.25); transform: translateY(-4px); }
-    .tier-card.featured { border-color: var(--teal); background: rgba(28, 167, 162, 0.04); position: relative; }
+    .tier-card:hover { border-color: rgba(51, 115, 131, 0.25); transform: translateY(-4px); }
+    .tier-card.featured { border-color: var(--teal); background: rgba(51, 115, 131, 0.04); position: relative; }
     .tier-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--teal); color: #fff; font-size: 0.7rem; font-weight: 600; padding: 4px 16px; border-radius: 50px; letter-spacing: 1px; text-transform: uppercase; }
     .tier-name { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.5rem; }
     .tier-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text-primary); font-weight: 600; margin-bottom: 1rem; }
@@ -143,9 +147,9 @@
     .tier-cta.outline { background: transparent; border: 1.5px solid var(--glass-border); color: var(--text-secondary); }
     .tier-cta.outline:hover { border-color: var(--teal); color: var(--teal); }
     /* ── About ──────────────────────────────── */
-    .about-bg { background: linear-gradient(180deg, transparent 0%, rgba(10, 31, 68, 0.12) 50%, transparent 100%); }
+    .about-bg { background: linear-gradient(180deg, transparent 0%, rgba(20, 30, 43, 0.12) 50%, transparent 100%); }
     .about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 4rem; align-items: start; }
-    .about-photo { width: 280px; height: 280px; border-radius: 50%; background: linear-gradient(135deg, rgba(28, 167, 162, 0.15), rgba(10, 31, 68, 0.4)); border: 2px solid rgba(28, 167, 162, 0.25); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; box-shadow: 0 0 40px rgba(28, 167, 162, 0.08); }
+    .about-photo { width: 280px; height: 280px; border-radius: 50%; background: linear-gradient(135deg, rgba(51, 115, 131, 0.15), rgba(20, 30, 43, 0.4)); border: 2px solid rgba(51, 115, 131, 0.25); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; box-shadow: 0 0 40px rgba(51, 115, 131, 0.08); }
     .about-photo img { width: 100%; height: 100%; object-fit: cover; }
     .about-text h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-primary); margin-bottom: 0.3rem; }
     .about-role { font-size: 0.9rem; color: var(--teal); font-weight: 500; margin-bottom: 1.5rem; }
@@ -154,14 +158,14 @@
     .cred-item { text-align: center; }
     .cred-number { font-size: 1.8rem; font-weight: 700; color: var(--teal); }
     .cred-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-    .portfolio-link { color: var(--teal); font-size: 0.88rem; text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(28,167,162,0.3); padding-bottom: 1px; }
+    .portfolio-link { color: var(--teal); font-size: 0.88rem; text-decoration: none; font-weight: 500; border-bottom: 1px solid rgba(51,115,131,0.3); padding-bottom: 1px; }
     .portfolio-link:hover { border-bottom-color: var(--teal); }
     /* ── Tools ──────────────────────────────── */
     .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
     .tool-card { padding: 2.5rem 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; text-align: center; transition: border-color 0.3s; }
-    .tool-card:hover { border-color: rgba(28, 167, 162, 0.2); }
+    .tool-card:hover { border-color: rgba(51, 115, 131, 0.2); }
     .tool-badge { display: inline-block; padding: 4px 14px; border-radius: 50px; font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; }
-    .tool-badge.lite { background: rgba(28, 167, 162, 0.15); color: var(--teal); }
+    .tool-badge.lite { background: rgba(51, 115, 131, 0.15); color: var(--teal); }
     .tool-badge.pro { background: rgba(205, 164, 52, 0.15); color: var(--gold); }
     .tool-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem; }
     .tool-price { font-size: 0.9rem; color: var(--gold); font-weight: 600; margin-bottom: 1rem; }
@@ -175,7 +179,7 @@
     .transition-section { text-align: center; padding: 6rem 2rem; position: relative; z-index: 1; }
     .transition-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); color: var(--text-primary); font-weight: 600; margin-bottom: 1rem; line-height: 1.3; }
     .transition-section p { font-size: 1rem; color: var(--text-muted); max-width: 500px; margin: 0 auto; }
-    .contact-section { text-align: center; padding: 6rem 2rem 4rem; position: relative; z-index: 1; background: linear-gradient(180deg, transparent, rgba(10, 31, 68, 0.15)); }
+    .contact-section { text-align: center; padding: 6rem 2rem 4rem; position: relative; z-index: 1; background: linear-gradient(180deg, transparent, rgba(20, 30, 43, 0.15)); }
     .contact-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); color: var(--text-primary); font-weight: 600; margin-bottom: 1rem; line-height: 1.2; }
     .contact-section .sub { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
     .contact-section .sub2 { font-size: 1rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; }
@@ -189,7 +193,7 @@
       .nav-links { display: none; }
       .nav-cta.desktop { display: none; }
       .hamburger { display: flex; }
-      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(7, 11, 26, 0.97); backdrop-filter: blur(20px); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--glass-border); }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(18, 25, 35, 0.97); backdrop-filter: blur(20px); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--glass-border); }
       .nav-links.open a { padding: 0.8rem 0; font-size: 1rem; }
       .what-we-do-grid, .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       .about-photo { width: 220px; height: 220px; margin: 0 auto; }
@@ -590,8 +594,8 @@
         const flicker = p.isBright ? Math.sin(p.pulse) * 0.15 : Math.sin(p.pulse) * 0.08;
         const op = Math.max(0.05, p.opacity + flicker);
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.isBright ? `rgba(28,167,162,${op})` : `rgba(200,215,230,${op})`; ctx.fill();
-        if (p.isBright) { ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2); ctx.fillStyle = `rgba(28,167,162,${op * 0.15})`; ctx.fill(); }
+        ctx.fillStyle = p.isBright ? `rgba(51,115,131,${op})` : `rgba(200,215,230,${op})`; ctx.fill();
+        if (p.isBright) { ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2); ctx.fillStyle = `rgba(51,115,131,${op * 0.15})`; ctx.fill(); }
         p.x += p.dx; p.y += p.dy;
         if (p.x < 0 || p.x > w) p.dx *= -1; if (p.y < 0 || p.y > h) p.dy *= -1;
       });

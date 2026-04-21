@@ -10,10 +10,10 @@
   <meta property="og:description" content="We help founders and leadership teams make high-stakes decisions with clarity using proprietary analytical frameworks." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://signalyzesolutions.com" />
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png" />
-  <link rel="apple-touch-icon" sizes="512x512" href="favicon-512.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/favicon-512.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -57,9 +57,9 @@
     }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo-icon {
-      width: 36px; height: 36px; border: 2px solid var(--teal); border-radius: 8px;
+      width: 36px; height: 36px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 18px; color: var(--teal);
+      overflow: hidden;
     }
     .nav-logo-text { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px; }
     .nav-logo-text span { display: block; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
@@ -220,7 +220,7 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="#hero" class="nav-logo">
-        <div class="nav-logo-icon">S</div>
+        <div class="nav-logo-icon"><img src="logo-mark.png" alt="S" style="width:100%;height:100%;object-fit:cover;" /></div>
         <div class="nav-logo-text">Signalyze<span>Solutions</span></div>
       </a>
       <ul class="nav-links" id="nav-links">

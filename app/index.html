@@ -768,6 +768,1250 @@ async function offerMFASetup() {
   // Show QR
   const qrEl = document.getElementById('mfaQR');
   if (data.totp?.qr_code) {
+    qrEl.innerHTML = '';
+    const img = document.createElement('img');
+    img.src = data.totp.qr_code;
+    img.style.cssText = 'width:180px;height:180px;border-radius:8px';
+    qrEl.appendChild(img);
+  }
+  document.getElementById('mfaSecret').textContent = data.totp?.secret || '';
+  document.querySelector('#setupTotpInputs .totp-digit[data-idx="0"]').focus();
+}
+
+async function verifyMFASetup() {
+  const digits = document.querySelectorAll('#setupTotpInputs .totp-digit');
+  const code = Array.from(digits).map(d => d.value).join('');
+  if (code.length !== 6) { document.getElementById('mfaSetupError').textContent = 'Enter all 6 digits'; return; }
+
+  const { data: challengeData } = await sb.auth.mfa.challenge({ factorId: mfaFactorId });
+  const { data, error } = await sb.auth.mfa.verify({ factorId: mfaFactorId, challengeId: challengeData.id, code });
+  if (error) { document.getElementById('mfaSetupError').textContent = 'Invalid code. Please try again.'; digits.forEach(d => d.value = ''); digits[0].focus(); return; }
+
+  showToast('Two-Factor Authentication enabled!');
+  if (window.PublicKeyCredential) { await offerBiometricEnrollment(); } else { await enterApp(); }
+}
+
+async function offerBiometricEnrollment() {
+  // Try WebAuthn enrollment for Face ID
+  try {
+    const challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
+    const userId = new TextEncoder().encode(currentUser.id);
+    const credential = await navigator.credentials.create({
+      publicKey: {
+        challenge, rp: { name: 'Elenivo', id: location.hostname || 'localhost' },
+        user: { id: userId, name: currentUser.email, displayName: currentUser.email },
+        pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+        authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+        timeout: 60000,
+      }
+    });
+    if (credential) {
+      localStorage.setItem('elenivo_bio_enrolled', 'true');
+      localStorage.setItem('elenivo_bio_cred_id', btoa(String.fromCharCode(...new Uint8Array(credential.rawId))));
+      showToast('Face ID enabled for quick unlock!');
+    }
+  } catch (e) {
+    console.log('Biometric enrollment skipped:', e.message);
+  }
+  await enterApp();
+}
+
+async function doBiometricAuth() {
+  const errEl = document.getElementById('bioError');
+  errEl.textContent = '';
+  try {
+    const credIdB64 = localStorage.getItem('elenivo_bio_cred_id');
+    const credIdRaw = Uint8Array.from(atob(credIdB64), c => c.charCodeAt(0));
+    const challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
+    const assertion = await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        allowCredentials: [{ id: credIdRaw, type: 'public-key', transports: ['internal'] }],
+        userVerification: 'required', timeout: 60000,
+      }
+    });
+    if (assertion) {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) { currentUser = session.user; await enterApp(); }
+      else { showLogin(); }
+    }
+  } catch (e) {
+    errEl.textContent = 'Biometric authentication failed. Use password instead.';
+  }
+}
+
+function showLogin() {
+  showScreen('loginScreen');
+  document.getElementById('loginEmail').focus();
+}
+function showScreen(id) {
+  ['loginScreen','totpScreen','mfaSetupScreen','bioScreen'].forEach(s => {
+    document.getElementById(s).classList.toggle('hidden', s !== id);
+  });
+  document.getElementById('appShell').classList.remove('active');
+}
+
+async function enterApp() {
+  // Hide all auth screens
+  ['loginScreen','totpScreen','mfaSetupScreen','bioScreen'].forEach(s => document.getElementById(s).classList.add('hidden'));
+  document.getElementById('appShell').classList.add('active');
+
+  // Load user profile
+  const { data: prof } = await sb.from('user_profiles').select('*').eq('user_id', currentUser.id).single();
+  if (prof) {
+    currentTenant = prof.tenant_id;
+    document.getElementById('userDisplay').textContent = prof.display_name || currentUser.email;
+  } else {
+    document.getElementById('userDisplay').textContent = currentUser.email;
+  }
+
+  // Load clients
+  await loadClients();
+  // Build form
+  buildMetricForm();
+  // Load history
+  await loadHistory();
+}
+
+function lockApp() {
+  if (localStorage.getItem('elenivo_bio_enrolled') === 'true') {
+    showScreen('bioScreen');
+  } else {
+    doLogout();
+  }
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  currentUser = null; currentTenant = null;
+  showLogin();
+}
+
+// ══════════════════════════════════════════
+// TOTP DIGIT INPUT BEHAVIOR
+// ══════════════════════════════════════════
+document.querySelectorAll('.totp-digit').forEach(input => {
+  input.addEventListener('input', e => {
+    const val = e.target.value.replace(/\D/g, '');
+    e.target.value = val.slice(0, 1);
+    if (val && e.target.dataset.idx < 5) {
+      const next = e.target.parentNode.querySelector(`[data-idx="${parseInt(e.target.dataset.idx)+1}"]`);
+      if (next) next.focus();
+    }
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !e.target.value && e.target.dataset.idx > 0) {
+      const prev = e.target.parentNode.querySelector(`[data-idx="${parseInt(e.target.dataset.idx)-1}"]`);
+      if (prev) { prev.focus(); prev.value = ''; }
+    }
+  });
+});
+
+// ══════════════════════════════════════════
+// TAB NAVIGATION
+// ══════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + tab).classList.add('active');
+  if (tab === 'History') loadHistory();
+}
+
+// ══════════════════════════════════════════
+// INPUT MODE SWITCHING
+// ══════════════════════════════════════════
+function switchInputMode(mode) {
+  document.querySelectorAll('[data-input]').forEach(b => b.classList.toggle('active', b.dataset.input === mode));
+  document.getElementById('inputManual').style.display = mode === 'manual' ? 'block' : 'none';
+  document.getElementById('inputImport').style.display = mode === 'import' ? 'block' : 'none';
+  document.getElementById('inputJSON').style.display = mode === 'json' ? 'block' : 'none';
+}
+
+// ══════════════════════════════════════════
+// CLIENT LOADING
+// ══════════════════════════════════════════
+async function loadClients() {
+  if (!currentTenant) return;
+  const { data } = await sb.from('client_profiles').select('id,company_name,tier_at_intake,status').eq('tenant_id', currentTenant).eq('status','active').order('company_name');
+  const sel = document.getElementById('mSdeClient');
+  sel.innerHTML = '<option value="">Ad-Hoc Analysis</option>';
+  (data||[]).forEach(c => {
+    sel.innerHTML += `<option value="${c.id}" data-tier="${c.tier_at_intake}">${c.company_name} (${c.tier_at_intake})</option>`;
+  });
+}
+
+function updateTierFromClient() {
+  const sel = document.getElementById('mSdeClient');
+  const opt = sel.selectedOptions[0];
+  if (opt && opt.dataset.tier) {
+    document.getElementById('mSdeTier').value = opt.dataset.tier;
+  }
+}
+
+// ══════════════════════════════════════════
+// METRIC FORM BUILDER
+// ══════════════════════════════════════════
+function buildMetricForm() {
+  const tier = document.getElementById('mSdeTier').value;
+  const container = document.getElementById('metricForm');
+  const groups = {};
+  for (const [key, spec] of Object.entries(FIELD_SPECS)) {
+    if (!tierIncludes(spec.tier, tier)) continue;
+    const fl = FIELD_LABELS[key] || { label: key, hint: '', group: 'Other' };
+    if (!groups[fl.group]) groups[fl.group] = [];
+    groups[fl.group].push({ key, ...fl, spec });
+  }
+  let html = '';
+  for (const [grp, fields] of Object.entries(groups)) {
+    html += `<div class="metric-group"><div class="metric-group-title">${grp}</div>`;
+    fields.forEach(f => {
+      const val = importedInputs[f.key] !== undefined ? importedInputs[f.key] : '';
+      html += `<div class="metric-row"><div class="metric-label">${f.label}<div class="metric-hint">${f.hint}</div></div><input class="metric-input" id="m_${f.key}" type="number" step="any" placeholder="${f.spec.neutral}" value="${val}"></div>`;
+    });
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+document.getElementById('mSdeTier').addEventListener('change', buildMetricForm);
+
+// ══════════════════════════════════════════
+// FILE IMPORT
+// ══════════════════════════════════════════
+function handleMobileFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext === 'csv') {
+    Papa.parse(file, { header: true, skipEmptyLines: true, complete: r => showMapping(r.data, Object.keys(r.data[0] || {})) });
+  } else {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(ws, { defval: '' });
+      showMapping(json, Object.keys(json[0] || {}));
+    };
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function showMapping(data, headers) {
+  const fieldKeys = Object.keys(FIELD_SPECS);
+  let html = '<div class="m-card-header">Column Mapping</div><table class="map-table"><tr><th>File Column</th><th>Maps To</th></tr>';
+  headers.forEach(h => {
+    const match = autoMatch(h);
+    html += `<tr><td>${h}</td><td><select data-col="${h}"><option value="">-- skip --</option>`;
+    fieldKeys.forEach(k => { html += `<option value="${k}" ${match===k?'selected':''}>${FIELD_LABELS[k]?.label||k}</option>`; });
+    html += '</select></td></tr>';
+  });
+  html += '</table><button class="m-btn m-btn-primary" onclick="applyMapping()" style="margin-top:12px">Apply Mapping</button>';
+  document.getElementById('mMappingArea').innerHTML = html;
+  window._importData = data;
+}
+
+function autoMatch(header) {
+  const clean = header.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+  if (FIELD_SPECS[clean]) return clean;
+  for (const k of Object.keys(FIELD_SPECS)) { if (clean.includes(k.replace(/_/g, ''))) return k; }
+  return '';
+}
+
+function applyMapping() {
+  const selects = document.querySelectorAll('#mMappingArea select');
+  const map = {};
+  selects.forEach(s => { if (s.value) map[s.dataset.col] = s.value; });
+  const row = window._importData[0] || {};
+  importedInputs = {};
+  for (const [col, field] of Object.entries(map)) { if (row[col] !== undefined) importedInputs[field] = parseFloat(row[col]) || 0; }
+  buildMetricForm();
+  switchInputMode('manual');
+  showToast(`Mapped ${Object.keys(map).length} fields`);
+}
+
+function loadJSON() {
+  try {
+    const raw = document.getElementById('mJsonInput').value.trim();
+    const obj = JSON.parse(raw);
+    importedInputs = obj;
+    buildMetricForm();
+    switchInputMode('manual');
+    showToast('JSON loaded');
+  } catch (e) { showToast('Invalid JSON'); }
+}
+
+// ══════════════════════════════════════════
+// RUN ANALYSIS
+// ══════════════════════════════════════════
+async function runAnalysis() {
+  const tier = document.getElementById('mSdeTier').value;
+  const inputs = {};
+  for (const [key, spec] of Object.entries(FIELD_SPECS)) {
+    if (!tierIncludes(spec.tier, tier)) continue;
+    const el = document.getElementById('m_' + key);
+    if (el && el.value !== '') inputs[key] = parseFloat(el.value);
+  }
+  const riskTol = parseFloat(document.getElementById('mRiskTol').value) || 0.5;
+  const timeHz = parseInt(document.getElementById('mTimeHz').value) || 90;
+
+  const scores = normalize(inputs, tier);
+  const m1 = runM1(scores, tier);
+  const m2 = runM2(scores, tier);
+  const m3 = runM3(scores, tier);
+  const result = orchestrate(m1, m2, m3, riskTol, timeHz, tier);
+  result.tier = tier;
+  lastResult = result;
+
+  // Save to Supabase
+  if (currentTenant) {
+    const clientId = document.getElementById('mSdeClient').value || null;
+    try {
+      await sb.from('decision_records').insert({
+        tenant_id: currentTenant, client_id: clientId,
+        decision_key: result.decision_key, engine_version: result.engine_version,
+        orchestrator_version: result.orchestrator_version,
+        normalized_inputs: scores, context: { risk_tolerance: riskTol, time_horizon: timeHz },
+        result_summary: { recommendation: result.recommendation, composite: Math.round(result.composite_score*100), m1_score: Math.round(m1.score*100), m2_score: Math.round(m2.score*100), m3_score: Math.round(m3.score*100), band: m1.band },
+        full_result: result, confidence: result.confidence, risk_posture: result.recommendation,
+        tier_at_eval: tier,
+      });
+    } catch (e) { console.warn('Save failed:', e); }
+  }
+
+  showResult(result);
+}
+
+// ══════════════════════════════════════════
+// RESULT DISPLAY
+// ══════════════════════════════════════════
+function showResult(r) {
+  const L = exportLang;
+  const recColors = { GO: 'var(--green)', HOLD: 'var(--amber)', REDUCE: 'var(--orange)', INVEST: 'var(--blue)' };
+  const rc = recColors[r.recommendation] || '#fff';
+  const barColor = n => n >= 0.70 ? 'var(--green)' : n >= 0.45 ? 'var(--amber)' : 'var(--red)';
+
+  let html = `
+    <div class="rec-badge" style="background:${rc}">
+      <div class="rec-badge-label">${tRec(r.recommendation, L)}</div>
+      <div class="rec-badge-desc">${tRecDesc(r.recommendation, L)}</div>
+    </div>
+    <div style="text-align:center;font-size:15px;font-weight:600;margin:8px 0">${t('confidence',L)}: ${r.confidence}% <span style="color:var(--text-dim);font-weight:400">(${r.confidence_band_low}–${r.confidence_band_high}%)</span></div>
+
+    <div class="m-section">${t('module_scores',L)}</div>
+    <div class="m-card">
+      <div class="score-row"><div class="score-label">${t('m1_full',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.m1_score*100)}%;background:${barColor(r.m1_score)}"></div></div><div class="score-num">${Math.round(r.m1_score*100)}</div></div>
+      <div class="score-row"><div class="score-label">${t('m2_full',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.m2_score*100)}%;background:${barColor(r.m2_score)}"></div></div><div class="score-num">${Math.round(r.m2_score*100)}</div></div>
+      <div class="score-row"><div class="score-label">${t('m3_full',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.m3_score*100)}%;background:${barColor(r.m3_score)}"></div></div><div class="score-num">${Math.round(r.m3_score*100)}</div></div>
+      <div style="border-top:1px solid var(--card-border);margin-top:8px;padding-top:8px">
+        <div class="score-row"><div class="score-label" style="font-weight:600">${t('composite_score',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.composite_score*100)}%;background:var(--teal)"></div></div><div class="score-num" style="color:var(--teal)">${Math.round(r.composite_score*100)}</div></div>
+      </div>
+    </div>`;
+
+  if (currentOutputLevel !== 'quick' && r.key_drivers.length) {
+    html += `<div class="m-section">${t('key_drivers',L)}</div><div class="m-card">`;
+    r.key_drivers.forEach(d => {
+      const impact = d.score >= 0.6 ? 'var(--green)' : d.score <= 0.4 ? 'var(--red)' : 'var(--amber)';
+      html += `<div class="score-row"><div class="score-label">${tDriver(d.name,L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(d.score*100)}%;background:${impact}"></div></div><div class="score-num">${Math.round(d.score*100)}</div></div>`;
+    });
+    html += '</div>';
+  }
+
+  if (currentOutputLevel !== 'quick' && r.tradeoffs.length) {
+    html += `<div class="m-section">${t('tradeoffs',L)}</div>`;
+    r.tradeoffs.forEach(tf => {
+      const sevColor = tf.severity === 'high' ? 'var(--red)' : tf.severity === 'medium' ? 'var(--amber)' : 'var(--green)';
+      html += `<div class="m-card"><div class="m-card-header">${tTension(tf.tension,L)} <span style="color:${sevColor};font-size:12px;font-weight:400">${tSeverity(tf.severity,L)}</span></div><div style="font-size:13px;color:var(--slate)">${tf.description}</div></div>`;
+    });
+  }
+
+  if (currentOutputLevel === 'deep' && r.sensitivity_triggers.length) {
+    html += `<div class="m-section">${t('sensitivity',L)}</div>`;
+    r.sensitivity_triggers.forEach(tr => {
+      html += `<div class="m-card"><div style="font-size:13px;color:var(--slate)">${tr.description}</div></div>`;
+    });
+  }
+
+  // Output level & language pickers
+  html += `
+    <div class="m-section">${t('output_level',L)}</div>
+    <div class="level-row">
+      <div class="level-chip ${currentOutputLevel==='quick'?'active':''}" onclick="setOutputLevel('quick')">Quick</div>
+      <div class="level-chip ${currentOutputLevel==='standard'?'active':''}" onclick="setOutputLevel('standard')">Standard</div>
+      <div class="level-chip ${currentOutputLevel==='deep'?'active':''}" onclick="setOutputLevel('deep')">Deep</div>
+    </div>
+    <div class="m-section">Export Language</div>
+    <div class="lang-row">
+      <div class="lang-chip ${exportLang==='en'?'active':''}" onclick="setLang('en')">EN</div>
+      <div class="lang-chip ${exportLang==='es'?'active':''}" onclick="setLang('es')">ES</div>
+      <div class="lang-chip ${exportLang==='fr'?'active':''}" onclick="setLang('fr')">FR</div>
+      <div class="lang-chip ${exportLang==='zh'?'active':''}" onclick="setLang('zh')">ZH</div>
+    </div>
+
+    <div class="m-section">Export</div>
+    <div class="export-grid">
+      <div class="export-btn" onclick="exportPDF()"><div class="export-icon">&#128196;</div>PDF Brief</div>
+      <div class="export-btn" onclick="exportDOCX()"><div class="export-icon">&#128209;</div>DOCX Brief</div>
+      <div class="export-btn" onclick="exportExcel()"><div class="export-icon">&#128202;</div>Excel</div>
+      <div class="export-btn" onclick="exportPowerBI()"><div class="export-icon">&#128200;</div>BI CSV</div>
+      <div class="export-btn" onclick="exportJSON()"><div class="export-icon">&#123;&#125;</div>JSON</div>
+      <div class="export-btn" onclick="copyPlaintext()"><div class="export-icon">&#128203;</div>Copy Text</div>
+    </div>
+
+    <div style="text-align:center;font-size:10px;color:var(--text-dim);margin-top:16px;padding:12px 0">${t('disclaimer',L)}<br>${t('footer',L)}</div>`;
+
+  document.getElementById('resultPanel').innerHTML = html;
+  document.getElementById('resultOverlay').classList.add('active');
+}
+
+function setOutputLevel(lvl) { currentOutputLevel = lvl; if (lastResult) showResult(lastResult); }
+function setLang(l) { exportLang = l; if (lastResult) showResult(lastResult); }
+function closeResult() { document.getElementById('resultOverlay').classList.remove('active'); }
+
+// ══════════════════════════════════════════
+// EXPORT FUNCTIONS
+// ══════════════════════════════════════════
+function exportPDF() {
+  if (!lastResult) return;
+  const r = lastResult; const L = exportLang;
+  const { jsPDF } = window.jspdf; const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'letter' });
+  const W=215.9, margin=20, cW=W-margin*2; let y=margin;
+  doc.setFillColor(18,25,35);doc.rect(0,0,W,40,'F');doc.setTextColor(28,167,162);doc.setFontSize(20);doc.setFont('helvetica','bold');doc.text(t('brand_title',L),margin,18);
+  doc.setFontSize(10);doc.setTextColor(136,146,164);doc.text(t('brand_subtitle',L),margin,26);
+  doc.setFontSize(8);doc.text(`${t('generated',L)}: ${new Date().toLocaleDateString()} | ${t('tier_label',L)}: ${r.tier.toUpperCase()} | ${t('decision_key',L)}: ${r.decision_key}`,margin,34);y=50;
+  const rcC={GO:[52,211,153],HOLD:[251,191,36],REDUCE:[249,115,22],INVEST:[96,165,250]};const rc=rcC[r.recommendation]||[255,255,255];
+  doc.setFillColor(rc[0],rc[1],rc[2]);doc.roundedRect(margin,y,cW,28,3,3,'F');doc.setTextColor(18,25,35);doc.setFontSize(28);doc.setFont('helvetica','bold');doc.text(tRec(r.recommendation,L),W/2,y+13,{align:'center'});
+  doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text(tRecDesc(r.recommendation,L),W/2,y+22,{align:'center'});y+=36;
+  doc.setTextColor(60,60,60);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text(`${t('confidence',L)}: ${r.confidence}% (${r.confidence_band_low}–${r.confidence_band_high}%)`,W/2,y,{align:'center'});y+=12;
+  doc.autoTable({startY:y,margin:{left:margin,right:margin},head:[[t('th_module',L),t('th_score',L),t('th_band',L),t('th_weight',L)]],body:[[t('m1_full',L),Math.round(r.m1_score*100),tBand(r.m1_band,L),'40%'],[t('m2_full',L),Math.round(r.m2_score*100),tBand(r.m2_band,L),'30%'],[t('m3_full',L),Math.round(r.m3_score*100),tBand(r.m3_band,L),'30%'],[t('composite_score',L),Math.round(r.composite_score*100),'','100%']],theme:'grid',headStyles:{fillColor:[28,167,162],textColor:255,fontSize:10},bodyStyles:{fontSize:10}});
+  y=doc.lastAutoTable.finalY+10;
+  if(currentOutputLevel!=='quick'&&r.key_drivers.length){doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(18,25,35);doc.text(t('key_drivers',L),margin,y);y+=6;doc.autoTable({startY:y,margin:{left:margin,right:margin},head:[[t('th_driver',L),t('th_module',L),t('th_score',L),t('th_impact',L)]],body:r.key_drivers.map(d=>[tDriver(d.name,L),d.module,Math.round(d.score*100),d.score>=0.6?t('impact_positive',L):d.score<=0.4?t('impact_negative',L):t('impact_neutral',L)]),theme:'striped',headStyles:{fillColor:[36,51,72],textColor:255,fontSize:9},bodyStyles:{fontSize:9}});y=doc.lastAutoTable.finalY+10;}
+  const pH=279.4;doc.setFontSize(7);doc.setTextColor(150,150,150);doc.text(t('disclaimer',L),W/2,pH-12,{align:'center',maxWidth:cW});doc.text(`${t('footer',L)} | ${new Date().getFullYear()}`,W/2,pH-8,{align:'center'});
+  const cn=getClientName().replace(/\s+/g,'_');const ls=L!=='en'?`_${L.toUpperCase()}`:'';
+  doc.save(`Elenivo_Brief_${cn}_${currentOutputLevel}${ls}_${r.decision_key}.pdf`);showToast('PDF exported');
+}
+
+function exportDOCX() {
+  if (!lastResult) return;
+  const r = lastResult; const L = exportLang;
+  const rcC={GO:'#34d399',HOLD:'#fbbf24',REDUCE:'#f97316',INVEST:'#60a5fa'};const rc=rcC[r.recommendation]||'#fff';
+  const cn=getClientName();
+  let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;color:#333;margin:40px}h1{color:#1CA7A2;font-size:24px}h2{color:#121923;font-size:16px;border-bottom:2px solid #1CA7A2;padding-bottom:4px;margin-top:24px}.rec-box{background:${rc};color:#121923;text-align:center;padding:20px;font-size:28px;font-weight:bold;border-radius:8px;margin:16px 0}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#121923;color:white;padding:8px 12px;text-align:left;font-size:11px}td{padding:8px 12px;border-bottom:1px solid #ddd;font-size:12px}tr:nth-child(even){background:#f8f9fa}.disclaimer{text-align:center;font-size:9px;color:#aaa;margin-top:40px;font-style:italic;border-top:1px solid #ddd;padding-top:12px}</style></head><body>`;
+  html += `<h1>${t('brand_title',L)}</h1><div style="color:#888;font-size:12px;margin-bottom:24px">${t('brand_subtitle',L)}<br>${t('client_label',L)}: ${cn} | ${t('tier_label',L)}: ${r.tier.toUpperCase()} | ${t('date_label',L)}: ${new Date().toLocaleDateString()}</div>`;
+  html += `<div class="rec-box">${tRec(r.recommendation,L)}</div><div style="text-align:center;font-size:14px;color:#555">${tRecDesc(r.recommendation,L)}</div><div style="text-align:center;font-size:16px;font-weight:bold;margin:8px 0 24px">${t('confidence',L)}: ${r.confidence}%</div>`;
+  html += `<h2>${t('module_scores',L)}</h2><table><tr><th>${t('th_module',L)}</th><th>${t('th_score',L)}</th><th>${t('th_band',L)}</th><th>${t('th_weight',L)}</th></tr><tr><td>${t('m1_full',L)}</td><td>${Math.round(r.m1_score*100)}</td><td>${tBand(r.m1_band,L)}</td><td>40%</td></tr><tr><td>${t('m2_full',L)}</td><td>${Math.round(r.m2_score*100)}</td><td>${tBand(r.m2_band,L)}</td><td>30%</td></tr><tr><td>${t('m3_full',L)}</td><td>${Math.round(r.m3_score*100)}</td><td>${tBand(r.m3_band,L)}</td><td>30%</td></tr></table>`;
+  if(currentOutputLevel!=='quick'){html+=`<h2>${t('key_drivers',L)}</h2><table><tr><th>${t('th_driver',L)}</th><th>${t('th_module',L)}</th><th>${t('th_score',L)}</th></tr>`;r.key_drivers.forEach(d=>{html+=`<tr><td>${tDriver(d.name,L)}</td><td>${d.module}</td><td>${Math.round(d.score*100)}</td></tr>`;});html+='</table>';}
+  html += `<div class="disclaimer">${t('disclaimer',L)}</div><div style="text-align:center;font-size:9px;color:#bbb;margin-top:8px">${t('footer',L)}</div></body></html>`;
+  const blob=new Blob([html],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const ls=L!=='en'?`_${L.toUpperCase()}`:'';a.download=`Elenivo_Brief_${cn.replace(/\s+/g,'_')}_${currentOutputLevel}${ls}_${r.decision_key}.doc`;a.click();URL.revokeObjectURL(url);showToast('DOCX exported');
+}
+
+function exportExcel() {
+  if(!lastResult) return; const r=lastResult; const L=exportLang;
+  const wb=XLSX.utils.book_new();const cn=getClientName();
+  const sum=[[`${t('brand_title',L)} — ${t('brand_subtitle',L)}`],[''],[t('cp_recommendation',L),tRec(r.recommendation,L)],[t('confidence',L),`${r.confidence}%`],[t('composite_score',L),Math.round(r.composite_score*100)],[''],[t('th_module',L),t('th_score',L),t('th_band',L),t('th_weight',L)],[t('m1_full',L),Math.round(r.m1_score*100),tBand(r.m1_band,L),'40%'],[t('m2_full',L),Math.round(r.m2_score*100),tBand(r.m2_band,L),'30%'],[t('m3_full',L),Math.round(r.m3_score*100),tBand(r.m3_band,L),'30%']];
+  const ws1=XLSX.utils.aoa_to_sheet(sum);ws1['!cols']=[{wch:24},{wch:18},{wch:15},{wch:10}];XLSX.utils.book_append_sheet(wb,ws1,'Summary');
+  if(currentOutputLevel!=='quick'){const dd=[[t('th_driver',L),t('th_module',L),t('th_score',L)]];r.key_drivers.forEach(d=>dd.push([tDriver(d.name,L),d.module,Math.round(d.score*100)]));const ws2=XLSX.utils.aoa_to_sheet(dd);XLSX.utils.book_append_sheet(wb,ws2,'Drivers');}
+  const ls=L!=='en'?`_${L.toUpperCase()}`:'';XLSX.writeFile(wb,`Elenivo_${cn.replace(/\s+/g,'_')}_${currentOutputLevel}${ls}_${r.decision_key}.xlsx`);showToast('Excel exported');
+}
+
+function exportPowerBI() {
+  if(!lastResult) return; const r=lastResult; const L=exportLang;
+  const row={decision_key:r.decision_key,timestamp:r.timestamp,client:getClientName(),tier:r.tier,recommendation:tRec(r.recommendation,L),confidence:r.confidence,composite:Math.round(r.composite_score*100),m1_score:Math.round(r.m1_score*100),m2_score:Math.round(r.m2_score*100),m3_score:Math.round(r.m3_score*100),m1_band:tBand(r.m1_band,L),m2_band:tBand(r.m2_band,L),m3_band:tBand(r.m3_band,L),output_level:currentOutputLevel,language:L};
+  const csv=Papa.unparse([row]);downloadBlob(csv,`Elenivo_BI_${r.decision_key}.csv`,'text/csv');showToast('CSV exported');
+}
+
+function exportJSON() {
+  if(!lastResult) return; const r={...lastResult}; delete r._normalized;
+  downloadBlob(JSON.stringify(r,null,2),`Elenivo_${r.decision_key}.json`,'application/json');showToast('JSON exported');
+}
+
+function copyPlaintext() {
+  if(!lastResult) return; const r=lastResult; const L=exportLang;
+  let text=`${t('brand_title',L)} — ${t('brand_subtitle',L)}\n${'='.repeat(40)}\n${t('cp_recommendation',L)}: ${tRec(r.recommendation,L)}\n${tRecDesc(r.recommendation,L)}\n${t('confidence',L)}: ${r.confidence}%\n\n${t('cp_module_scores',L)}:\n  ${t('m1_full',L)}: ${Math.round(r.m1_score*100)} (${tBand(r.m1_band,L)})\n  ${t('m2_full',L)}: ${Math.round(r.m2_score*100)} (${tBand(r.m2_band,L)})\n  ${t('m3_full',L)}: ${Math.round(r.m3_score*100)} (${tBand(r.m3_band,L)})`;
+  if(currentOutputLevel!=='quick'){text+=`\n\n${t('cp_key_drivers',L)}:\n`;r.key_drivers.forEach(d=>{text+=`  ${tDriver(d.name,L)}: ${Math.round(d.score*100)}\n`;});}
+  text+=`\n${t('disclaimer',L)}\n${t('footer',L)}`;
+  navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard')).catch(()=>showToast('Copy failed'));
+}
+
+function getClientName() {
+  const sel = document.getElementById('mSdeClient');
+  return sel.selectedOptions[0]?.text?.split(' (')[0] || 'Ad-Hoc';
+}
+function downloadBlob(content,filename,mime) {
+  const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════
+// DECISION HISTORY
+// ══════════════════════════════════════════
+async function loadHistory() {
+  if (!currentTenant) { document.getElementById('historyList').innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:40px 0">Sign in to view history</div>'; return; }
+  const { data, error } = await sb.from('decision_records').select('*').eq('tenant_id', currentTenant).order('created_at', { ascending: false }).limit(50);
+  if (error || !data?.length) { document.getElementById('historyList').innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:40px 0">No decisions yet</div>'; return; }
+  const recColors = { GO: 'var(--green)', HOLD: 'var(--amber)', REDUCE: 'var(--orange)', INVEST: 'var(--blue)' };
+  let html = '';
+  data.forEach(d => {
+    const rs = d.result_summary || {};
+    const rc = recColors[rs.recommendation] || 'var(--slate)';
+    const date = new Date(d.created_at).toLocaleDateString();
+    html += `<div class="history-item" onclick="viewHistoryItem('${d.id}')"><div class="hist-left"><div class="hist-key">${d.decision_key}</div><div class="hist-meta">${date} • ${d.tier_at_eval} • ${t('confidence',exportLang)}: ${d.confidence}%</div></div><div class="hist-rec" style="background:${rc};color:var(--navy)">${rs.recommendation||'?'}</div></div>`;
+  });
+  document.getElementById('historyList').innerHTML = html;
+}
+
+async function viewHistoryItem(id) {
+  const { data } = await sb.from('decision_records').select('full_result').eq('id', id).single();
+  if (data?.full_result) { lastResult = data.full_result; showResult(data.full_result); }
+}
+
+async function exportAllHistoryCSV() {
+  if (!currentTenant) return;
+  const { data } = await sb.from('decision_records').select('*').eq('tenant_id', currentTenant).order('created_at', { ascending: false });
+  if (!data?.length) { showToast('No records'); return; }
+  const rows = data.map(d => { const rs = d.result_summary || {}; return { decision_key: d.decision_key, timestamp: d.created_at, tier: d.tier_at_eval, recommendation: rs.recommendation, confidence: d.confidence, composite: rs.composite }; });
+  downloadBlob(Papa.unparse(rows), `Elenivo_AllDecisions_${new Date().toISOString().slice(0,10)}.csv`, 'text/csv');
+  showToast(`Exported ${rows.length} records`);
+}
+
+async function exportAllHistoryExcel() {
+  if (!currentTenant) return;
+  const { data } = await sb.from('decision_records').select('*').eq('tenant_id', currentTenant).order('created_at', { ascending: false });
+  if (!data?.length) { showToast('No records'); return; }
+  const wb = XLSX.utils.book_new();
+  const rows = data.map(d => { const rs = d.result_summary || {}; return { decision_key: d.decision_key, timestamp: d.created_at, tier: d.tier_at_eval, recommendation: rs.recommendation, confidence: d.confidence, composite: rs.composite }; });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'All Decisions');
+  XLSX.writeFile(wb, `Elenivo_AllDecisions_${new Date().toISOString().slice(0,10)}.xlsx`);
+  showToast(`Exported ${rows.length} records`);
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════════
+// SERVICE WORKER & INIT
+// ══════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(e => console.log('SW registration failed:', e));
+}
+
+// Check session on load
+checkSession();
+</script>
+</body>
+</html>
+.auth-logo { color: var(--teal); font-size: 32px; font-weight: 800; letter-spacing: 2px; margin-bottom: 4px; }
+.auth-subtitle { color: var(--slate); font-size: 13px; margin-bottom: 40px; }
+.auth-card {
+  width: 100%; max-width: 360px;
+  background: var(--card); border: 1px solid var(--card-border); border-radius: 16px;
+  padding: 28px 24px;
+}
+.auth-card h2 { font-size: 18px; margin-bottom: 20px; color: var(--text); }
+.auth-input {
+  width: 100%; padding: 14px 16px; margin-bottom: 14px;
+  background: var(--navy); border: 1px solid var(--card-border); border-radius: 10px;
+  color: var(--text); font-size: 16px; outline: none;
+  -webkit-appearance: none;
+}
+.auth-input:focus { border-color: var(--teal); }
+.auth-input::placeholder { color: var(--text-dim); }
+.auth-btn {
+  width: 100%; padding: 14px; margin-top: 8px;
+  background: var(--teal); color: #fff; font-size: 16px; font-weight: 600;
+  border: none; border-radius: 10px; cursor: pointer;
+  transition: opacity 0.2s;
+}
+.auth-btn:active { opacity: 0.8; }
+.auth-btn:disabled { opacity: 0.5; }
+.auth-btn.secondary { background: var(--navy-mid); margin-top: 10px; }
+.auth-error { color: var(--red); font-size: 13px; margin-top: 10px; text-align: center; min-height: 18px; }
+.auth-info { color: var(--slate); font-size: 13px; margin-top: 12px; text-align: center; line-height: 1.5; }
+
+/* TOTP code input */
+.totp-inputs { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
+.totp-digit {
+  width: 44px; height: 52px; text-align: center; font-size: 24px; font-weight: 700;
+  background: var(--navy); border: 1px solid var(--card-border); border-radius: 10px;
+  color: var(--teal); outline: none; -webkit-appearance: none;
+}
+.totp-digit:focus { border-color: var(--teal); }
+
+/* Biometric lock screen */
+.bio-icon { font-size: 64px; margin-bottom: 16px; }
+.bio-text { color: var(--slate); font-size: 15px; margin-bottom: 24px; }
+
+/* MFA setup */
+.mfa-qr { width: 200px; height: 200px; background: #fff; border-radius: 12px; margin: 16px auto; display: flex; align-items: center; justify-content: center; }
+.mfa-secret { font-family: 'SF Mono', monospace; font-size: 14px; color: var(--teal); background: var(--navy); padding: 10px 14px; border-radius: 8px; margin: 12px 0; text-align: center; word-break: break-all; }
+
+/* ── APP SHELL ── */
+.app-shell { display: none; height: 100%; flex-direction: column; }
+.app-shell.active { display: flex; }
+
+/* Top bar */
+.top-bar {
+  padding: 12px 16px; padding-top: calc(var(--safe-top) + 12px);
+  background: var(--navy); border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.top-bar-brand { color: var(--teal); font-weight: 800; font-size: 18px; letter-spacing: 1px; }
+.top-bar-right { display: flex; align-items: center; gap: 12px; }
+.top-bar-user { color: var(--slate); font-size: 12px; }
+.top-bar-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--slate); font-size: 18px; border-radius: 8px; cursor: pointer; }
+.top-bar-icon:active { background: var(--navy-mid); }
+
+/* Pages */
+.page-container { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.page { display: none; padding: 16px; padding-bottom: calc(var(--safe-bottom) + 80px); }
+.page.active { display: block; }
+
+/* Bottom tab bar */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--navy); border-top: 1px solid var(--card-border);
+  display: flex; padding-bottom: var(--safe-bottom);
+  z-index: 100;
+}
+.tab-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 10px 0 6px; cursor: pointer; color: var(--text-dim);
+  transition: color 0.2s; font-size: 10px; gap: 4px;
+}
+.tab-item.active { color: var(--teal); }
+.tab-icon { font-size: 22px; }
+
+/* ── MOBILE CARDS ── */
+.m-card {
+  background: var(--card); border: 1px solid var(--card-border); border-radius: 14px;
+  padding: 16px; margin-bottom: 12px;
+}
+.m-card-header { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.m-card-label { font-size: 12px; color: var(--text-dim); margin-bottom: 4px; }
+.m-card-value { font-size: 14px; color: var(--text); }
+
+/* Section headers */
+.m-section { font-size: 13px; font-weight: 600; color: var(--slate); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px; }
+
+/* Selects / Inputs */
+.m-select, .m-input {
+  width: 100%; padding: 12px 14px; font-size: 16px;
+  background: var(--navy); border: 1px solid var(--card-border); border-radius: 10px;
+  color: var(--text); -webkit-appearance: none; appearance: none; outline: none;
+  margin-bottom: 10px;
+}
+.m-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892A4' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+.m-select:focus, .m-input:focus { border-color: var(--teal); }
+
+/* Buttons */
+.m-btn {
+  width: 100%; padding: 14px; font-size: 15px; font-weight: 600;
+  border: none; border-radius: 10px; cursor: pointer; transition: opacity 0.2s;
+}
+.m-btn:active { opacity: 0.8; }
+.m-btn-primary { background: var(--teal); color: #fff; }
+.m-btn-secondary { background: var(--navy-mid); color: var(--text); border: 1px solid var(--card-border); }
+.m-btn-small { padding: 10px 16px; font-size: 13px; width: auto; display: inline-flex; align-items: center; gap: 6px; }
+.m-btn + .m-btn { margin-top: 8px; }
+
+/* Recommendation box */
+.rec-badge {
+  text-align: center; padding: 20px; border-radius: 14px; margin: 12px 0;
+}
+.rec-badge-label { font-size: 32px; font-weight: 800; color: var(--navy); }
+.rec-badge-desc { font-size: 14px; color: var(--navy); opacity: 0.8; margin-top: 4px; }
+
+/* Score bars */
+.score-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.score-label { width: 80px; font-size: 12px; color: var(--slate); flex-shrink: 0; }
+.score-bar { flex: 1; height: 8px; background: var(--navy-mid); border-radius: 4px; overflow: hidden; }
+.score-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.score-num { width: 36px; text-align: right; font-size: 13px; font-weight: 600; color: var(--text); }
+
+/* Results modal */
+.result-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  display: none; flex-direction: column;
+}
+.result-overlay.active { display: flex; }
+.result-panel {
+  flex: 1; margin-top: calc(var(--safe-top) + 48px);
+  background: var(--bg); border-radius: 20px 20px 0 0; overflow-y: auto;
+  -webkit-overflow-scrolling: touch; padding: 20px 16px calc(var(--safe-bottom) + 24px);
+}
+.result-close {
+  position: fixed; top: calc(var(--safe-top) + 10px); right: 16px;
+  width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15);
+  color: #fff; font-size: 20px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 201; border: none;
+}
+
+/* History table */
+.history-item {
+  background: var(--card); border: 1px solid var(--card-border); border-radius: 12px;
+  padding: 14px; margin-bottom: 10px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.history-item:active { background: var(--navy-mid); }
+.hist-left { flex: 1; }
+.hist-key { font-size: 13px; color: var(--teal); font-weight: 600; }
+.hist-meta { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.hist-rec { font-size: 14px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+
+/* Language picker */
+.lang-row { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.lang-chip {
+  padding: 6px 12px; font-size: 12px; border-radius: 8px;
+  background: var(--navy-mid); color: var(--slate); border: 1px solid var(--card-border);
+  cursor: pointer; transition: all 0.2s;
+}
+.lang-chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+/* Output level picker */
+.level-row { display: flex; gap: 6px; margin: 8px 0; }
+.level-chip {
+  flex: 1; text-align: center; padding: 10px 8px; font-size: 12px; font-weight: 600;
+  border-radius: 10px; background: var(--navy-mid); color: var(--slate);
+  border: 1px solid var(--card-border); cursor: pointer; transition: all 0.2s;
+}
+.level-chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+/* Import zone */
+.drop-zone {
+  border: 2px dashed var(--card-border); border-radius: 14px; padding: 32px 16px;
+  text-align: center; color: var(--slate); font-size: 14px; cursor: pointer;
+  transition: border-color 0.2s; margin-bottom: 12px;
+}
+.drop-zone.active { border-color: var(--teal); background: rgba(28,167,162,0.05); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: calc(var(--safe-bottom) + 70px); left: 50%; transform: translateX(-50%);
+  background: var(--navy-mid); color: var(--text); padding: 10px 20px; border-radius: 10px;
+  font-size: 13px; z-index: 500; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none; box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+.toast.show { opacity: 1; }
+
+/* Metric form groups */
+.metric-group { margin-bottom: 16px; }
+.metric-group-title { font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.metric-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.metric-label { font-size: 13px; color: var(--slate); flex: 1; }
+.metric-input { width: 100px; padding: 8px 10px; font-size: 14px; background: var(--navy); border: 1px solid var(--card-border); border-radius: 8px; color: var(--text); outline: none; text-align: right; -webkit-appearance: none; }
+.metric-input:focus { border-color: var(--teal); }
+.metric-hint { font-size: 10px; color: var(--text-dim); }
+
+/* Mapping table */
+.map-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+.map-table th { text-align: left; padding: 8px; color: var(--teal); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--card-border); }
+.map-table td { padding: 8px; border-bottom: 1px solid var(--card-border); }
+.map-table select { font-size: 13px; padding: 6px; background: var(--navy); border: 1px solid var(--card-border); border-radius: 6px; color: var(--text); width: 100%; }
+
+/* Export grid */
+.export-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+.export-btn {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 14px 8px; background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 12px; color: var(--text); font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; gap: 6px;
+}
+.export-btn:active { background: var(--navy-mid); border-color: var(--teal); }
+.export-icon { font-size: 22px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--navy-mid); border-radius: 2px; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.slide-up { animation: slideUp 0.35s ease; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     AUTH: BIOMETRIC LOCK SCREEN
+     ═══════════════════════════════════════════ -->
+<div id="bioScreen" class="auth-screen hidden">
+  <div class="auth-logo">ELENIVO</div>
+  <div class="auth-subtitle">Signalyz&eacute; Solutions</div>
+  <div class="auth-card" style="text-align:center">
+    <div class="bio-icon">&#128274;</div>
+    <div class="bio-text">Tap to unlock with Face ID</div>
+    <button class="auth-btn" onclick="doBiometricAuth()">Unlock</button>
+    <button class="auth-btn secondary" onclick="showLogin()">Use Password</button>
+    <div class="auth-error" id="bioError"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     AUTH: LOGIN SCREEN
+     ═══════════════════════════════════════════ -->
+<div id="loginScreen" class="auth-screen">
+  <div class="auth-logo">ELENIVO</div>
+  <div class="auth-subtitle">Signalyz&eacute; Solutions</div>
+  <div class="auth-card fade-in">
+    <h2>Sign In</h2>
+    <input id="loginEmail" class="auth-input" type="email" placeholder="Email" autocomplete="email" inputmode="email">
+    <input id="loginPassword" class="auth-input" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="loginBtn" class="auth-btn" onclick="doLogin()">Sign In</button>
+    <div class="auth-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     AUTH: TOTP VERIFICATION
+     ═══════════════════════════════════════════ -->
+<div id="totpScreen" class="auth-screen hidden">
+  <div class="auth-logo">ELENIVO</div>
+  <div class="auth-subtitle">Two-Factor Authentication</div>
+  <div class="auth-card fade-in">
+    <h2>Enter Authenticator Code</h2>
+    <div class="auth-info">Open Microsoft Authenticator and enter the 6-digit code</div>
+    <div class="totp-inputs">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="0">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="1">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="2">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="3">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="4">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="5">
+    </div>
+    <button id="totpBtn" class="auth-btn" onclick="verifyTOTP()">Verify</button>
+    <div class="auth-error" id="totpError"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     AUTH: MFA ENROLLMENT
+     ═══════════════════════════════════════════ -->
+<div id="mfaSetupScreen" class="auth-screen hidden">
+  <div class="auth-logo">ELENIVO</div>
+  <div class="auth-subtitle">Set Up Two-Factor Authentication</div>
+  <div class="auth-card fade-in">
+    <h2>Scan with Authenticator</h2>
+    <div class="auth-info">Scan this QR code with Microsoft Authenticator, then enter the 6-digit code to verify.</div>
+    <div class="mfa-qr" id="mfaQR"></div>
+    <div class="mfa-secret" id="mfaSecret"></div>
+    <div class="totp-inputs" id="setupTotpInputs">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="0">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="1">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="2">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="3">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="4">
+      <input class="totp-digit" type="tel" maxlength="1" inputmode="numeric" data-idx="5">
+    </div>
+    <button class="auth-btn" onclick="verifyMFASetup()">Verify &amp; Enable</button>
+    <div class="auth-error" id="mfaSetupError"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MAIN APP SHELL
+     ═══════════════════════════════════════════ -->
+<div id="appShell" class="app-shell">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-brand">ELENIVO</div>
+    <div class="top-bar-right">
+      <div class="top-bar-user" id="userDisplay"></div>
+      <div class="top-bar-icon" onclick="lockApp()" title="Lock">&#128274;</div>
+      <div class="top-bar-icon" onclick="doLogout()" title="Logout">&#9211;</div>
+    </div>
+  </div>
+
+  <!-- Page Container -->
+  <div class="page-container">
+
+    <!-- ═══ PAGE: SDE ANALYSIS ═══ -->
+    <div id="pageAnalysis" class="page active">
+
+      <!-- Client & Tier Selection -->
+      <div class="m-section">Client &amp; Configuration</div>
+      <select id="mSdeClient" class="m-select" onchange="updateTierFromClient()">
+        <option value="">Ad-Hoc Analysis</option>
+      </select>
+      <select id="mSdeTier" class="m-select">
+        <option value="lite">Lite</option>
+        <option value="pro" selected>Pro</option>
+        <option value="enterprise">Enterprise</option>
+      </select>
+
+      <!-- Data Input Tabs -->
+      <div class="m-section">Data Input</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px">
+        <button class="m-btn-small m-btn-secondary level-chip active" data-input="manual" onclick="switchInputMode('manual')">Manual</button>
+        <button class="m-btn-small m-btn-secondary level-chip" data-input="import" onclick="switchInputMode('import')">Import</button>
+        <button class="m-btn-small m-btn-secondary level-chip" data-input="json" onclick="switchInputMode('json')">JSON</button>
+      </div>
+
+      <!-- Manual Input -->
+      <div id="inputManual" class="m-card">
+        <div id="metricForm"></div>
+        <div class="metric-group" style="margin-top:12px">
+          <div class="metric-row">
+            <div class="metric-label">Risk Tolerance</div>
+            <input id="mRiskTol" class="metric-input" type="number" value="0.5" min="0" max="1" step="0.1">
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">Time Horizon (days)</div>
+            <input id="mTimeHz" class="metric-input" type="number" value="90" min="1" max="3650">
+          </div>
+        </div>
+      </div>
+
+      <!-- File Import -->
+      <div id="inputImport" class="m-card" style="display:none">
+        <div class="drop-zone" id="mDropZone" onclick="document.getElementById('mFileInput').click()">
+          Tap to select CSV or Excel file
+          <input id="mFileInput" type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="handleMobileFile(event)">
+        </div>
+        <div id="mMappingArea"></div>
+      </div>
+
+      <!-- JSON Input -->
+      <div id="inputJSON" class="m-card" style="display:none">
+        <textarea id="mJsonInput" class="m-input" rows="8" placeholder='Paste JSON payload...' style="font-family:monospace;font-size:13px;resize:vertical"></textarea>
+        <button class="m-btn m-btn-secondary" onclick="loadJSON()" style="margin-top:8px">Load JSON</button>
+      </div>
+
+      <!-- Run Button -->
+      <button class="m-btn m-btn-primary" onclick="runAnalysis()" style="margin-top:12px;font-size:17px;padding:16px">
+        Run SDE Analysis
+      </button>
+    </div>
+
+    <!-- ═══ PAGE: DECISION HISTORY ═══ -->
+    <div id="pageHistory" class="page">
+      <div class="m-section">Decision History</div>
+      <div id="historyList" style="margin-top:8px">
+        <div style="text-align:center;color:var(--text-dim);padding:40px 0">Loading...</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="m-btn m-btn-secondary" onclick="exportAllHistoryCSV()" style="flex:1;font-size:13px">Export CSV</button>
+        <button class="m-btn m-btn-secondary" onclick="exportAllHistoryExcel()" style="flex:1;font-size:13px">Export Excel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="switchTab('Analysis')" data-tab="Analysis">
+      <div class="tab-icon">&#9881;</div>
+      Analysis
+    </div>
+    <div class="tab-item" onclick="switchTab('History')" data-tab="History">
+      <div class="tab-icon">&#128203;</div>
+      History
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     RESULT OVERLAY
+     ═══════════════════════════════════════════ -->
+<div id="resultOverlay" class="result-overlay">
+  <button class="result-close" onclick="closeResult()">&times;</button>
+  <div class="result-panel slide-up" id="resultPanel"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════
+// SUPABASE CONFIG
+// ══════════════════════════════════════════
+const SUPABASE_URL = 'https://fzcpakoaaqxzeiqwflvm.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6Y3Bha29hYXF4emVpcXdmbHZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMTYzMjcsImV4cCI6MjA5MTg5MjMyN30.Vs5HvCXApdrUvjqMllBu8W-_7qsfN689QylJIG0y0k0';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let currentUser = null;
+let currentTenant = null;
+let currentTier = 'pro';
+let lastResult = null;
+let currentOutputLevel = 'standard';
+let exportLang = 'en';
+let mfaFactorId = null;
+let mfaChallengeId = null;
+let importedInputs = {};
+
+// ══════════════════════════════════════════
+// i18n DICTIONARY (same as console)
+// ══════════════════════════════════════════
+const i18n = {
+  brand_title: { en: 'ELENIVO', es: 'ELENIVO', fr: 'ELENIVO', zh: 'ELENIVO' },
+  brand_subtitle: { en: 'Strategic Decision Engine — Executive Brief', es: 'Motor de Decisión Estratégica — Informe Ejecutivo', fr: 'Moteur de Décision Stratégique — Rapport Exécutif', zh: '战略决策引擎 — 执行摘要' },
+  generated: { en: 'Generated', es: 'Generado', fr: 'Généré', zh: '生成日期' },
+  tier_label: { en: 'Tier', es: 'Nivel', fr: 'Niveau', zh: '级别' },
+  decision_key: { en: 'Decision Key', es: 'Clave de Decisión', fr: 'Clé de Décision', zh: '决策密钥' },
+  output_level: { en: 'Output Level', es: 'Nivel de Detalle', fr: 'Niveau de Détail', zh: '输出级别' },
+  client_label: { en: 'Client', es: 'Cliente', fr: 'Client', zh: '客户' },
+  date_label: { en: 'Date', es: 'Fecha', fr: 'Date', zh: '日期' },
+  level_quick: { en: 'Quick Scan', es: 'Escaneo Rápido', fr: 'Analyse Rapide', zh: '快速扫描' },
+  level_standard: { en: 'Standard Analysis', es: 'Análisis Estándar', fr: 'Analyse Standard', zh: '标准分析' },
+  level_deep: { en: 'Deep Dive', es: 'Análisis Profundo', fr: 'Analyse Approfondie', zh: '深度分析' },
+  rec_GO: { en: 'GO', es: 'AVANZAR', fr: 'AVANCER', zh: '执行' },
+  rec_HOLD: { en: 'HOLD', es: 'MANTENER', fr: 'MAINTENIR', zh: '观望' },
+  rec_REDUCE: { en: 'REDUCE', es: 'REDUCIR', fr: 'RÉDUIRE', zh: '缩减' },
+  rec_INVEST: { en: 'INVEST', es: 'INVERTIR', fr: 'INVESTIR', zh: '投资' },
+  rec_desc_GO: { en: 'Proceed with strategic initiative', es: 'Proceder con la iniciativa estratégica', fr: 'Procéder à l\'initiative stratégique', zh: '推进战略计划' },
+  rec_desc_HOLD: { en: 'Maintain current position, monitor signals', es: 'Mantener posición actual, monitorear señales', fr: 'Maintenir la position actuelle, surveiller les signaux', zh: '维持现状，持续监控' },
+  rec_desc_REDUCE: { en: 'Scale back exposure, de-risk position', es: 'Reducir exposición, disminuir riesgo', fr: 'Réduire l\'exposition, limiter les risques', zh: '降低风险敞口，减少头寸' },
+  rec_desc_INVEST: { en: 'Invest in strengthening weak areas before expanding', es: 'Invertir en fortalecer áreas débiles antes de expandir', fr: 'Investir dans le renforcement des points faibles avant l\'expansion', zh: '在扩张前投资加强薄弱环节' },
+  confidence: { en: 'Confidence', es: 'Confianza', fr: 'Confiance', zh: '置信度' },
+  composite_score: { en: 'Composite Score', es: 'Puntuación Compuesta', fr: 'Score Composite', zh: '综合评分' },
+  module_scores: { en: 'Module Scores', es: 'Puntuaciones por Módulo', fr: 'Scores par Module', zh: '模块评分' },
+  key_drivers: { en: 'Key Drivers', es: 'Factores Clave', fr: 'Facteurs Clés', zh: '关键驱动因素' },
+  tradeoffs: { en: 'Tradeoffs', es: 'Compensaciones', fr: 'Compromis', zh: '权衡取舍' },
+  sensitivity: { en: 'Sensitivity Triggers', es: 'Indicadores de Sensibilidad', fr: 'Déclencheurs de Sensibilité', zh: '敏感性触发条件' },
+  module_detail: { en: 'Module Detail', es: 'Detalle por Módulo', fr: 'Détail par Module', zh: '模块详情' },
+  m1_full: { en: 'M1 — Performance', es: 'M1 — Rendimiento', fr: 'M1 — Performance', zh: 'M1 — 绩效' },
+  m2_full: { en: 'M2 — Risk', es: 'M2 — Riesgo', fr: 'M2 — Risque', zh: 'M2 — 风险' },
+  m3_full: { en: 'M3 — Capital', es: 'M3 — Capital', fr: 'M3 — Capital', zh: 'M3 — 资本' },
+  th_module: { en: 'Module', es: 'Módulo', fr: 'Module', zh: '模块' },
+  th_score: { en: 'Score', es: 'Puntuación', fr: 'Score', zh: '评分' },
+  th_band: { en: 'Band', es: 'Banda', fr: 'Bande', zh: '等级' },
+  th_weight: { en: 'Weight', es: 'Peso', fr: 'Poids', zh: '权重' },
+  th_driver: { en: 'Driver', es: 'Factor', fr: 'Facteur', zh: '因素' },
+  th_impact: { en: 'Impact', es: 'Impacto', fr: 'Impact', zh: '影响' },
+  th_severity: { en: 'Severity', es: 'Severidad', fr: 'Sévérité', zh: '严重程度' },
+  th_weighted: { en: 'Weighted', es: 'Ponderado', fr: 'Pondéré', zh: '加权' },
+  band_strong: { en: 'Strong', es: 'Fuerte', fr: 'Fort', zh: '强劲' },
+  band_moderate: { en: 'Moderate', es: 'Moderado', fr: 'Modéré', zh: '中等' },
+  band_weak: { en: 'Weak', es: 'Débil', fr: 'Faible', zh: '薄弱' },
+  band_low_risk: { en: 'Low risk', es: 'Riesgo bajo', fr: 'Risque faible', zh: '低风险' },
+  band_moderate_risk: { en: 'Moderate risk', es: 'Riesgo moderado', fr: 'Risque modéré', zh: '中等风险' },
+  band_high_risk: { en: 'High risk', es: 'Riesgo alto', fr: 'Risque élevé', zh: '高风险' },
+  band_efficient: { en: 'Efficient', es: 'Eficiente', fr: 'Efficace', zh: '高效' },
+  band_adequate: { en: 'Adequate', es: 'Adecuado', fr: 'Adéquat', zh: '适当' },
+  band_constrained: { en: 'Constrained', es: 'Limitado', fr: 'Contraint', zh: '受限' },
+  band_not_evaluated: { en: 'Not evaluated', es: 'No evaluado', fr: 'Non évalué', zh: '未评估' },
+  impact_positive: { en: 'Positive', es: 'Positivo', fr: 'Positif', zh: '积极' },
+  impact_negative: { en: 'Negative', es: 'Negativo', fr: 'Négatif', zh: '消极' },
+  impact_neutral: { en: 'Neutral', es: 'Neutro', fr: 'Neutre', zh: '中性' },
+  sev_high: { en: 'high', es: 'alto', fr: 'élevé', zh: '高' },
+  sev_medium: { en: 'medium', es: 'medio', fr: 'moyen', zh: '中' },
+  sev_low: { en: 'low', es: 'bajo', fr: 'faible', zh: '低' },
+  drv_revenue_growth: { en: 'Revenue growth', es: 'Crecimiento de ingresos', fr: 'Croissance du CA', zh: '收入增长' },
+  drv_utilization: { en: 'Utilization', es: 'Utilización', fr: 'Utilisation', zh: '资源利用率' },
+  drv_lead_velocity: { en: 'Lead velocity', es: 'Velocidad de prospectos', fr: 'Vélocité des prospects', zh: '线索速度' },
+  drv_cash_runway: { en: 'Cash runway', es: 'Reserva de efectivo', fr: 'Trésorerie disponible', zh: '现金跑道' },
+  drv_spend_balance: { en: 'Spend balance', es: 'Balance de gastos', fr: 'Équilibre des dépenses', zh: '支出平衡' },
+  drv_efficiency: { en: 'Efficiency', es: 'Eficiencia', fr: 'Efficacité', zh: '效率' },
+  drv_demand_signals: { en: 'Demand signals', es: 'Señales de demanda', fr: 'Signaux de demande', zh: '需求信号' },
+  drv_growth_roi: { en: 'Growth ROI', es: 'ROI de crecimiento', fr: 'ROI de croissance', zh: '增长投资回报率' },
+  drv_concentration_risk: { en: 'Concentration risk', es: 'Riesgo de concentración', fr: 'Risque de concentration', zh: '集中度风险' },
+  drv_regulatory_exposure: { en: 'Regulatory exposure', es: 'Exposición regulatoria', fr: 'Exposition réglementaire', zh: '监管风险' },
+  drv_pricing_moat: { en: 'Pricing moat', es: 'Ventaja de precios', fr: 'Avantage tarifaire', zh: '定价护城河' },
+  drv_margin_resilience: { en: 'Margin resilience', es: 'Resiliencia de margen', fr: 'Résilience des marges', zh: '利润率韧性' },
+  drv_allocation_balance: { en: 'Allocation balance', es: 'Balance de asignación', fr: 'Équilibre d\'allocation', zh: '分配平衡' },
+  drv_reserve_health: { en: 'Reserve health', es: 'Salud de reservas', fr: 'Santé des réserves', zh: '储备健康' },
+  drv_growth_investment_roi: { en: 'Growth investment ROI', es: 'ROI inversión crecimiento', fr: 'ROI investissement croissance', zh: '增长投资回报' },
+  drv_working_capital: { en: 'Working capital', es: 'Capital de trabajo', fr: 'Fonds de roulement', zh: '营运资本' },
+  drv_market_position: { en: 'Market position', es: 'Posición de mercado', fr: 'Position de marché', zh: '市场地位' },
+  drv_strategic_readiness: { en: 'Strategic readiness', es: 'Preparación estratégica', fr: 'Préparation stratégique', zh: '战略准备度' },
+  drv_risk_assessment: { en: 'Risk assessment', es: 'Evaluación de riesgo', fr: 'Évaluation des risques', zh: '风险评估' },
+  drv_capital_strategy: { en: 'Capital strategy', es: 'Estrategia de capital', fr: 'Stratégie de capital', zh: '资本策略' },
+  tf_growth_vs_safety: { en: 'Growth vs Safety', es: 'Crecimiento vs Seguridad', fr: 'Croissance vs Sécurité', zh: '增长与安全' },
+  tf_safety_vs_growth: { en: 'Safety vs Growth', es: 'Seguridad vs Crecimiento', fr: 'Sécurité vs Croissance', zh: '安全与增长' },
+  tf_growth_vs_capital: { en: 'Growth vs Capital', es: 'Crecimiento vs Capital', fr: 'Croissance vs Capital', zh: '增长与资本' },
+  tf_double_exposure: { en: 'Double Exposure', es: 'Doble Exposición', fr: 'Double Exposition', zh: '双重风险' },
+  tf_balanced: { en: 'Balanced', es: 'Equilibrado', fr: 'Équilibré', zh: '均衡' },
+  disclaimer: { en: 'DECISION SUPPORT ONLY — This analysis does not constitute financial, legal, or investment advice.', es: 'SOLO APOYO A LA DECISIÓN — Este análisis no constituye asesoramiento financiero, legal o de inversión.', fr: 'AIDE À LA DÉCISION UNIQUEMENT — Cette analyse ne constitue pas un conseil financier, juridique ou d\'investissement.', zh: '仅供决策参考 — 本分析不构成财务、法律或投资建议。' },
+  footer: { en: 'Signalyzé Solutions LLC | signalyzesolutions.com', es: 'Signalyzé Solutions LLC | signalyzesolutions.com', fr: 'Signalyzé Solutions LLC | signalyzesolutions.com', zh: 'Signalyzé Solutions LLC | signalyzesolutions.com' },
+  cp_recommendation: { en: 'RECOMMENDATION', es: 'RECOMENDACIÓN', fr: 'RECOMMANDATION', zh: '建议' },
+  cp_module_scores: { en: 'MODULE SCORES', es: 'PUNTUACIONES POR MÓDULO', fr: 'SCORES PAR MODULE', zh: '模块评分' },
+  cp_key_drivers: { en: 'KEY DRIVERS', es: 'FACTORES CLAVE', fr: 'FACTEURS CLÉS', zh: '关键驱动因素' },
+  cp_tradeoffs: { en: 'TRADEOFFS', es: 'COMPENSACIONES', fr: 'COMPROMIS', zh: '权衡取舍' },
+  cp_sensitivity: { en: 'SENSITIVITY', es: 'SENSIBILIDAD', fr: 'SENSIBILITÉ', zh: '敏感性' },
+};
+function t(key, lang) { lang = lang || exportLang; const e = i18n[key]; if (!e) return key; return e[lang] || e.en || key; }
+function tBand(b, lang) { const m = { 'Strong':'band_strong','Moderate':'band_moderate','Weak':'band_weak','Low risk':'band_low_risk','Moderate risk':'band_moderate_risk','High risk':'band_high_risk','Efficient':'band_efficient','Adequate':'band_adequate','Constrained':'band_constrained','Not evaluated':'band_not_evaluated' }; return t(m[b]||b, lang); }
+function tDriver(n, lang) { const m = { 'Revenue growth':'drv_revenue_growth','Utilization':'drv_utilization','Lead velocity':'drv_lead_velocity','Cash runway':'drv_cash_runway','Spend balance':'drv_spend_balance','Efficiency':'drv_efficiency','Demand signals':'drv_demand_signals','Growth ROI':'drv_growth_roi','Concentration risk':'drv_concentration_risk','Regulatory exposure':'drv_regulatory_exposure','Pricing moat':'drv_pricing_moat','Margin resilience':'drv_margin_resilience','Allocation balance':'drv_allocation_balance','Reserve health':'drv_reserve_health','Growth investment ROI':'drv_growth_investment_roi','Working capital':'drv_working_capital','Market position':'drv_market_position','Strategic readiness':'drv_strategic_readiness','Risk assessment':'drv_risk_assessment','Capital strategy':'drv_capital_strategy' }; return t(m[n]||n, lang); }
+function tRec(r, lang) { return t('rec_'+r, lang); }
+function tRecDesc(r, lang) { return t('rec_desc_'+r, lang); }
+function tSeverity(s, lang) { const m = { 'high':'sev_high','medium':'sev_medium','low':'sev_low' }; return t(m[s]||s, lang); }
+function tTension(tn, lang) { const m = { 'Growth vs Safety':'tf_growth_vs_safety','Safety vs Growth':'tf_safety_vs_growth','Growth vs Capital':'tf_growth_vs_capital','Double Exposure':'tf_double_exposure','Balanced':'tf_balanced' }; return t(m[tn]||tn, lang); }
+function tLevel(lang) { const m = { quick:'level_quick', standard:'level_standard', deep:'level_deep' }; return t(m[currentOutputLevel], lang); }
+
+// ══════════════════════════════════════════
+// SDE ENGINE (identical to console)
+// ══════════════════════════════════════════
+const FIELD_SPECS = {
+  revenue_growth_rate:{min:-1,max:5,neutral:0.05,tier:'lite'},utilization_rate:{min:0,max:1,neutral:0.5,tier:'lite'},lead_velocity:{min:-1,max:10,neutral:0,tier:'lite'},burn_rate:{min:0,max:10000000,neutral:50000,tier:'lite'},cash_runway:{min:0,max:120,neutral:12,tier:'lite'},
+  revenue:{min:0,max:1e9,neutral:1e6,tier:'pro'},cogs:{min:0,max:1e9,neutral:5e5,tier:'pro'},operating_expenses:{min:0,max:1e9,neutral:3e5,tier:'pro'},gross_margin:{min:-1,max:1,neutral:0.5,tier:'pro'},net_margin:{min:-2,max:1,neutral:0.1,tier:'pro'},margin_trend:{min:-0.5,max:0.5,neutral:0,tier:'pro'},client_count:{min:0,max:1e5,neutral:50,tier:'pro'},top_client_pct:{min:0,max:1,neutral:0.15,tier:'pro'},top3_client_pct:{min:0,max:1,neutral:0.35,tier:'pro'},regulatory_risk:{min:0,max:1,neutral:0.3,tier:'pro'},switching_cost_score:{min:0,max:10,neutral:5,tier:'pro'},brand_score:{min:0,max:10,neutral:5,tier:'pro'},price_index:{min:0.5,max:2,neutral:1.0,tier:'pro'},spend_sales:{min:0,max:1,neutral:0.15,tier:'pro'},spend_rd:{min:0,max:1,neutral:0.10,tier:'pro'},spend_ops:{min:0,max:1,neutral:0.50,tier:'pro'},spend_admin:{min:0,max:1,neutral:0.15,tier:'pro'},capex_ratio:{min:0,max:1,neutral:0.10,tier:'pro'},growth_investment_roi:{min:-1,max:10,neutral:1.5,tier:'pro'},working_capital_ratio:{min:0,max:5,neutral:1.5,tier:'pro'},debt_to_equity:{min:0,max:10,neutral:1.0,tier:'pro'},
+  market_share:{min:0,max:1,neutral:0.05,tier:'enterprise'},share_trend:{min:-0.5,max:0.5,neutral:0,tier:'enterprise'},differentiation_score:{min:0,max:10,neutral:5,tier:'enterprise'},win_rate:{min:0,max:1,neutral:0.3,tier:'enterprise'},competitor_count:{min:0,max:100,neutral:10,tier:'enterprise'},pmf_score:{min:0,max:10,neutral:5,tier:'enterprise'},strategic_alignment:{min:0,max:10,neutral:5,tier:'enterprise'},execution_speed:{min:0,max:10,neutral:5,tier:'enterprise'},retention_rate:{min:0,max:1,neutral:0.85,tier:'enterprise'},segment_count:{min:1,max:50,neutral:3,tier:'enterprise'},
+};
+const TIER_ORDER = { lite:0, pro:1, enterprise:2 };
+function tierIncludes(ft, st) { return TIER_ORDER[st] >= TIER_ORDER[ft]; }
+function scaleLinear(v, mn, mx) { if (mx===mn) return 0.5; return Math.max(0, Math.min(1, (v-mn)/(mx-mn))); }
+
+function normalize(inputs, tier) {
+  const s = {};
+  for (const [k, sp] of Object.entries(FIELD_SPECS)) { if (!tierIncludes(sp.tier,tier)) continue; const raw = inputs[k]!==undefined && inputs[k]!=='' ? parseFloat(inputs[k]) : sp.neutral; s[k] = scaleLinear(raw, sp.min, sp.max); }
+  const gm=inputs.gross_margin!==undefined?parseFloat(inputs.gross_margin):0.5, nm=inputs.net_margin!==undefined?parseFloat(inputs.net_margin):0.1, mt=inputs.margin_trend!==undefined?parseFloat(inputs.margin_trend):0;
+  s.margin_health = scaleLinear(gm,-1,1)*0.5 + scaleLinear(nm,-2,1)*0.5;
+  s.margin_momentum = scaleLinear(mt,-0.5,0.5);
+  const topPct=inputs.top_client_pct!==undefined?parseFloat(inputs.top_client_pct):0.15; s.concentration_safety = 1 - scaleLinear(topPct,0,1);
+  const top3=inputs.top3_client_pct!==undefined?parseFloat(inputs.top3_client_pct):0.35; s.client_diversification = 1 - scaleLinear(top3,0,1);
+  const regRisk=inputs.regulatory_risk!==undefined?parseFloat(inputs.regulatory_risk):0.3; s.regulatory_safety = 1 - scaleLinear(regRisk,0,1);
+  s.switching_moat = scaleLinear(inputs.switching_cost_score||5,0,10); s.brand_strength = scaleLinear(inputs.brand_score||5,0,10);
+  const pi=inputs.price_index!==undefined?parseFloat(inputs.price_index):1.0; s.price_premium = scaleLinear(pi,0.5,2);
+  const spS=parseFloat(inputs.spend_sales||0.15), spR=parseFloat(inputs.spend_rd||0.10), spO=parseFloat(inputs.spend_ops||0.50), spA=parseFloat(inputs.spend_admin||0.15);
+  const hhi=[spS,spR,spO,spA].reduce((a,v)=>a+v*v,0); s.spend_balance = 1-hhi; s.allocation_balance = s.spend_balance;
+  const br=parseFloat(inputs.burn_rate||50000), cr=parseFloat(inputs.cash_runway||12); s.reserve_health = scaleLinear(cr,0,120); s.burn_efficiency = br>0 ? scaleLinear(parseFloat(inputs.revenue||1e6)/br,0,20) : 0.5;
+  s.growth_roi = scaleLinear(parseFloat(inputs.growth_investment_roi||1.5),-1,10); s.working_capital = scaleLinear(parseFloat(inputs.working_capital_ratio||1.5),0,5);
+  s.market_presence = scaleLinear(parseFloat(inputs.market_share||0.05),0,1); s.share_momentum = scaleLinear(parseFloat(inputs.share_trend||0),-0.5,0.5); s.differentiation = scaleLinear(parseFloat(inputs.differentiation_score||5),0,10); s.win_rate_score = scaleLinear(parseFloat(inputs.win_rate||0.3),0,1);
+  const cc=parseFloat(inputs.competitor_count||10); s.competitive_pressure = 1-scaleLinear(cc,0,100);
+  s.pmf = scaleLinear(parseFloat(inputs.pmf_score||5),0,10); s.strategic_alignment = scaleLinear(parseFloat(inputs.strategic_alignment||5),0,10); s.execution_speed = scaleLinear(parseFloat(inputs.execution_speed||5),0,10); s.retention = scaleLinear(parseFloat(inputs.retention_rate||0.85),0,1); s.segment_diversification = scaleLinear(parseFloat(inputs.segment_count||3),1,50);
+  return s;
+}
+
+function runM1(s,tier) {
+  if(tier==='lite'){const g=s.revenue_growth_rate||0.5,u=s.utilization_rate||0.5,l=s.lead_velocity||0.5,rn=s.reserve_health||0.5,sp=s.spend_balance||0.5;const c=g*0.30+u*0.25+l*0.20+rn*0.15+sp*0.10;return{module:'M1_Performance',version:'1.0.0',score:c,band:c>=0.70?'Strong':c>=0.45?'Moderate':'Weak',drivers:[{name:'Revenue growth',score:g,weight:0.30,weighted:g*0.30},{name:'Utilization',score:u,weight:0.25,weighted:u*0.25},{name:'Lead velocity',score:l,weight:0.20,weighted:l*0.20},{name:'Cash runway',score:rn,weight:0.15,weighted:rn*0.15},{name:'Spend balance',score:sp,weight:0.10,weighted:sp*0.10}]};}
+  const g=s.revenue_growth_rate||0.5,e=(s.margin_health||0.5)*0.5+(s.utilization_rate||0.5)*0.5,d=(s.lead_velocity||0.5)*0.6+(s.burn_efficiency||0.5)*0.4,rn=s.reserve_health||0.5,sr=s.growth_roi||0.5;const c=g*0.30+e*0.25+d*0.20+rn*0.15+sr*0.10;return{module:'M1_Performance',version:'1.0.0',score:c,band:c>=0.70?'Strong':c>=0.45?'Moderate':'Weak',drivers:[{name:'Revenue growth',score:g,weight:0.30,weighted:g*0.30},{name:'Efficiency',score:e,weight:0.25,weighted:e*0.25},{name:'Demand signals',score:d,weight:0.20,weighted:d*0.20},{name:'Cash runway',score:rn,weight:0.15,weighted:rn*0.15},{name:'Growth ROI',score:sr,weight:0.10,weighted:sr*0.10}]};
+}
+function runM2(s,tier) {
+  if(tier==='lite') return {module:'M2_Risk',version:'1.0.0',score:0.50,band:'Not evaluated',drivers:[{name:'Risk assessment',score:0.5,weight:1.0,weighted:0.5}]};
+  const bc=(s.concentration_safety||0.5)*0.6+(s.client_diversification||0.5)*0.4, rs=s.regulatory_safety||0.7, ms=(s.switching_moat||0.5)*0.4+(s.brand_strength||0.5)*0.3+(s.price_premium||0.5)*0.3, mg=(s.margin_health||0.5)*0.7+(s.margin_momentum||0.5)*0.3;
+  const W={c:0.30,r:0.20,p:0.25,m:0.25}; const c=bc*W.c+rs*W.r+ms*W.p+mg*W.m;
+  return{module:'M2_Risk',version:'1.0.0',score:c,band:c>=0.70?'Low risk':c>=0.45?'Moderate risk':'High risk',drivers:[{name:'Concentration risk',score:bc,weight:W.c,weighted:bc*W.c},{name:'Regulatory exposure',score:rs,weight:W.r,weighted:rs*W.r},{name:'Pricing moat',score:ms,weight:W.p,weighted:ms*W.p},{name:'Margin resilience',score:mg,weight:W.m,weighted:mg*W.m}]};
+}
+function runM3(s,tier) {
+  if(tier==='lite') return {module:'M3_Capital',version:'1.0.0',score:0.50,band:'Not evaluated',drivers:[{name:'Capital strategy',score:0.5,weight:1.0,weighted:0.5}]};
+  const al=s.allocation_balance||0.5,re=s.reserve_health||0.5,gr=s.growth_roi||0.5,wc=s.working_capital||0.5;
+  if(tier==='enterprise'){const W={a:0.15,r:0.15,g:0.15,w:0.15,mk:0.20,st:0.20};const mp=(s.market_presence||0.5)*0.2+(s.share_momentum||0.5)*0.2+(s.differentiation||0.5)*0.25+(s.win_rate_score||0.5)*0.2+(s.competitive_pressure||0.5)*0.15;const sp=(s.pmf||0.5)*0.25+(s.strategic_alignment||0.5)*0.2+(s.execution_speed||0.5)*0.2+(s.retention||0.5)*0.2+(s.segment_diversification||0.5)*0.15;const c=al*W.a+re*W.r+gr*W.g+wc*W.w+mp*W.mk+sp*W.st;return{module:'M3_Capital',version:'1.0.0',score:c,band:c>=0.70?'Efficient':c>=0.45?'Adequate':'Constrained',drivers:[{name:'Allocation balance',score:al,weight:W.a,weighted:al*W.a},{name:'Reserve health',score:re,weight:W.r,weighted:re*W.r},{name:'Growth investment ROI',score:gr,weight:W.g,weighted:gr*W.g},{name:'Working capital',score:wc,weight:W.w,weighted:wc*W.w},{name:'Market position',score:mp,weight:W.mk,weighted:mp*W.mk},{name:'Strategic readiness',score:sp,weight:W.st,weighted:sp*W.st}]};}
+  const W={a:0.25,r:0.25,g:0.25,w:0.25};const c=al*W.a+re*W.r+gr*W.g+wc*W.w;return{module:'M3_Capital',version:'1.0.0',score:c,band:c>=0.70?'Efficient':c>=0.45?'Adequate':'Constrained',drivers:[{name:'Allocation balance',score:al,weight:W.a,weighted:al*W.a},{name:'Reserve health',score:re,weight:W.r,weighted:re*W.r},{name:'Growth investment ROI',score:gr,weight:W.g,weighted:gr*W.g},{name:'Working capital',score:wc,weight:W.w,weighted:wc*W.w}]};
+}
+function orchestrate(m1,m2,m3,riskTol,timeHz,tier) {
+  const MW={m1:0.40,m2:0.30,m3:0.30};const composite=m1.score*MW.m1+m2.score*MW.m2+m3.score*MW.m3;
+  const goTh=0.65+(1-riskTol)*0.10;let rec;if(m2.score<0.30&&composite>goTh)rec='HOLD';else if(m1.score<0.30&&m3.score<0.30)rec='INVEST';else if(composite>=goTh)rec='GO';else if(composite>=0.50)rec='HOLD';else if(composite>=0.35)rec='REDUCE';else rec='INVEST';
+  const recDesc={GO:'Proceed with strategic initiative',HOLD:'Maintain current position, monitor signals',REDUCE:'Scale back exposure, de-risk position',INVEST:'Invest in strengthening weak areas before expanding'};
+  const conf=Math.round(composite*100);const scores=[m1.score,m2.score,m3.score];const disp=Math.max(...scores)-Math.min(...scores);const bw=Math.min(20,5+Math.floor(disp*15)+Math.floor((1-Math.abs(composite-0.5)*2)*5));
+  const allD=[];[m1,m2,m3].forEach(e=>{e.drivers.forEach(d=>{allD.push({...d,module:e.module});});});allD.sort((a,b)=>Math.abs(b.score-0.5)-Math.abs(a.score-0.5));
+  const tradeoffs=[];if(m1.score>0.70&&m2.score<0.45)tradeoffs.push({tension:'Growth vs Safety',description:'Strong performance but elevated risk.',severity:m2.score<0.30?'high':'medium',modules:['M1','M2']});else if(m1.score<0.45&&m2.score>0.70)tradeoffs.push({tension:'Safety vs Growth',description:'Conservative risk posture but underperforming on growth.',severity:'medium',modules:['M1','M2']});
+  if(m1.score>0.65&&m3.score<0.40)tradeoffs.push({tension:'Growth vs Capital',description:'Strong growth signals but capital is constrained.',severity:'high',modules:['M1','M3']});
+  if(m2.score<0.45&&m3.score<0.45)tradeoffs.push({tension:'Double Exposure',description:'Both risk and capital are weak. Defensive posture recommended.',severity:'high',modules:['M2','M3']});
+  if(tradeoffs.length===0&&(Math.max(...scores)-Math.min(...scores))<0.15)tradeoffs.push({tension:'Balanced',description:'Modules are reasonably aligned.',severity:'low',modules:['M1','M2','M3']});
+  const triggers=[];if(rec!=='GO'){const gap=goTh-composite;if(gap<0.15){const w=[{name:'M1',score:m1.score,weight:0.40},{name:'M2',score:m2.score,weight:0.30},{name:'M3',score:m3.score,weight:0.30}].sort((a,b)=>a.score-b.score)[0];const needed=gap/w.weight;triggers.push({driver:w.name,description:`If ${w.name} improves by ${Math.round(needed*100)}pts, recommendation shifts to GO.`});}}
+  if(rec==='GO'||rec==='HOLD'){const buf=composite-0.50;if(buf<0.15)triggers.push({driver:'Composite',description:`A ${Math.round(buf*100)}pt composite drop would trigger REDUCE.`});}
+  const now=new Date().toISOString();let hash=0;for(let i=0;i<now.length;i++){hash=((hash<<5)-hash)+now.charCodeAt(i);hash|=0;}const dk=Math.abs(hash).toString(16).padStart(12,'0').slice(0,12);
+  return {recommendation:rec,recommendation_description:recDesc[rec],confidence:conf,confidence_band_low:Math.max(0,conf-bw),confidence_band_high:Math.min(100,conf+bw),m1_score:m1.score,m1_band:m1.band,m1_drivers:m1.drivers,m2_score:m2.score,m2_band:m2.band,m2_drivers:m2.drivers,m3_score:m3.score,m3_band:m3.band,m3_drivers:m3.drivers,composite_score:composite,key_drivers:allD.slice(0,8),tradeoffs,sensitivity_triggers:triggers,tier,engine_version:`M1:${m1.version}|M2:${m2.version}|M3:${m3.version}`,orchestrator_version:'1.0.0',risk_tolerance:riskTol,time_horizon:timeHz,decision_key:dk,timestamp:now,decision_support_only:true};
+}
+
+// ══════════════════════════════════════════
+// FIELD LABELS FOR FORM
+// ══════════════════════════════════════════
+const FIELD_LABELS = {
+  revenue_growth_rate:{label:'Revenue Growth Rate',hint:'YoY decimal',group:'Growth'},utilization_rate:{label:'Utilization Rate',hint:'0-1',group:'Efficiency'},lead_velocity:{label:'Lead Velocity',hint:'MoM rate',group:'Demand'},burn_rate:{label:'Monthly Burn Rate ($)',hint:'$/month',group:'Runway'},cash_runway:{label:'Cash Runway (months)',hint:'Months',group:'Runway'},
+  revenue:{label:'Annual Revenue ($)',hint:'Annual',group:'Financial'},cogs:{label:'COGS ($)',hint:'Annual',group:'Financial'},operating_expenses:{label:'OpEx ($)',hint:'Annual',group:'Financial'},gross_margin:{label:'Gross Margin',hint:'0.6=60%',group:'Margins'},net_margin:{label:'Net Margin',hint:'0.1=10%',group:'Margins'},margin_trend:{label:'Margin Trend',hint:'YoY change',group:'Margins'},
+  client_count:{label:'Client Count',hint:'Active',group:'Client Base'},top_client_pct:{label:'Top Client %',hint:'% of rev',group:'Client Base'},top3_client_pct:{label:'Top 3 Clients %',hint:'% of rev',group:'Client Base'},regulatory_risk:{label:'Regulatory Risk',hint:'0-1',group:'Risk'},
+  switching_cost_score:{label:'Switching Cost',hint:'0-10',group:'Moat'},brand_score:{label:'Brand Strength',hint:'0-10',group:'Moat'},price_index:{label:'Price Index',hint:'1.0=avg',group:'Moat'},
+  spend_sales:{label:'Spend: Sales %',hint:'0-1',group:'Capital'},spend_rd:{label:'Spend: R&D %',hint:'0-1',group:'Capital'},spend_ops:{label:'Spend: Ops %',hint:'0-1',group:'Capital'},spend_admin:{label:'Spend: Admin %',hint:'0-1',group:'Capital'},capex_ratio:{label:'CapEx Ratio',hint:'0-1',group:'Capital'},growth_investment_roi:{label:'Growth Invest ROI',hint:'multiplier',group:'Capital'},working_capital_ratio:{label:'Working Capital Ratio',hint:'ratio',group:'Capital'},debt_to_equity:{label:'Debt/Equity',hint:'ratio',group:'Capital'},
+  market_share:{label:'Market Share',hint:'0-1',group:'Market'},share_trend:{label:'Share Trend',hint:'YoY',group:'Market'},differentiation_score:{label:'Differentiation',hint:'0-10',group:'Market'},win_rate:{label:'Win Rate',hint:'0-1',group:'Market'},competitor_count:{label:'Competitors',hint:'count',group:'Market'},
+  pmf_score:{label:'Product-Market Fit',hint:'0-10',group:'Strategy'},strategic_alignment:{label:'Strategic Alignment',hint:'0-10',group:'Strategy'},execution_speed:{label:'Execution Speed',hint:'0-10',group:'Strategy'},retention_rate:{label:'Retention Rate',hint:'0-1',group:'Strategy'},segment_count:{label:'Segments',hint:'count',group:'Strategy'},
+};
+
+// ══════════════════════════════════════════
+// AUTH FUNCTIONS
+// ══════════════════════════════════════════
+async function checkSession() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { showLogin(); return; }
+
+  // Check if MFA is verified
+  const { data: aalData } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aalData && aalData.nextLevel === 'aal2' && aalData.currentLevel === 'aal1') {
+    // Has MFA enrolled but not verified this session — show TOTP
+    currentUser = session.user;
+    await startTOTPChallenge();
+    return;
+  }
+
+  // Check for stored biometric credential
+  const hasBio = localStorage.getItem('elenivo_bio_enrolled') === 'true';
+  if (hasBio && window.PublicKeyCredential) {
+    showScreen('bioScreen');
+  } else {
+    currentUser = session.user;
+    await enterApp();
+  }
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  document.getElementById('loginBtn').disabled = true;
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+  document.getElementById('loginBtn').disabled = false;
+  if (error) { errEl.textContent = error.message; return; }
+  currentUser = data.user;
+
+  // Check MFA status
+  const { data: aalData } = await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aalData && aalData.nextLevel === 'aal2' && aalData.currentLevel === 'aal1') {
+    await startTOTPChallenge();
+  } else if (aalData && aalData.currentLevel === 'aal1' && aalData.nextLevel === 'aal1') {
+    // No MFA enrolled — offer setup
+    await offerMFASetup();
+  } else {
+    await enterApp();
+  }
+}
+
+async function startTOTPChallenge() {
+  showScreen('totpScreen');
+  const { data: factors } = await sb.auth.mfa.listFactors();
+  const totpFactor = factors?.totp?.[0];
+  if (!totpFactor) { showLogin(); return; }
+  mfaFactorId = totpFactor.id;
+  const { data, error } = await sb.auth.mfa.challenge({ factorId: mfaFactorId });
+  if (error) { document.getElementById('totpError').textContent = error.message; return; }
+  mfaChallengeId = data.id;
+  // Focus first digit
+  document.querySelector('#totpScreen .totp-digit[data-idx="0"]').focus();
+}
+
+async function verifyTOTP() {
+  const digits = document.querySelectorAll('#totpScreen .totp-digit');
+  const code = Array.from(digits).map(d => d.value).join('');
+  if (code.length !== 6) { document.getElementById('totpError').textContent = 'Enter all 6 digits'; return; }
+
+  const { data, error } = await sb.auth.mfa.verify({ factorId: mfaFactorId, challengeId: mfaChallengeId, code });
+  if (error) { document.getElementById('totpError').textContent = 'Invalid code. Try again.'; digits.forEach(d => d.value = ''); digits[0].focus(); return; }
+
+  // Offer biometric enrollment if not set
+  if (!localStorage.getItem('elenivo_bio_enrolled') && window.PublicKeyCredential) {
+    await offerBiometricEnrollment();
+  } else {
+    await enterApp();
+  }
+}
+
+async function offerMFASetup() {
+  showScreen('mfaSetupScreen');
+  const { data, error } = await sb.auth.mfa.enroll({ factorType: 'totp', issuer: 'Elenivo', friendlyName: 'Elenivo SDE' });
+  if (error) { document.getElementById('mfaSetupError').textContent = error.message; return; }
+  mfaFactorId = data.id;
+
+  // Show QR
+  const qrEl = document.getElementById('mfaQR');
+  if (data.totp?.qr_code) {
     qrEl.innerHTML = `<img src="${data.totp.qr_code}" style="width:180px;height:180px;border-radius:8px">`;
   }
   document.getElementById('mfaSecret').textContent = data.totp?.secret || '';

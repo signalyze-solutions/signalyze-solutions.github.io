@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+<rect width="512" height="512" rx="112" fill="#121923"/>
+<g transform="translate(256, 250) scale(1.6)">
+<path d="M0,-65 L54,-46 L54,18 L0,64 L-54,18 L-54,-46 Z" fill="none" stroke="#1CA7A2" stroke-width="1.2" opacity="0.3"/>
+<path d="M0,-58 L47,-41 L47,14 L0,56 L-47,14 L-47,-41 Z" fill="#1A2536" opacity="0.5"/>
+<rect x="-32" y="-36" width="11" height="72" rx="1" fill="#1CA7A2"/>
+<rect x="-21" y="-36" width="46" height="11" rx="1" fill="#1CA7A2"/>
+<rect x="-21" y="-5.5" width="34" height="11" rx="1" fill="#2CC4BF"/>
+<rect x="-21" y="25" width="46" height="11" rx="1" fill="#1CA7A2"/>
+<circle cx="31" cy="-30.5" r="4.5" fill="#2CC4BF"/>
+<circle cx="18" cy="0" r="5" fill="#34D399"/>
+<circle cx="31" cy="30.5" r="4.5" fill="#2CC4BF"/>
+<line x1="31" y1="-26" x2="21" y2="-4" stroke="#2CC4BF" stroke-width="0.8" opacity="0.35"/>
+<line x1="21" y1="4" x2="31" y2="26" stroke="#2CC4BF" stroke-width="0.8" opacity="0.35"/>
+<line x1="31" y1="-26" x2="31" y2="26" stroke="#1CA7A2" stroke-width="0.5" opacity="0.2"/>
+<circle cx="27" cy="-14" r="2" fill="#1CA7A2" opacity="0.5"/>
+<circle cx="27" cy="14" r="2" fill="#1CA7A2" opacity="0.5"/>
+<circle cx="18" cy="0" r="9" fill="none" stroke="#34D399" stroke-width="0.7" opacity="0.3"/>
+</g>
+</svg>

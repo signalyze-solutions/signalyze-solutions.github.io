@@ -538,6 +538,10 @@ const i18n = {
   m1_full: { en: 'M1 — Performance', es: 'M1 — Rendimiento', fr: 'M1 — Performance', zh: 'M1 — 绩效' },
   m2_full: { en: 'M2 — Risk', es: 'M2 — Riesgo', fr: 'M2 — Risque', zh: 'M2 — 风险' },
   m3_full: { en: 'M3 — Capital', es: 'M3 — Capital', fr: 'M3 — Capital', zh: 'M3 — 资本' },
+  m4_full: { en: 'M4 — Customer Health', es: 'M4 — Salud del Cliente', fr: 'M4 — Santé Client', zh: 'M4 — 客户健康' },
+  m5_full: { en: 'M5 — Talent & Ops', es: 'M5 — Talento y Operaciones', fr: 'M5 — Talent & Ops', zh: 'M5 — 人才与运营' },
+  m6_full: { en: 'M6 — Innovation', es: 'M6 — Innovación', fr: 'M6 — Innovation', zh: 'M6 — 创新' },
+  m7_full: { en: 'M7 — Market Timing', es: 'M7 — Temporalidad del Mercado', fr: 'M7 — Timing du Marché', zh: 'M7 — 市场时机' },
   th_module: { en: 'Module', es: 'Módulo', fr: 'Module', zh: '模块' },
   th_score: { en: 'Score', es: 'Puntuación', fr: 'Score', zh: '评分' },
   th_band: { en: 'Band', es: 'Banda', fr: 'Bande', zh: '等级' },
@@ -556,6 +560,18 @@ const i18n = {
   band_adequate: { en: 'Adequate', es: 'Adecuado', fr: 'Adéquat', zh: '适当' },
   band_constrained: { en: 'Constrained', es: 'Limitado', fr: 'Contraint', zh: '受限' },
   band_not_evaluated: { en: 'Not evaluated', es: 'No evaluado', fr: 'Non évalué', zh: '未评估' },
+  band_healthy: { en: 'Healthy', es: 'Saludable', fr: 'Sain', zh: '健康' },
+  band_at_risk: { en: 'At risk', es: 'En riesgo', fr: 'À risque', zh: '处于风险' },
+  band_critical: { en: 'Critical', es: 'Crítico', fr: 'Critique', zh: '危急' },
+  band_high_performing: { en: 'High performing', es: 'Alto rendimiento', fr: 'Haute performance', zh: '高绩效' },
+  band_developing: { en: 'Developing', es: 'En desarrollo', fr: 'En développement', zh: '发展中' },
+  band_under_resourced: { en: 'Under-resourced', es: 'Subrecursado', fr: 'Sous-doté', zh: '资源不足' },
+  band_innovative: { en: 'Innovative', es: 'Innovador', fr: 'Innovant', zh: '创新' },
+  band_iterating: { en: 'Iterating', es: 'Iterando', fr: 'En itération', zh: '迭代中' },
+  band_stagnant: { en: 'Stagnant', es: 'Estancado', fr: 'Stagnant', zh: '停滞' },
+  band_favorable: { en: 'Favorable', es: 'Favorable', fr: 'Favorable', zh: '有利' },
+  band_neutral: { en: 'Neutral', es: 'Neutro', fr: 'Neutre', zh: '中性' },
+  band_unfavorable: { en: 'Unfavorable', es: 'Desfavorable', fr: 'Défavorable', zh: '不利' },
   impact_positive: { en: 'Positive', es: 'Positivo', fr: 'Positif', zh: '积极' },
   impact_negative: { en: 'Negative', es: 'Negativo', fr: 'Négatif', zh: '消极' },
   impact_neutral: { en: 'Neutral', es: 'Neutro', fr: 'Neutre', zh: '中性' },
@@ -582,11 +598,39 @@ const i18n = {
   drv_strategic_readiness: { en: 'Strategic readiness', es: 'Preparación estratégica', fr: 'Préparation stratégique', zh: '战略准备度' },
   drv_risk_assessment: { en: 'Risk assessment', es: 'Evaluación de riesgo', fr: 'Évaluation des risques', zh: '风险评估' },
   drv_capital_strategy: { en: 'Capital strategy', es: 'Estrategia de capital', fr: 'Stratégie de capital', zh: '资本策略' },
+  drv_ltv_cac_ratio: { en: 'LTV/CAC ratio', es: 'Ratio LTV/CAC', fr: 'Ratio LTV/CAC', zh: 'LTV/CAC比率' },
+  drv_churn_safety: { en: 'Churn safety', es: 'Seguridad de retención', fr: 'Sécurité contre l\'attrition', zh: '流失安全' },
+  drv_customer_satisfaction: { en: 'Customer satisfaction', es: 'Satisfacción del cliente', fr: 'Satisfaction client', zh: '客户满意度' },
+  drv_repeat_purchase_rate: { en: 'Repeat purchase rate', es: 'Tasa de recompra', fr: 'Taux de rachat', zh: '复购率' },
+  drv_customer_health: { en: 'Customer health', es: 'Salud del cliente', fr: 'Santé client', zh: '客户健康' },
+  drv_productivity: { en: 'Productivity', es: 'Productividad', fr: 'Productivité', zh: '生产力' },
+  drv_talent_retention: { en: 'Talent retention', es: 'Retención de talento', fr: 'Rétention des talents', zh: '人才保留' },
+  drv_hiring_velocity: { en: 'Hiring velocity', es: 'Velocidad de contratación', fr: 'Vélocité de recrutement', zh: '招聘速度' },
+  drv_team_satisfaction: { en: 'Team satisfaction', es: 'Satisfacción del equipo', fr: 'Satisfaction d\'équipe', zh: '团队满意度' },
+  drv_operational_efficiency: { en: 'Operational efficiency', es: 'Eficiencia operativa', fr: 'Efficacité opérationnelle', zh: '运营效率' },
+  drv_talent_operations: { en: 'Talent & operations', es: 'Talento y operaciones', fr: 'Talent et opérations', zh: '人才与运营' },
+  drv_rd_efficiency: { en: 'R&D efficiency', es: 'Eficiencia de I+D', fr: 'Efficacité R&D', zh: '研发效率' },
+  drv_launch_velocity: { en: 'Launch velocity', es: 'Velocidad de lanzamiento', fr: 'Vélocité de lancement', zh: '发布速度' },
+  drv_tech_health: { en: 'Tech health', es: 'Salud tecnológica', fr: 'Santé technologique', zh: '技术健康' },
+  drv_feature_adoption: { en: 'Feature adoption', es: 'Adopción de funciones', fr: 'Adoption des fonctionnalités', zh: '功能采用率' },
+  drv_ip_strength: { en: 'IP strength', es: 'Fortaleza de PI', fr: 'Force de la PI', zh: '知识产权强度' },
+  drv_innovation_pipeline: { en: 'Innovation pipeline', es: 'Pipeline de innovación', fr: 'Pipeline d\'innovation', zh: '创新管线' },
+  drv_tam_momentum: { en: 'TAM momentum', es: 'Impulso del TAM', fr: 'Dynamique du TAM', zh: 'TAM动量' },
+  drv_regulatory_shift: { en: 'Regulatory shift', es: 'Cambio regulatorio', fr: 'Évolution réglementaire', zh: '监管变化' },
+  drv_macro_resilience: { en: 'Macro resilience', es: 'Resiliencia macroeconómica', fr: 'Résilience macro', zh: '宏观韧性' },
+  drv_industry_cycle: { en: 'Industry cycle', es: 'Ciclo industrial', fr: 'Cycle industriel', zh: '行业周期' },
+  drv_first_mover_advantage: { en: 'First-mover advantage', es: 'Ventaja del primero en llegar', fr: 'Avantage du premier entrant', zh: '先发优势' },
+  drv_market_timing: { en: 'Market timing', es: 'Temporalidad del mercado', fr: 'Timing du marché', zh: '市场时机' },
   tf_growth_vs_safety: { en: 'Growth vs Safety', es: 'Crecimiento vs Seguridad', fr: 'Croissance vs Sécurité', zh: '增长与安全' },
   tf_safety_vs_growth: { en: 'Safety vs Growth', es: 'Seguridad vs Crecimiento', fr: 'Sécurité vs Croissance', zh: '安全与增长' },
   tf_growth_vs_capital: { en: 'Growth vs Capital', es: 'Crecimiento vs Capital', fr: 'Croissance vs Capital', zh: '增长与资本' },
   tf_double_exposure: { en: 'Double Exposure', es: 'Doble Exposición', fr: 'Double Exposition', zh: '双重风险' },
   tf_balanced: { en: 'Balanced', es: 'Equilibrado', fr: 'Équilibré', zh: '均衡' },
+  tf_growth_vs_retention: { en: 'Growth vs Retention', es: 'Crecimiento vs Retención', fr: 'Croissance vs Rétention', zh: '增长与留存' },
+  tf_capital_vs_customers: { en: 'Capital vs Customers', es: 'Capital vs Clientes', fr: 'Capital vs Clients', zh: '资本与客户' },
+  tf_growth_vs_team: { en: 'Growth vs Team', es: 'Crecimiento vs Equipo', fr: 'Croissance vs Équipe', zh: '增长与团队' },
+  tf_performance_vs_innovation: { en: 'Performance vs Innovation', es: 'Rendimiento vs Innovación', fr: 'Performance vs Innovation', zh: '绩效与创新' },
+  tf_readiness_vs_timing: { en: 'Readiness vs Timing', es: 'Preparación vs Temporalidad', fr: 'Préparation vs Timing', zh: '准备度与时机' },
   disclaimer: { en: 'DECISION SUPPORT ONLY — This analysis does not constitute financial, legal, or investment advice.', es: 'SOLO APOYO A LA DECISIÓN — Este análisis no constituye asesoramiento financiero, legal o de inversión.', fr: 'AIDE À LA DÉCISION UNIQUEMENT — Cette analyse ne constitue pas un conseil financier, juridique ou d\'investissement.', zh: '仅供决策参考 — 本分析不构成财务、法律或投资建议。' },
   footer: { en: 'Signalyzé Solutions LLC | signalyzesolutions.com', es: 'Signalyzé Solutions LLC | signalyzesolutions.com', fr: 'Signalyzé Solutions LLC | signalyzesolutions.com', zh: 'Signalyzé Solutions LLC | signalyzesolutions.com' },
   cp_recommendation: { en: 'RECOMMENDATION', es: 'RECOMENDACIÓN', fr: 'RECOMMANDATION', zh: '建议' },
@@ -611,6 +655,10 @@ const FIELD_SPECS = {
   revenue_growth_rate:{min:-1,max:5,neutral:0.05,tier:'lite'},utilization_rate:{min:0,max:1,neutral:0.5,tier:'lite'},lead_velocity:{min:-1,max:10,neutral:0,tier:'lite'},burn_rate:{min:0,max:10000000,neutral:50000,tier:'lite'},cash_runway:{min:0,max:120,neutral:12,tier:'lite'},
   revenue:{min:0,max:1e9,neutral:1e6,tier:'pro'},cogs:{min:0,max:1e9,neutral:5e5,tier:'pro'},operating_expenses:{min:0,max:1e9,neutral:3e5,tier:'pro'},gross_margin:{min:-1,max:1,neutral:0.5,tier:'pro'},net_margin:{min:-2,max:1,neutral:0.1,tier:'pro'},margin_trend:{min:-0.5,max:0.5,neutral:0,tier:'pro'},client_count:{min:0,max:1e5,neutral:50,tier:'pro'},top_client_pct:{min:0,max:1,neutral:0.15,tier:'pro'},top3_client_pct:{min:0,max:1,neutral:0.35,tier:'pro'},regulatory_risk:{min:0,max:1,neutral:0.3,tier:'pro'},switching_cost_score:{min:0,max:10,neutral:5,tier:'pro'},brand_score:{min:0,max:10,neutral:5,tier:'pro'},price_index:{min:0.5,max:2,neutral:1.0,tier:'pro'},spend_sales:{min:0,max:1,neutral:0.15,tier:'pro'},spend_rd:{min:0,max:1,neutral:0.10,tier:'pro'},spend_ops:{min:0,max:1,neutral:0.50,tier:'pro'},spend_admin:{min:0,max:1,neutral:0.15,tier:'pro'},capex_ratio:{min:0,max:1,neutral:0.10,tier:'pro'},growth_investment_roi:{min:-1,max:10,neutral:1.5,tier:'pro'},working_capital_ratio:{min:0,max:5,neutral:1.5,tier:'pro'},debt_to_equity:{min:0,max:10,neutral:1.0,tier:'pro'},
   market_share:{min:0,max:1,neutral:0.05,tier:'enterprise'},share_trend:{min:-0.5,max:0.5,neutral:0,tier:'enterprise'},differentiation_score:{min:0,max:10,neutral:5,tier:'enterprise'},win_rate:{min:0,max:1,neutral:0.3,tier:'enterprise'},competitor_count:{min:0,max:100,neutral:10,tier:'enterprise'},pmf_score:{min:0,max:10,neutral:5,tier:'enterprise'},strategic_alignment:{min:0,max:10,neutral:5,tier:'enterprise'},execution_speed:{min:0,max:10,neutral:5,tier:'enterprise'},retention_rate:{min:0,max:1,neutral:0.85,tier:'enterprise'},segment_count:{min:1,max:50,neutral:3,tier:'enterprise'},
+  churn_rate:{min:0,max:1,neutral:0.05,tier:'pro'},customer_ltv:{min:0,max:1e7,neutral:5e4,tier:'pro'},customer_cac:{min:0,max:1e6,neutral:5e3,tier:'pro'},nps_score:{min:-100,max:100,neutral:30,tier:'pro'},csat_score:{min:0,max:10,neutral:7,tier:'pro'},repeat_purchase_rate:{min:0,max:1,neutral:0.30,tier:'pro'},
+  employee_count:{min:1,max:1e5,neutral:50,tier:'enterprise'},revenue_per_employee:{min:0,max:5e6,neutral:150000,tier:'enterprise'},turnover_rate:{min:0,max:1,neutral:0.15,tier:'enterprise'},hiring_velocity:{min:0,max:100,neutral:5,tier:'enterprise'},employee_satisfaction:{min:0,max:10,neutral:7,tier:'enterprise'},operational_efficiency:{min:0,max:10,neutral:5,tier:'enterprise'},
+  rd_efficiency:{min:0,max:10,neutral:5,tier:'enterprise'},product_launch_velocity:{min:0,max:50,neutral:2,tier:'enterprise'},tech_debt_ratio:{min:0,max:1,neutral:0.30,tier:'enterprise'},feature_adoption_rate:{min:0,max:1,neutral:0.50,tier:'enterprise'},ip_score:{min:0,max:10,neutral:3,tier:'enterprise'},
+  tam_growth_rate:{min:-0.5,max:2,neutral:0.05,tier:'enterprise'},regulatory_shift_index:{min:0,max:10,neutral:3,tier:'enterprise'},macro_sensitivity:{min:0,max:1,neutral:0.30,tier:'enterprise'},industry_cycle_position:{min:0,max:10,neutral:5,tier:'enterprise'},first_mover_score:{min:0,max:10,neutral:5,tier:'enterprise'},
 };
 const TIER_ORDER = { lite:0, pro:1, enterprise:2 };
 function tierIncludes(ft, st) { return TIER_ORDER[st] >= TIER_ORDER[ft]; }
@@ -634,6 +682,14 @@ function normalize(inputs, tier) {
   s.market_presence = scaleLinear(parseFloat(inputs.market_share||0.05),0,1); s.share_momentum = scaleLinear(parseFloat(inputs.share_trend||0),-0.5,0.5); s.differentiation = scaleLinear(parseFloat(inputs.differentiation_score||5),0,10); s.win_rate_score = scaleLinear(parseFloat(inputs.win_rate||0.3),0,1);
   const cc=parseFloat(inputs.competitor_count||10); s.competitive_pressure = 1-scaleLinear(cc,0,100);
   s.pmf = scaleLinear(parseFloat(inputs.pmf_score||5),0,10); s.strategic_alignment = scaleLinear(parseFloat(inputs.strategic_alignment||5),0,10); s.execution_speed = scaleLinear(parseFloat(inputs.execution_speed||5),0,10); s.retention = scaleLinear(parseFloat(inputs.retention_rate||0.85),0,1); s.segment_diversification = scaleLinear(parseFloat(inputs.segment_count||3),1,50);
+  // M4 Customer Health derived
+  const churn=parseFloat(inputs.churn_rate||0.05); s.churn_safety=1-scaleLinear(churn,0,1); const ltv=parseFloat(inputs.customer_ltv||5e4), cac=parseFloat(inputs.customer_cac||5e3); s.ltv_cac_ratio=scaleLinear(cac>0?ltv/cac:10,0,20); s.nps_health=scaleLinear(parseFloat(inputs.nps_score||30),-100,100); s.csat_health=scaleLinear(parseFloat(inputs.csat_score||7),0,10); s.customer_satisfaction=s.nps_health*0.6+s.csat_health*0.4; s.repeat_rate=scaleLinear(parseFloat(inputs.repeat_purchase_rate||0.30),0,1);
+  // M5 Talent & Ops derived
+  s.productivity=scaleLinear(parseFloat(inputs.revenue_per_employee||150000),0,5e6); s.talent_retention=1-scaleLinear(parseFloat(inputs.turnover_rate||0.15),0,1); s.hiring_pace=scaleLinear(parseFloat(inputs.hiring_velocity||5),0,100); s.team_satisfaction=scaleLinear(parseFloat(inputs.employee_satisfaction||7),0,10); s.ops_efficiency=scaleLinear(parseFloat(inputs.operational_efficiency||5),0,10);
+  // M6 Innovation derived
+  s.rd_output=scaleLinear(parseFloat(inputs.rd_efficiency||5),0,10); s.launch_velocity=scaleLinear(parseFloat(inputs.product_launch_velocity||2),0,50); s.tech_health=1-scaleLinear(parseFloat(inputs.tech_debt_ratio||0.30),0,1); s.adoption=scaleLinear(parseFloat(inputs.feature_adoption_rate||0.50),0,1); s.ip_strength=scaleLinear(parseFloat(inputs.ip_score||3),0,10);
+  // M7 Market Timing derived
+  s.tam_momentum=scaleLinear(parseFloat(inputs.tam_growth_rate||0.05),-0.5,2); s.reg_shift=scaleLinear(parseFloat(inputs.regulatory_shift_index||3),0,10); s.macro_resilience=1-scaleLinear(parseFloat(inputs.macro_sensitivity||0.30),0,1); s.cycle_position=scaleLinear(parseFloat(inputs.industry_cycle_position||5),0,10); s.first_mover=scaleLinear(parseFloat(inputs.first_mover_score||5),0,10);
   return s;
 }
 
@@ -653,20 +709,34 @@ function runM3(s,tier) {
   if(tier==='enterprise'){const W={a:0.15,r:0.15,g:0.15,w:0.15,mk:0.20,st:0.20};const mp=(s.market_presence||0.5)*0.2+(s.share_momentum||0.5)*0.2+(s.differentiation||0.5)*0.25+(s.win_rate_score||0.5)*0.2+(s.competitive_pressure||0.5)*0.15;const sp=(s.pmf||0.5)*0.25+(s.strategic_alignment||0.5)*0.2+(s.execution_speed||0.5)*0.2+(s.retention||0.5)*0.2+(s.segment_diversification||0.5)*0.15;const c=al*W.a+re*W.r+gr*W.g+wc*W.w+mp*W.mk+sp*W.st;return{module:'M3_Capital',version:'1.0.0',score:c,band:c>=0.70?'Efficient':c>=0.45?'Adequate':'Constrained',drivers:[{name:'Allocation balance',score:al,weight:W.a,weighted:al*W.a},{name:'Reserve health',score:re,weight:W.r,weighted:re*W.r},{name:'Growth investment ROI',score:gr,weight:W.g,weighted:gr*W.g},{name:'Working capital',score:wc,weight:W.w,weighted:wc*W.w},{name:'Market position',score:mp,weight:W.mk,weighted:mp*W.mk},{name:'Strategic readiness',score:sp,weight:W.st,weighted:sp*W.st}]};}
   const W={a:0.25,r:0.25,g:0.25,w:0.25};const c=al*W.a+re*W.r+gr*W.g+wc*W.w;return{module:'M3_Capital',version:'1.0.0',score:c,band:c>=0.70?'Efficient':c>=0.45?'Adequate':'Constrained',drivers:[{name:'Allocation balance',score:al,weight:W.a,weighted:al*W.a},{name:'Reserve health',score:re,weight:W.r,weighted:re*W.r},{name:'Growth investment ROI',score:gr,weight:W.g,weighted:gr*W.g},{name:'Working capital',score:wc,weight:W.w,weighted:wc*W.w}]};
 }
-function orchestrate(m1,m2,m3,riskTol,timeHz,tier) {
-  const MW={m1:0.40,m2:0.30,m3:0.30};const composite=m1.score*MW.m1+m2.score*MW.m2+m3.score*MW.m3;
-  const goTh=0.65+(1-riskTol)*0.10;let rec;if(m2.score<0.30&&composite>goTh)rec='HOLD';else if(m1.score<0.30&&m3.score<0.30)rec='INVEST';else if(composite>=goTh)rec='GO';else if(composite>=0.50)rec='HOLD';else if(composite>=0.35)rec='REDUCE';else rec='INVEST';
+function runM4(s,tier){if(tier==='lite')return{module:'M4_Customer',version:'1.0.0',score:0.50,band:'Not evaluated',drivers:[{name:'Customer health',score:0.5,weight:1.0,weighted:0.5}]};const ltv=s.ltv_cac_ratio||0.5,ch=s.churn_safety||0.5,cs=s.customer_satisfaction||0.5,rp=s.repeat_rate||0.5;const W={ltv:0.30,ch:0.25,cs:0.25,rp:0.20};const c=ltv*W.ltv+ch*W.ch+cs*W.cs+rp*W.rp;return{module:'M4_Customer',version:'1.0.0',score:c,band:c>=0.70?'Healthy':c>=0.45?'At risk':'Critical',drivers:[{name:'LTV/CAC ratio',score:ltv,weight:W.ltv,weighted:ltv*W.ltv},{name:'Churn safety',score:ch,weight:W.ch,weighted:ch*W.ch},{name:'Customer satisfaction',score:cs,weight:W.cs,weighted:cs*W.cs},{name:'Repeat purchase rate',score:rp,weight:W.rp,weighted:rp*W.rp}]};
+}
+function runM5(s,tier){if(tier!=='enterprise')return{module:'M5_Talent',version:'1.0.0',score:0.50,band:'Not evaluated',drivers:[{name:'Talent & operations',score:0.5,weight:1.0,weighted:0.5}]};const pr=s.productivity||0.5,ret=s.talent_retention||0.5,hr=s.hiring_pace||0.5,ts=s.team_satisfaction||0.5,oe=s.ops_efficiency||0.5;const W={pr:0.25,ret:0.25,hr:0.15,ts:0.15,oe:0.20};const c=pr*W.pr+ret*W.ret+hr*W.hr+ts*W.ts+oe*W.oe;return{module:'M5_Talent',version:'1.0.0',score:c,band:c>=0.70?'High performing':c>=0.45?'Developing':'Under-resourced',drivers:[{name:'Productivity',score:pr,weight:W.pr,weighted:pr*W.pr},{name:'Talent retention',score:ret,weight:W.ret,weighted:ret*W.ret},{name:'Hiring velocity',score:hr,weight:W.hr,weighted:hr*W.hr},{name:'Team satisfaction',score:ts,weight:W.ts,weighted:ts*W.ts},{name:'Operational efficiency',score:oe,weight:W.oe,weighted:oe*W.oe}]};
+}
+function runM6(s,tier){if(tier!=='enterprise')return{module:'M6_Innovation',version:'1.0.0',score:0.50,band:'Not evaluated',drivers:[{name:'Innovation pipeline',score:0.5,weight:1.0,weighted:0.5}]};const rd=s.rd_output||0.5,lv=s.launch_velocity||0.5,th=s.tech_health||0.5,ad=s.adoption||0.5,ip=s.ip_strength||0.5;const W={rd:0.25,lv:0.20,th:0.20,ad:0.15,ip:0.20};const c=rd*W.rd+lv*W.lv+th*W.th+ad*W.ad+ip*W.ip;return{module:'M6_Innovation',version:'1.0.0',score:c,band:c>=0.70?'Innovative':c>=0.45?'Iterating':'Stagnant',drivers:[{name:'R&D efficiency',score:rd,weight:W.rd,weighted:rd*W.rd},{name:'Launch velocity',score:lv,weight:W.lv,weighted:lv*W.lv},{name:'Tech health',score:th,weight:W.th,weighted:th*W.th},{name:'Feature adoption',score:ad,weight:W.ad,weighted:ad*W.ad},{name:'IP strength',score:ip,weight:W.ip,weighted:ip*W.ip}]};
+}
+function runM7(s,tier){if(tier!=='enterprise')return{module:'M7_Timing',version:'1.0.0',score:0.50,band:'Not evaluated',drivers:[{name:'Market timing',score:0.5,weight:1.0,weighted:0.5}]};const tm=s.tam_momentum||0.5,rs=s.reg_shift||0.5,mc=s.macro_resilience||0.5,cyc=s.cycle_position||0.5,fm=s.first_mover||0.5;const W={tm:0.25,rs:0.15,mc:0.25,cyc:0.15,fm:0.20};const c=tm*W.tm+rs*W.rs+mc*W.mc+cyc*W.cyc+fm*W.fm;return{module:'M7_Timing',version:'1.0.0',score:c,band:c>=0.70?'Favorable':c>=0.45?'Neutral':'Unfavorable',drivers:[{name:'TAM momentum',score:tm,weight:W.tm,weighted:tm*W.tm},{name:'Regulatory shift',score:rs,weight:W.rs,weighted:rs*W.rs},{name:'Macro resilience',score:mc,weight:W.mc,weighted:mc*W.mc},{name:'Industry cycle',score:cyc,weight:W.cyc,weighted:cyc*W.cyc},{name:'First-mover advantage',score:fm,weight:W.fm,weighted:fm*W.fm}]};
+}
+
+function orchestrate(m1,m2,m3,m4,m5,m6,m7,riskTol,timeHz,tier) {
+  let MW,composite;if(tier==='enterprise'){MW={m1:0.22,m2:0.16,m3:0.16,m4:0.16,m5:0.10,m6:0.10,m7:0.10};composite=m1.score*MW.m1+m2.score*MW.m2+m3.score*MW.m3+m4.score*MW.m4+m5.score*MW.m5+m6.score*MW.m6+m7.score*MW.m7;}else if(tier==='pro'){MW={m1:0.30,m2:0.25,m3:0.25,m4:0.20,m5:0,m6:0,m7:0};composite=m1.score*MW.m1+m2.score*MW.m2+m3.score*MW.m3+m4.score*MW.m4;}else{MW={m1:1.0,m2:0,m3:0,m4:0,m5:0,m6:0,m7:0};composite=m1.score;}
+  const goTh=0.65+(1-riskTol)*0.10;let rec;if(m2.score<0.30&&MW.m2>0&&composite>goTh)rec='HOLD';else if(m4.score<0.30&&MW.m4>0&&composite>goTh)rec='HOLD';else if(m1.score<0.30&&m3.score<0.30&&MW.m3>0)rec='INVEST';else if(composite>=goTh)rec='GO';else if(composite>=0.50)rec='HOLD';else if(composite>=0.35)rec='REDUCE';else rec='INVEST';
   const recDesc={GO:'Proceed with strategic initiative',HOLD:'Maintain current position, monitor signals',REDUCE:'Scale back exposure, de-risk position',INVEST:'Invest in strengthening weak areas before expanding'};
-  const conf=Math.round(composite*100);const scores=[m1.score,m2.score,m3.score];const disp=Math.max(...scores)-Math.min(...scores);const bw=Math.min(20,5+Math.floor(disp*15)+Math.floor((1-Math.abs(composite-0.5)*2)*5));
-  const allD=[];[m1,m2,m3].forEach(e=>{e.drivers.forEach(d=>{allD.push({...d,module:e.module});});});allD.sort((a,b)=>Math.abs(b.score-0.5)-Math.abs(a.score-0.5));
-  const tradeoffs=[];if(m1.score>0.70&&m2.score<0.45)tradeoffs.push({tension:'Growth vs Safety',description:'Strong performance but elevated risk.',severity:m2.score<0.30?'high':'medium',modules:['M1','M2']});else if(m1.score<0.45&&m2.score>0.70)tradeoffs.push({tension:'Safety vs Growth',description:'Conservative risk posture but underperforming on growth.',severity:'medium',modules:['M1','M2']});
-  if(m1.score>0.65&&m3.score<0.40)tradeoffs.push({tension:'Growth vs Capital',description:'Strong growth signals but capital is constrained.',severity:'high',modules:['M1','M3']});
-  if(m2.score<0.45&&m3.score<0.45)tradeoffs.push({tension:'Double Exposure',description:'Both risk and capital are weak. Defensive posture recommended.',severity:'high',modules:['M2','M3']});
-  if(tradeoffs.length===0&&(Math.max(...scores)-Math.min(...scores))<0.15)tradeoffs.push({tension:'Balanced',description:'Modules are reasonably aligned.',severity:'low',modules:['M1','M2','M3']});
-  const triggers=[];if(rec!=='GO'){const gap=goTh-composite;if(gap<0.15){const w=[{name:'M1',score:m1.score,weight:0.40},{name:'M2',score:m2.score,weight:0.30},{name:'M3',score:m3.score,weight:0.30}].sort((a,b)=>a.score-b.score)[0];const needed=gap/w.weight;triggers.push({driver:w.name,description:`If ${w.name} improves by ${Math.round(needed*100)}pts, recommendation shifts to GO.`});}}
+  const conf=Math.round(composite*100);const scores=[m1,m2,m3,m4,m5,m6,m7].filter(m=>m.band!=='Not evaluated').map(m=>m.score);const disp=scores.length>1?Math.max(...scores)-Math.min(...scores):0;const bw=Math.min(20,5+Math.floor(disp*15)+Math.floor((1-Math.abs(composite-0.5)*2)*5));
+  const allD=[];[m1,m2,m3,m4,m5,m6,m7].forEach(e=>{if(e.band==='Not evaluated')return;e.drivers.forEach(d=>{allD.push({...d,module:e.module});});});allD.sort((a,b)=>Math.abs(b.score-0.5)-Math.abs(a.score-0.5));
+  const tradeoffs=[];if(m1.score>0.70&&m2.score<0.45&&MW.m2>0)tradeoffs.push({tension:'Growth vs Safety',description:'Strong performance but elevated risk. Growth may be outpacing risk controls.',severity:m2.score<0.30?'high':'medium',modules:['M1','M2']});else if(m1.score<0.45&&m2.score>0.70&&MW.m2>0)tradeoffs.push({tension:'Safety vs Growth',description:'Conservative risk posture but underperforming on growth.',severity:'medium',modules:['M1','M2']});
+  if(m1.score>0.65&&m3.score<0.40&&MW.m3>0)tradeoffs.push({tension:'Growth vs Capital',description:'Strong growth signals but capital is constrained. Scaling may be premature.',severity:'high',modules:['M1','M3']});
+  if(m2.score<0.45&&m3.score<0.45&&MW.m2>0&&MW.m3>0)tradeoffs.push({tension:'Double Exposure',description:'Both risk and capital are weak. Defensive posture recommended.',severity:'high',modules:['M2','M3']});
+  if(m1.score>0.65&&m4.score<0.40&&MW.m4>0)tradeoffs.push({tension:'Growth vs Retention',description:'Strong top-line growth but customer health is declining. Acquisition may be outpacing retention.',severity:'high',modules:['M1','M4']});
+  if(m4.score<0.40&&m3.score>0.65&&MW.m4>0&&MW.m3>0)tradeoffs.push({tension:'Capital vs Customers',description:'Healthy capital position but customers are churning. Re-invest in customer success.',severity:'medium',modules:['M3','M4']});
+  if(m1.score>0.65&&m5.score<0.40&&MW.m5>0)tradeoffs.push({tension:'Growth vs Team',description:'Strong performance but team is strained. Burnout and turnover risk is elevated.',severity:'high',modules:['M1','M5']});
+  if(m6.score<0.40&&m1.score>0.65&&MW.m6>0)tradeoffs.push({tension:'Performance vs Innovation',description:'Current results are strong but innovation pipeline is weak. Future competitiveness at risk.',severity:'medium',modules:['M1','M6']});
+  if(m7.score<0.35&&composite>goTh&&MW.m7>0)tradeoffs.push({tension:'Readiness vs Timing',description:'Internal metrics support action but market timing is unfavorable. Consider delaying.',severity:'medium',modules:['M7']});
+  const activeScores=[m1,m2,m3,m4,m5,m6,m7].filter(m=>m.band!=='Not evaluated').map(m=>m.score);if(tradeoffs.length===0&&activeScores.length>1&&(Math.max(...activeScores)-Math.min(...activeScores))<0.15)tradeoffs.push({tension:'Balanced',description:'Modules are reasonably aligned. No critical tradeoff tension detected.',severity:'low',modules:['M1','M2','M3','M4','M5','M6','M7'].slice(0,activeScores.length)});
+  const triggers=[];if(rec!=='GO'){const gap=goTh-composite;if(gap<0.15){const modList=[{name:'M1',score:m1.score,weight:MW.m1},{name:'M2',score:m2.score,weight:MW.m2},{name:'M3',score:m3.score,weight:MW.m3},{name:'M4',score:m4.score,weight:MW.m4},{name:'M5',score:m5.score,weight:MW.m5},{name:'M6',score:m6.score,weight:MW.m6},{name:'M7',score:m7.score,weight:MW.m7}].filter(m=>m.weight>0);const weakest=modList.sort((a,b)=>a.score-b.score)[0];const needed=gap/weakest.weight;triggers.push({driver:weakest.name,description:`If ${weakest.name} improves by ${Math.round(needed*100)}pts, recommendation shifts to GO.`});}}
   if(rec==='GO'||rec==='HOLD'){const buf=composite-0.50;if(buf<0.15)triggers.push({driver:'Composite',description:`A ${Math.round(buf*100)}pt composite drop would trigger REDUCE.`});}
   const now=new Date().toISOString();let hash=0;for(let i=0;i<now.length;i++){hash=((hash<<5)-hash)+now.charCodeAt(i);hash|=0;}const dk=Math.abs(hash).toString(16).padStart(12,'0').slice(0,12);
-  return {recommendation:rec,recommendation_description:recDesc[rec],confidence:conf,confidence_band_low:Math.max(0,conf-bw),confidence_band_high:Math.min(100,conf+bw),m1_score:m1.score,m1_band:m1.band,m1_drivers:m1.drivers,m2_score:m2.score,m2_band:m2.band,m2_drivers:m2.drivers,m3_score:m3.score,m3_band:m3.band,m3_drivers:m3.drivers,composite_score:composite,key_drivers:allD.slice(0,8),tradeoffs,sensitivity_triggers:triggers,tier,engine_version:`M1:${m1.version}|M2:${m2.version}|M3:${m3.version}`,orchestrator_version:'1.0.0',risk_tolerance:riskTol,time_horizon:timeHz,decision_key:dk,timestamp:now,decision_support_only:true};
+  return {recommendation:rec,recommendation_description:recDesc[rec],confidence:conf,confidence_band_low:Math.max(0,conf-bw),confidence_band_high:Math.min(100,conf+bw),m1_score:m1.score,m1_band:m1.band,m1_drivers:m1.drivers,m2_score:m2.score,m2_band:m2.band,m2_drivers:m2.drivers,m3_score:m3.score,m3_band:m3.band,m3_drivers:m3.drivers,m4_score:m4.score,m4_band:m4.band,m4_drivers:m4.drivers,m5_score:m5.score,m5_band:m5.band,m5_drivers:m5.drivers,m6_score:m6.score,m6_band:m6.band,m6_drivers:m6.drivers,m7_score:m7.score,m7_band:m7.band,m7_drivers:m7.drivers,composite_score:composite,module_weights:MW,key_drivers:allD.slice(0,10),tradeoffs,sensitivity_triggers:triggers,tier,engine_version:`M1:${m1.version}|M2:${m2.version}|M3:${m3.version}|M4:${m4.version}|M5:${m5.version}|M6:${m6.version}|M7:${m7.version}`,orchestrator_version:'1.0.0',risk_tolerance:riskTol,time_horizon:timeHz,decision_key:dk,timestamp:now,decision_support_only:true};
 }
 
 // ══════════════════════════════════════════
@@ -680,6 +750,10 @@ const FIELD_LABELS = {
   spend_sales:{label:'Spend: Sales %',hint:'0-1',group:'Capital'},spend_rd:{label:'Spend: R&D %',hint:'0-1',group:'Capital'},spend_ops:{label:'Spend: Ops %',hint:'0-1',group:'Capital'},spend_admin:{label:'Spend: Admin %',hint:'0-1',group:'Capital'},capex_ratio:{label:'CapEx Ratio',hint:'0-1',group:'Capital'},growth_investment_roi:{label:'Growth Invest ROI',hint:'multiplier',group:'Capital'},working_capital_ratio:{label:'Working Capital Ratio',hint:'ratio',group:'Capital'},debt_to_equity:{label:'Debt/Equity',hint:'ratio',group:'Capital'},
   market_share:{label:'Market Share',hint:'0-1',group:'Market'},share_trend:{label:'Share Trend',hint:'YoY',group:'Market'},differentiation_score:{label:'Differentiation',hint:'0-10',group:'Market'},win_rate:{label:'Win Rate',hint:'0-1',group:'Market'},competitor_count:{label:'Competitors',hint:'count',group:'Market'},
   pmf_score:{label:'Product-Market Fit',hint:'0-10',group:'Strategy'},strategic_alignment:{label:'Strategic Alignment',hint:'0-10',group:'Strategy'},execution_speed:{label:'Execution Speed',hint:'0-10',group:'Strategy'},retention_rate:{label:'Retention Rate',hint:'0-1',group:'Strategy'},segment_count:{label:'Segments',hint:'count',group:'Strategy'},
+  churn_rate:{label:'Monthly Churn Rate',hint:'0-1 decimal',group:'Customer Health'},customer_ltv:{label:'Customer LTV ($)',hint:'Average value',group:'Customer Health'},customer_cac:{label:'Customer CAC ($)',hint:'Acquisition cost',group:'Customer Health'},nps_score:{label:'Net Promoter Score',hint:'-100 to 100',group:'Customer Health'},csat_score:{label:'Customer Satisfaction',hint:'0-10 scale',group:'Customer Health'},repeat_purchase_rate:{label:'Repeat Purchase Rate',hint:'0-1 decimal',group:'Customer Health'},
+  employee_count:{label:'Employee Count',hint:'Total headcount',group:'Talent & Ops'},revenue_per_employee:{label:'Revenue/Employee ($)',hint:'Annual rev/headcount',group:'Talent & Ops'},turnover_rate:{label:'Employee Turnover Rate',hint:'0-1 decimal',group:'Talent & Ops'},hiring_velocity:{label:'Hiring Velocity',hint:'New hires/month',group:'Talent & Ops'},employee_satisfaction:{label:'Employee Satisfaction',hint:'0-10 scale',group:'Talent & Ops'},operational_efficiency:{label:'Operational Efficiency',hint:'0-10 scale',group:'Talent & Ops'},
+  rd_efficiency:{label:'R&D Efficiency',hint:'0-10 scale',group:'Innovation'},product_launch_velocity:{label:'Product Launch Velocity',hint:'Launches/year',group:'Innovation'},tech_debt_ratio:{label:'Tech Debt Ratio',hint:'0-1 decimal',group:'Innovation'},feature_adoption_rate:{label:'Feature Adoption Rate',hint:'0-1 decimal',group:'Innovation'},ip_score:{label:'IP/Patent Score',hint:'0-10 scale',group:'Innovation'},
+  tam_growth_rate:{label:'TAM Growth Rate',hint:'Annual decimal',group:'Market Timing'},regulatory_shift_index:{label:'Regulatory Shift Index',hint:'0-10 scale',group:'Market Timing'},macro_sensitivity:{label:'Macro Sensitivity',hint:'0-1 decimal',group:'Market Timing'},industry_cycle_position:{label:'Industry Cycle Position',hint:'0-10 scale',group:'Market Timing'},first_mover_score:{label:'First-Mover Score',hint:'0-10 scale',group:'Market Timing'},
 };
 
 // ══════════════════════════════════════════
@@ -1059,7 +1133,11 @@ async function runAnalysis() {
   const m1 = runM1(scores, tier);
   const m2 = runM2(scores, tier);
   const m3 = runM3(scores, tier);
-  const result = orchestrate(m1, m2, m3, riskTol, timeHz, tier);
+  const m4 = runM4(scores, tier);
+  const m5 = runM5(scores, tier);
+  const m6 = runM6(scores, tier);
+  const m7 = runM7(scores, tier);
+  const result = orchestrate(m1, m2, m3, m4, m5, m6, m7, riskTol, timeHz, tier);
   result.tier = tier;
   lastResult = result;
 
@@ -1072,7 +1150,7 @@ async function runAnalysis() {
         decision_key: result.decision_key, engine_version: result.engine_version,
         orchestrator_version: result.orchestrator_version,
         normalized_inputs: scores, context: { risk_tolerance: riskTol, time_horizon: timeHz },
-        result_summary: { recommendation: result.recommendation, composite: Math.round(result.composite_score*100), m1_score: Math.round(m1.score*100), m2_score: Math.round(m2.score*100), m3_score: Math.round(m3.score*100), band: m1.band },
+        result_summary: { recommendation: result.recommendation, composite: Math.round(result.composite_score*100), m1_score: Math.round(m1.score*100), m2_score: Math.round(m2.score*100), m3_score: Math.round(m3.score*100), m4_score: Math.round(m4.score*100), m5_score: Math.round(m5.score*100), m6_score: Math.round(m6.score*100), m7_score: Math.round(m7.score*100), band: m1.band },
         full_result: result, confidence: result.confidence, risk_posture: result.recommendation,
         tier_at_eval: tier,
       });
@@ -1099,11 +1177,9 @@ function showResult(r) {
     <div style="text-align:center;font-size:15px;font-weight:600;margin:8px 0">${t('confidence',L)}: ${r.confidence}% <span style="color:var(--text-dim);font-weight:400">(${r.confidence_band_low}–${r.confidence_band_high}%)</span></div>
 
     <div class="m-section">${t('module_scores',L)}</div>
-    <div class="m-card">
-      <div class="score-row"><div class="score-label">${t('m1_full',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.m1_score*100)}%;background:${barColor(r.m1_score)}"></div></div><div class="score-num">${Math.round(r.m1_score*100)}</div></div>
-      <div class="score-row"><div class="score-label">${t('m2_full',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.m2_score*100)}%;background:${barColor(r.m2_score)}"></div></div><div class="score-num">${Math.round(r.m2_score*100)}</div></div>
-      <div class="score-row"><div class="score-label">${t('m3_full',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.m3_score*100)}%;background:${barColor(r.m3_score)}"></div></div><div class="score-num">${Math.round(r.m3_score*100)}</div></div>
-      <div style="border-top:1px solid var(--card-border);margin-top:8px;padding-top:8px">
+    <div class="m-card">`;
+  [['m1','m1_full'],['m2','m2_full'],['m3','m3_full'],['m4','m4_full'],['m5','m5_full'],['m6','m6_full'],['m7','m7_full']].forEach(([k,k_full])=>{if(r[k+'_band']==='Not evaluated')return;html+=`<div class="score-row"><div class="score-label">${t(k_full,L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r[k+'_score']*100)}%;background:${barColor(r[k+'_score'])}"></div></div><div class="score-num">${Math.round(r[k+'_score']*100)}</div></div>`;});
+  html+=`<div style="border-top:1px solid var(--card-border);margin-top:8px;padding-top:8px">
         <div class="score-row"><div class="score-label" style="font-weight:600">${t('composite_score',L)}</div><div class="score-bar"><div class="score-fill" style="width:${Math.round(r.composite_score*100)}%;background:var(--teal)"></div></div><div class="score-num" style="color:var(--teal)">${Math.round(r.composite_score*100)}</div></div>
       </div>
     </div>`;
@@ -1183,7 +1259,8 @@ function exportPDF() {
   doc.setFillColor(rc[0],rc[1],rc[2]);doc.roundedRect(margin,y,cW,28,3,3,'F');doc.setTextColor(18,25,35);doc.setFontSize(28);doc.setFont('helvetica','bold');doc.text(tRec(r.recommendation,L),W/2,y+13,{align:'center'});
   doc.setFontSize(10);doc.setFont('helvetica','normal');doc.text(tRecDesc(r.recommendation,L),W/2,y+22,{align:'center'});y+=36;
   doc.setTextColor(60,60,60);doc.setFontSize(12);doc.setFont('helvetica','bold');doc.text(`${t('confidence',L)}: ${r.confidence}% (${r.confidence_band_low}–${r.confidence_band_high}%)`,W/2,y,{align:'center'});y+=12;
-  doc.autoTable({startY:y,margin:{left:margin,right:margin},head:[[t('th_module',L),t('th_score',L),t('th_band',L),t('th_weight',L)]],body:[[t('m1_full',L),Math.round(r.m1_score*100),tBand(r.m1_band,L),'40%'],[t('m2_full',L),Math.round(r.m2_score*100),tBand(r.m2_band,L),'30%'],[t('m3_full',L),Math.round(r.m3_score*100),tBand(r.m3_band,L),'30%'],[t('composite_score',L),Math.round(r.composite_score*100),'','100%']],theme:'grid',headStyles:{fillColor:[28,167,162],textColor:255,fontSize:10},bodyStyles:{fontSize:10}});
+  const mBody=[];[['m1','m1_full'],['m2','m2_full'],['m3','m3_full'],['m4','m4_full'],['m5','m5_full'],['m6','m6_full'],['m7','m7_full']].forEach(([k,k_full])=>{if(r[k+'_band']==='Not evaluated')return;mBody.push([t(k_full,L),Math.round(r[k+'_score']*100),tBand(r[k+'_band'],L),r.module_weights[k]?Math.round(r.module_weights[k]*100)+'%':'']);});mBody.push([t('composite_score',L),Math.round(r.composite_score*100),'','100%']);
+  doc.autoTable({startY:y,margin:{left:margin,right:margin},head:[[t('th_module',L),t('th_score',L),t('th_band',L),t('th_weight',L)]],body:mBody,theme:'grid',headStyles:{fillColor:[28,167,162],textColor:255,fontSize:10},bodyStyles:{fontSize:10}});
   y=doc.lastAutoTable.finalY+10;
   if(currentOutputLevel!=='quick'&&r.key_drivers.length){doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(18,25,35);doc.text(t('key_drivers',L),margin,y);y+=6;doc.autoTable({startY:y,margin:{left:margin,right:margin},head:[[t('th_driver',L),t('th_module',L),t('th_score',L),t('th_impact',L)]],body:r.key_drivers.map(d=>[tDriver(d.name,L),d.module,Math.round(d.score*100),d.score>=0.6?t('impact_positive',L):d.score<=0.4?t('impact_negative',L):t('impact_neutral',L)]),theme:'striped',headStyles:{fillColor:[36,51,72],textColor:255,fontSize:9},bodyStyles:{fontSize:9}});y=doc.lastAutoTable.finalY+10;}
   const pH=279.4;doc.setFontSize(7);doc.setTextColor(150,150,150);doc.text(t('disclaimer',L),W/2,pH-12,{align:'center',maxWidth:cW});doc.text(`${t('footer',L)} | ${new Date().getFullYear()}`,W/2,pH-8,{align:'center'});
@@ -1199,7 +1276,7 @@ function exportDOCX() {
   let html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><style>body{font-family:Arial,sans-serif;color:#333;margin:40px}h1{color:#1CA7A2;font-size:24px}h2{color:#121923;font-size:16px;border-bottom:2px solid #1CA7A2;padding-bottom:4px;margin-top:24px}.rec-box{background:${rc};color:#121923;text-align:center;padding:20px;font-size:28px;font-weight:bold;border-radius:8px;margin:16px 0}table{border-collapse:collapse;width:100%;margin:12px 0}th{background:#121923;color:white;padding:8px 12px;text-align:left;font-size:11px}td{padding:8px 12px;border-bottom:1px solid #ddd;font-size:12px}tr:nth-child(even){background:#f8f9fa}.disclaimer{text-align:center;font-size:9px;color:#aaa;margin-top:40px;font-style:italic;border-top:1px solid #ddd;padding-top:12px}</style></head><body>`;
   html += `<h1>${t('brand_title',L)}</h1><div style="color:#888;font-size:12px;margin-bottom:24px">${t('brand_subtitle',L)}<br>${t('client_label',L)}: ${cn} | ${t('tier_label',L)}: ${r.tier.toUpperCase()} | ${t('date_label',L)}: ${new Date().toLocaleDateString()}</div>`;
   html += `<div class="rec-box">${tRec(r.recommendation,L)}</div><div style="text-align:center;font-size:14px;color:#555">${tRecDesc(r.recommendation,L)}</div><div style="text-align:center;font-size:16px;font-weight:bold;margin:8px 0 24px">${t('confidence',L)}: ${r.confidence}%</div>`;
-  html += `<h2>${t('module_scores',L)}</h2><table><tr><th>${t('th_module',L)}</th><th>${t('th_score',L)}</th><th>${t('th_band',L)}</th><th>${t('th_weight',L)}</th></tr><tr><td>${t('m1_full',L)}</td><td>${Math.round(r.m1_score*100)}</td><td>${tBand(r.m1_band,L)}</td><td>40%</td></tr><tr><td>${t('m2_full',L)}</td><td>${Math.round(r.m2_score*100)}</td><td>${tBand(r.m2_band,L)}</td><td>30%</td></tr><tr><td>${t('m3_full',L)}</td><td>${Math.round(r.m3_score*100)}</td><td>${tBand(r.m3_band,L)}</td><td>30%</td></tr></table>`;
+  html += `<h2>${t('module_scores',L)}</h2><table><tr><th>${t('th_module',L)}</th><th>${t('th_score',L)}</th><th>${t('th_band',L)}</th><th>${t('th_weight',L)}</th></tr>`;[['m1','m1_full'],['m2','m2_full'],['m3','m3_full'],['m4','m4_full'],['m5','m5_full'],['m6','m6_full'],['m7','m7_full']].forEach(([k,k_full])=>{if(r[k+'_band']==='Not evaluated')return;html+=`<tr><td>${t(k_full,L)}</td><td>${Math.round(r[k+'_score']*100)}</td><td>${tBand(r[k+'_band'],L)}</td><td>${r.module_weights[k]?Math.round(r.module_weights[k]*100)+'%':''}</td></tr>`;});html+=`</table>`;
   if(currentOutputLevel!=='quick'){html+=`<h2>${t('key_drivers',L)}</h2><table><tr><th>${t('th_driver',L)}</th><th>${t('th_module',L)}</th><th>${t('th_score',L)}</th></tr>`;r.key_drivers.forEach(d=>{html+=`<tr><td>${tDriver(d.name,L)}</td><td>${d.module}</td><td>${Math.round(d.score*100)}</td></tr>`;});html+='</table>';}
   html += `<div class="disclaimer">${t('disclaimer',L)}</div><div style="text-align:center;font-size:9px;color:#bbb;margin-top:8px">${t('footer',L)}</div></body></html>`;
   const blob=new Blob([html],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;const ls=L!=='en'?`_${L.toUpperCase()}`:'';a.download=`Elenivo_Brief_${cn.replace(/\s+/g,'_')}_${currentOutputLevel}${ls}_${r.decision_key}.doc`;a.click();URL.revokeObjectURL(url);showToast('DOCX exported');
@@ -1208,7 +1285,7 @@ function exportDOCX() {
 function exportExcel() {
   if(!lastResult) return; const r=lastResult; const L=exportLang;
   const wb=XLSX.utils.book_new();const cn=getClientName();
-  const sum=[[`${t('brand_title',L)} — ${t('brand_subtitle',L)}`],[''],[t('cp_recommendation',L),tRec(r.recommendation,L)],[t('confidence',L),`${r.confidence}%`],[t('composite_score',L),Math.round(r.composite_score*100)],[''],[t('th_module',L),t('th_score',L),t('th_band',L),t('th_weight',L)],[t('m1_full',L),Math.round(r.m1_score*100),tBand(r.m1_band,L),'40%'],[t('m2_full',L),Math.round(r.m2_score*100),tBand(r.m2_band,L),'30%'],[t('m3_full',L),Math.round(r.m3_score*100),tBand(r.m3_band,L),'30%']];
+  const sum=[[`${t('brand_title',L)} — ${t('brand_subtitle',L)}`],[''],[t('cp_recommendation',L),tRec(r.recommendation,L)],[t('confidence',L),`${r.confidence}%`],[t('composite_score',L),Math.round(r.composite_score*100)],[''],[t('th_module',L),t('th_score',L),t('th_band',L),t('th_weight',L)]];[['m1','m1_full'],['m2','m2_full'],['m3','m3_full'],['m4','m4_full'],['m5','m5_full'],['m6','m6_full'],['m7','m7_full']].forEach(([k,k_full])=>{if(r[k+'_band']==='Not evaluated')return;sum.push([t(k_full,L),Math.round(r[k+'_score']*100),tBand(r[k+'_band'],L),r.module_weights[k]?Math.round(r.module_weights[k]*100)+'%':'']);});
   const ws1=XLSX.utils.aoa_to_sheet(sum);ws1['!cols']=[{wch:24},{wch:18},{wch:15},{wch:10}];XLSX.utils.book_append_sheet(wb,ws1,'Summary');
   if(currentOutputLevel!=='quick'){const dd=[[t('th_driver',L),t('th_module',L),t('th_score',L)]];r.key_drivers.forEach(d=>dd.push([tDriver(d.name,L),d.module,Math.round(d.score*100)]));const ws2=XLSX.utils.aoa_to_sheet(dd);XLSX.utils.book_append_sheet(wb,ws2,'Drivers');}
   const ls=L!=='en'?`_${L.toUpperCase()}`:'';XLSX.writeFile(wb,`Elenivo_${cn.replace(/\s+/g,'_')}_${currentOutputLevel}${ls}_${r.decision_key}.xlsx`);showToast('Excel exported');
@@ -1216,7 +1293,7 @@ function exportExcel() {
 
 function exportPowerBI() {
   if(!lastResult) return; const r=lastResult; const L=exportLang;
-  const row={decision_key:r.decision_key,timestamp:r.timestamp,client:getClientName(),tier:r.tier,recommendation:tRec(r.recommendation,L),confidence:r.confidence,composite:Math.round(r.composite_score*100),m1_score:Math.round(r.m1_score*100),m2_score:Math.round(r.m2_score*100),m3_score:Math.round(r.m3_score*100),m1_band:tBand(r.m1_band,L),m2_band:tBand(r.m2_band,L),m3_band:tBand(r.m3_band,L),output_level:currentOutputLevel,language:L};
+  const row={decision_key:r.decision_key,timestamp:r.timestamp,client:getClientName(),tier:r.tier,recommendation:tRec(r.recommendation,L),confidence:r.confidence,composite:Math.round(r.composite_score*100),m1_score:Math.round(r.m1_score*100),m2_score:Math.round(r.m2_score*100),m3_score:Math.round(r.m3_score*100),m1_band:tBand(r.m1_band,L),m2_band:tBand(r.m2_band,L),m3_band:tBand(r.m3_band,L)};['m4','m5','m6','m7'].forEach(k=>{if(r[k+'_band']!=='Not evaluated'){row[k+'_score']=Math.round(r[k+'_score']*100);row[k+'_band']=tBand(r[k+'_band'],L);}});row.output_level=currentOutputLevel;row.language=L;
   const csv=Papa.unparse([row]);downloadBlob(csv,`Elenivo_BI_${r.decision_key}.csv`,'text/csv');showToast('CSV exported');
 }
 
@@ -1227,7 +1304,7 @@ function exportJSON() {
 
 function copyPlaintext() {
   if(!lastResult) return; const r=lastResult; const L=exportLang;
-  let text=`${t('brand_title',L)} — ${t('brand_subtitle',L)}\n${'='.repeat(40)}\n${t('cp_recommendation',L)}: ${tRec(r.recommendation,L)}\n${tRecDesc(r.recommendation,L)}\n${t('confidence',L)}: ${r.confidence}%\n\n${t('cp_module_scores',L)}:\n  ${t('m1_full',L)}: ${Math.round(r.m1_score*100)} (${tBand(r.m1_band,L)})\n  ${t('m2_full',L)}: ${Math.round(r.m2_score*100)} (${tBand(r.m2_band,L)})\n  ${t('m3_full',L)}: ${Math.round(r.m3_score*100)} (${tBand(r.m3_band,L)})`;
+  let text=`${t('brand_title',L)} — ${t('brand_subtitle',L)}\n${'='.repeat(40)}\n${t('cp_recommendation',L)}: ${tRec(r.recommendation,L)}\n${tRecDesc(r.recommendation,L)}\n${t('confidence',L)}: ${r.confidence}%\n\n${t('cp_module_scores',L)}:\n`;[['m1','m1_full'],['m2','m2_full'],['m3','m3_full'],['m4','m4_full'],['m5','m5_full'],['m6','m6_full'],['m7','m7_full']].forEach(([k,k_full])=>{if(r[k+'_band']==='Not evaluated')return;text+=`  ${t(k_full,L)}: ${Math.round(r[k+'_score']*100)} (${tBand(r[k+'_band'],L)})\n`;});
   if(currentOutputLevel!=='quick'){text+=`\n\n${t('cp_key_drivers',L)}:\n`;r.key_drivers.forEach(d=>{text+=`  ${tDriver(d.name,L)}: ${Math.round(d.score*100)}\n`;});}
   text+=`\n${t('disclaimer',L)}\n${t('footer',L)}`;
   navigator.clipboard.writeText(text).then(()=>showToast('Copied to clipboard')).catch(()=>showToast('Copy failed'));

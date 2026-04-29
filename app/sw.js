@@ -1,5 +1,5 @@
 // Elenivo PWA Service Worker v1.0
-const CACHE_NAME = 'elenivo-v2';
+const CACHE_NAME = 'elenivo-v3';
 const ASSETS = [
   './',
   './index.html',

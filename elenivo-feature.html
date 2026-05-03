@@ -128,10 +128,17 @@
       padding: 1.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
       border-radius: 10px; text-align: center; transition: all 0.3s;
     }
+    .module-card { cursor: pointer; }
     .module-card:hover { border-color: rgba(28, 167, 162, 0.3); background: rgba(28, 167, 162, 0.05); }
+    .module-card.expanded { border-color: rgba(28, 167, 162, 0.4); background: rgba(28, 167, 162, 0.06); }
     .module-label { font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 1px; margin-bottom: 0.5rem; text-transform: uppercase; }
     .module-name { font-size: 0.95rem; color: var(--text-primary); font-weight: 600; }
     .module-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; }
+    .module-expand-icon { font-size: 0.7rem; color: var(--teal); margin-top: 0.6rem; transition: transform 0.3s; display: inline-block; }
+    .module-card.expanded .module-expand-icon { transform: rotate(180deg); }
+    .module-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease; opacity: 0; margin-top: 0; }
+    .module-card.expanded .module-detail { max-height: 200px; opacity: 1; margin-top: 0.8rem; }
+    .module-detail p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; text-align: left; padding: 0.5rem 0; border-top: 1px solid var(--glass-border); }
     /* Tier Cards */
     .tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 4rem; }
     .tier-card {
@@ -279,12 +286,13 @@
   <section class="hero">
     <div class="hero-content fade-up">
       <div style="font-size:0.8rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); font-weight:500; margin-bottom:1.5rem;" data-i18n="elenivo.hero.label">Elenivo &mdash; Decision Infrastructure</div>
+
       <h1 data-i18n="elenivo.hero.title" style="margin-bottom:1rem;">Your Boardroom, On Demand.</h1>
       <p style="font-size:1.2rem; color:var(--text-primary); font-weight:400; font-style:italic; margin-bottom:2rem; letter-spacing:0.3px;" data-i18n="elenivo.hero.tagline">Not a simulator. Not a dashboard. A system for making the right decision.</p>
-      <p class="hero-sub" data-i18n="elenivo.hero.sub">Elenivo is a proprietary decision infrastructure — a 7-module strategic engine that ingests your real business data, evaluates it across multiple dimensions simultaneously, and delivers certified recommendations with confidence scores, key drivers, and the specific conditions that would change the answer. This is not another analytics tool repackaged as strategy. This is a completely different category of product.</p>
+      <p class="hero-sub" data-i18n="elenivo.hero.sub">Every leader believes they make data-driven decisions. Almost none of them actually do. Elenivo changes that — a 7-module strategic engine that ingests your real business data, weighs it across multiple dimensions simultaneously, and delivers scored recommendations with confidence levels, the key drivers behind them, and the exact conditions that would flip the answer. This is not another analytics tool repackaged as strategy. This is an entirely different category — and once you see it, everything else feels like guessing.</p>
       <div class="hero-buttons">
         <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" class="btn-primary" data-i18n="elenivo.hero.cta">Book a Strategy Call &rarr;</a>
-        <a href="#modules" class="btn-secondary" data-i18n="elenivo.hero.learn">See the Architecture &darr;</a>
+        <a href="#modules" class="btn-secondary" data-i18n="elenivo.hero.learn">See the 7 Dimensions &darr;</a>
       </div>
     </div>
   </section>
@@ -325,40 +333,54 @@
         <p style="max-width: 700px; margin: 1rem auto 0; color: var(--text-secondary);" data-i18n="elenivo.modules.desc">Each tier unlocks different modules, from foundational capacity tracking to full-spectrum market position analysis.</p>
       </div>
       <div class="modules-grid">
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M1</div>
           <div class="module-name" data-i18n="elenivo.m1">Performance</div>
           <div class="module-desc" data-i18n="elenivo.m1desc">Capacity & utilization</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m1detail">Evaluates how efficiently your business uses its available capacity — revenue per unit, workforce utilization, and throughput relative to operational ceiling. Surfaces where you're leaving money on the table.</p></div>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M2</div>
           <div class="module-name" data-i18n="elenivo.m2">Risk</div>
           <div class="module-desc" data-i18n="elenivo.m2desc">Tolerance & exposure</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m2detail">Quantifies your exposure across financial, operational, and market risk vectors. Measures concentration risk, volatility sensitivity, and your capacity to absorb downside scenarios.</p></div>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M3</div>
           <div class="module-name" data-i18n="elenivo.m3">Capital Structure</div>
           <div class="module-desc" data-i18n="elenivo.m3desc">Allocation & efficiency</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m3detail">Analyzes how capital is allocated across your business — debt-to-equity positioning, cost of capital, and whether your investment distribution is optimized for your growth stage.</p></div>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M4</div>
           <div class="module-name" data-i18n="elenivo.m4">Customer Health</div>
           <div class="module-desc" data-i18n="elenivo.m4desc">Churn & retention</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m4detail">Measures the strength of your customer base — retention rates, lifetime value trends, acquisition cost efficiency, and early churn signals that indicate revenue risk before it materializes.</p></div>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M5</div>
           <div class="module-name" data-i18n="elenivo.m5">Talent & Ops</div>
           <div class="module-desc" data-i18n="elenivo.m5desc">Efficiency & scaling</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m5detail">Assesses operational scalability and workforce alignment — revenue per employee, process bottlenecks, and whether your team structure supports the next stage of growth.</p></div>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M6</div>
           <div class="module-name" data-i18n="elenivo.m6">Innovation</div>
           <div class="module-desc" data-i18n="elenivo.m6desc">Pipeline & timing</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m6detail">Tracks your innovation pipeline health — R&D investment ratio, time-to-market velocity, and whether your product development cadence positions you ahead of or behind market demand.</p></div>
         </div>
-        <div class="module-card">
+        <div class="module-card" onclick="toggleModule(this)">
           <div class="module-label">M7</div>
           <div class="module-name" data-i18n="elenivo.m7">Market Timing</div>
           <div class="module-desc" data-i18n="elenivo.m7desc">Positioning & shifts</div>
+          <div class="module-expand-icon">&#9660;</div>
+          <div class="module-detail"><p data-i18n="elenivo.m7detail">Detects competitive positioning shifts and market timing windows — analyzing sector momentum, competitive movement, and whether conditions favor expansion, consolidation, or strategic pivots.</p></div>
         </div>
       </div>
     </div>
@@ -489,12 +511,12 @@
     // Translations
     const T = {
       en: {
-        'elenivo.hero.label': 'Elenivo — Strategic Decision Environment',
+        'elenivo.hero.label': 'Elenivo — Decision Infrastructure',
         'elenivo.hero.title': 'Your Boardroom, On Demand.',
         'elenivo.hero.tagline': 'Not a simulator. Not a dashboard. A system for making the right decision.',
-        'elenivo.hero.sub': 'Elenivo is a 7-module weighted orchestrator that ingests your real business data and returns GO / HOLD / REDUCE / INVEST recommendations with confidence scores, key drivers, and flip conditions. This is not another analytics tool repackaged as strategy. This is a completely different category of product.',
+        'elenivo.hero.sub': 'Every leader believes they make data-driven decisions. Almost none of them actually do. Elenivo changes that — a 7-module strategic engine that ingests your real business data, weighs it across multiple dimensions simultaneously, and delivers scored recommendations with confidence levels, the key drivers behind them, and the exact conditions that would flip the answer. This is not another analytics tool repackaged as strategy. This is an entirely different category — and once you see it, everything else feels like guessing.',
         'elenivo.hero.cta': 'Book a Strategy Call →',
-        'elenivo.hero.learn': 'See the 7 Modules ↓',
+        'elenivo.hero.learn': 'See the 7 Dimensions ↓',
         'elenivo.framework.label': 'How It Works',
         'elenivo.framework.title': 'Analyze. Certify. Simplify.',
         'elenivo.framework.analyze': 'Analyze',
@@ -549,6 +571,13 @@
         'elenivo.t3.f4': 'Market & competitive analysis',
         'elenivo.t3.f5': 'Strategic pivot detection',
         'elenivo.t3.f6': 'Dedicated strategic support',
+        'elenivo.m1detail': 'Evaluates how efficiently your business uses its available capacity — revenue per unit, workforce utilization, and throughput relative to operational ceiling. Surfaces where you\x27re leaving money on the table.',
+        'elenivo.m2detail': 'Quantifies your exposure across financial, operational, and market risk vectors. Measures concentration risk, volatility sensitivity, and your capacity to absorb downside scenarios.',
+        'elenivo.m3detail': 'Analyzes how capital is allocated across your business — debt-to-equity positioning, cost of capital, and whether your investment distribution is optimized for your growth stage.',
+        'elenivo.m4detail': 'Measures the strength of your customer base — retention rates, lifetime value trends, acquisition cost efficiency, and early churn signals that indicate revenue risk before it materializes.',
+        'elenivo.m5detail': 'Assesses operational scalability and workforce alignment — revenue per employee, process bottlenecks, and whether your team structure supports the next stage of growth.',
+        'elenivo.m6detail': 'Tracks your innovation pipeline health — R&D investment ratio, time-to-market velocity, and whether your product development cadence positions you ahead of or behind market demand.',
+        'elenivo.m7detail': 'Detects competitive positioning shifts and market timing windows — analyzing sector momentum, competitive movement, and whether conditions favor expansion, consolidation, or strategic pivots.',
         'elenivo.tier.badge': 'Most Popular',
         'elenivo.tier.cta': 'Start Now →',
         'elenivo.tier.call': 'Book a Call →',
@@ -575,13 +604,13 @@
         'elenivo.hero.label': 'Elenivo — Infraestructura de Decisión',
         'elenivo.hero.title': 'Tu Sala de Juntas, Bajo Demanda.',
         'elenivo.hero.tagline': 'No es un simulador. No es un dashboard. Un sistema para tomar la decisión correcta.',
-        'elenivo.hero.sub': 'Elenivo es una infraestructura de decisión propietaria — un motor estratégico de 7 módulos que ingiere sus datos reales, los evalúa a través de múltiples dimensiones simultáneamente y entrega recomendaciones certificadas con puntajes de confianza, factores clave y las condiciones que cambiarían la respuesta. Esto no es otra herramienta de analítica reempaquetada como estrategia. Es una categoría de producto completamente diferente.',
+        'elenivo.hero.sub': 'Todo líder cree que toma decisiones basadas en datos. Casi ninguno lo hace realmente. Elenivo cambia eso — un motor estratégico de 7 módulos que ingiere sus datos reales, los pesa a través de múltiples dimensiones simultáneamente y entrega recomendaciones puntuadas con niveles de confianza, los factores clave detrás de ellas, y las condiciones exactas que cambiarían la respuesta. Esto no es otra herramienta de analítica reempaquetada como estrategia. Es una categoría completamente diferente — y una vez que lo ve, todo lo demás se siente como adivinar.',
         'elenivo.hero.learn': 'Ver la Arquitectura ↓',
         'elenivo.hero.cta': 'Reserva una Llamada Estratégica →',
         'elenivo.framework.label': 'Cómo Funciona',
         'elenivo.framework.title': 'Analiza. Certifica. Simplifica.',
         'elenivo.framework.analyze': 'Analiza',
-        'elenivo.framework.analyzeDesc': 'Tus datos fluyen a través de EDN (Normalización Electrónica de Datos), normalizados a puntuaciones 0.0-1.0.',
+        'elenivo.framework.analyzeDesc': 'Tus datos fluyen a través de la Red de Datos Elenivo (EDN) — nuestra capa de inteligencia estratégica que detecta patrones, los compara con resultados del mundo real y evalúa hasta 7 dimensiones.',
         'elenivo.framework.certify': 'Certifica',
         'elenivo.framework.certifyDesc': 'Cada recomendación viene con puntuaciones de confianza, condiciones de cambio y conductores clave—no opiniones.',
         'elenivo.framework.simplify': 'Simplifica',
@@ -632,6 +661,13 @@
         'elenivo.t3.f4': 'Análisis de mercado y competencia',
         'elenivo.t3.f5': 'Detección de giros estratégicos',
         'elenivo.t3.f6': 'Soporte estratégico dedicado',
+        'elenivo.m1detail': 'Evalúa cómo su negocio utiliza eficientemente su capacidad disponible — ingresos por unidad, utilización de la fuerza laboral y rendimiento relativo al techo operativo.',
+        'elenivo.m2detail': 'Cuantifica su exposición en vectores de riesgo financiero, operativo y de mercado. Mide el riesgo de concentración, sensibilidad a la volatilidad y capacidad de absorber escenarios adversos.',
+        'elenivo.m3detail': 'Analiza cómo se asigna el capital en su negocio — posicionamiento deuda-capital, costo de capital y si la distribución de inversión está optimizada para su etapa de crecimiento.',
+        'elenivo.m4detail': 'Mide la fortaleza de su base de clientes — tasas de retención, tendencias de valor de vida, eficiencia del costo de adquisición y señales tempranas de abandono.',
+        'elenivo.m5detail': 'Evalúa la escalabilidad operativa y la alineación de la fuerza laboral — ingresos por empleado, cuellos de botella y si su estructura de equipo soporta la próxima etapa de crecimiento.',
+        'elenivo.m6detail': 'Rastrea la salud de su pipeline de innovación — ratio de inversión en I+D, velocidad de llegada al mercado y si su cadencia de desarrollo lo posiciona por delante de la demanda.',
+        'elenivo.m7detail': 'Detecta cambios de posicionamiento competitivo y ventanas de timing de mercado — analizando el momentum del sector y si las condiciones favorecen la expansión o la consolidación.',
         'elenivo.tier.badge': 'Más Popular',
         'elenivo.tier.cta': 'Comienza Ahora →',
         'elenivo.tier.call': 'Reserva una Llamada →',
@@ -658,13 +694,13 @@
         'elenivo.hero.label': 'Elenivo — Infrastructure de Décision',
         'elenivo.hero.title': 'Votre Salle de Réunion, Sur Demande.',
         'elenivo.hero.tagline': 'Pas un simulateur. Pas un tableau de bord. Un système pour prendre la bonne décision.',
-        'elenivo.hero.sub': 'Elenivo est une infrastructure de décision propriétaire — un moteur stratégique à 7 modules qui ingère vos données réelles, les évalue sur plusieurs dimensions simultanément et fournit des recommandations certifiées avec scores de confiance, facteurs clés et conditions de changement. Ce n\'est pas un outil analytique repackagé en stratégie. C\'est une catégorie de produit complètement différente.',
+        'elenivo.hero.sub': 'Chaque dirigeant croit prendre des décisions basées sur les données. Presque aucun ne le fait vraiment. Elenivo change cela — un moteur stratégique à 7 modules qui ingère vos données réelles, les évalue sur plusieurs dimensions simultanément et fournit des recommandations notées avec des niveaux de confiance, les facteurs clés, et les conditions exactes qui changeraient la réponse. Ce n\'est pas un autre outil analytique repackagé en stratégie. C\'est une catégorie entièrement différente — et une fois que vous le voyez, tout le reste ressemble à de la devinette.',
         'elenivo.hero.learn': 'Voir l\'Architecture ↓',
         'elenivo.hero.cta': 'Réservez un Appel Stratégique →',
         'elenivo.framework.label': 'Comment Ça Marche',
         'elenivo.framework.title': 'Analyser. Certifier. Simplifier.',
         'elenivo.framework.analyze': 'Analyser',
-        'elenivo.framework.analyzeDesc': 'Vos données passent par EDN (Normalisation Électronique des Données), normalisées en scores 0,0-1,0.',
+        'elenivo.framework.analyzeDesc': 'Vos données passent par le Réseau de Données Elenivo (EDN) — notre couche d\x27intelligence stratégique qui détecte les tendances, les compare aux résultats réels et évalue jusqu\x27à 7 dimensions.',
         'elenivo.framework.certify': 'Certifier',
         'elenivo.framework.certifyDesc': 'Chaque recommandation s\'accompagne de scores de confiance, de conditions de basculement et de facteurs clés.',
         'elenivo.framework.simplify': 'Simplifier',
@@ -715,6 +751,13 @@
         'elenivo.t3.f4': 'Analyse du marché et de la concurrence',
         'elenivo.t3.f5': 'Détection des changements stratégiques',
         'elenivo.t3.f6': 'Support stratégique dédié',
+        'elenivo.m1detail': 'Évalue l\x27efficacité de l\x27utilisation de votre capacité disponible — revenu par unité, utilisation de la main-d\x27œuvre et débit par rapport au plafond opérationnel.',
+        'elenivo.m2detail': 'Quantifie votre exposition aux vecteurs de risque financier, opérationnel et de marché. Mesure le risque de concentration, la sensibilité à la volatilité et votre capacité à absorber les scénarios défavorables.',
+        'elenivo.m3detail': 'Analyse comment le capital est alloué dans votre entreprise — positionnement dette-capitaux propres, coût du capital et si votre distribution d\x27investissement est optimisée.',
+        'elenivo.m4detail': 'Mesure la solidité de votre base de clients — taux de rétention, tendances de valeur vie, efficacité du coût d\x27acquisition et signaux précoces de désabonnement.',
+        'elenivo.m5detail': 'Évalue l\x27évolutivité opérationnelle et l\x27alignement de la main-d\x27œuvre — revenu par employé, goulots d\x27étranglement et si votre structure d\x27équipe supporte la prochaine étape de croissance.',
+        'elenivo.m6detail': 'Suit la santé de votre pipeline d\x27innovation — ratio d\x27investissement R&D, vélocité de mise sur le marché et si votre cadence de développement vous positionne en avance ou en retard.',
+        'elenivo.m7detail': 'Détecte les changements de positionnement concurrentiel et les fenêtres de timing de marché — analysant le momentum sectoriel et si les conditions favorisent l\x27expansion ou la consolidation.',
         'elenivo.tier.badge': 'Plus Populaire',
         'elenivo.tier.cta': 'Commencer Maintenant →',
         'elenivo.tier.call': 'Réservez un Appel →',
@@ -741,13 +784,13 @@
         'elenivo.hero.label': 'Elenivo — 决策基础设施',
         'elenivo.hero.title': '您的董事会，随需应变。',
         'elenivo.hero.tagline': '不是模拟器。不是仪表板。一个做出正确决策的系统。',
-        'elenivo.hero.sub': 'Elenivo是一个专有的决策基础设施——一个7模块战略引擎，摄取您的真实业务数据，同时在多个维度上进行评估，并提供经过认证的建议，附带信心分数、关键驱动因素和可能改变结果的具体条件。这不是另一个被包装为战略的分析工具。这是一个完全不同类别的产品。',
+        'elenivo.hero.sub': '每位领导者都认为自己在做数据驱动的决策。几乎没有人真正做到了。Elenivo改变了这一点——一个7模块战略引擎，摄取您的真实业务数据，同时在多个维度上进行权衡，提供带有信心等级、关键驱动因素以及可能改变答案的确切条件的评分建议。这不是另一个被重新包装为战略的分析工具。这是一个完全不同的类别——一旦您看到它，其他一切都像是在猜测。',
         'elenivo.hero.cta': '预约战略电话 →',
         'elenivo.hero.learn': '查看7个模块 ↓',
         'elenivo.framework.label': '工作原理',
         'elenivo.framework.title': '分析。认证。简化。',
         'elenivo.framework.analyze': '分析',
-        'elenivo.framework.analyzeDesc': '您的数据通过EDN（电子数据规范化）流动，标准化为0.0-1.0分数。',
+        'elenivo.framework.analyzeDesc': '您的数据通过Elenivo数据网络 (EDN) 流动 — 我们的战略智能层，检测模式，将其与真实世界的决策结果进行比较，并评估多达7个维度。',
         'elenivo.framework.certify': '认证',
         'elenivo.framework.certifyDesc': '每项建议都附带信心分数、翻转条件和关键驱动因素。',
         'elenivo.framework.simplify': '简化',
@@ -798,6 +841,13 @@
         'elenivo.t3.f4': '市场和竞争分析',
         'elenivo.t3.f5': '战略转变检测',
         'elenivo.t3.f6': '专属战略支持',
+        'elenivo.m1detail': '评估您的企业如何有效利用其可用产能——单位收入、劳动力利用率和相对于运营上限的吐出量。揭示您在哪里浪费了赚钱的机会。',
+        'elenivo.m2detail': '量化您在财务、运营和市场风险向量上的暴露程度。衡量集中度风险、波动性敏感度以及您吸收下行情景的能力。',
+        'elenivo.m3detail': '分析资本如何在您的业务中分配——债务与股权定位、资本成本以及您的投资分配是否针对您的增长阶段进行了优化。',
+        'elenivo.m4detail': '衡量您客户群的强度——留存率、生命周期价值趋势、获客成本效率以及早期流失信号。',
+        'elenivo.m5detail': '评估运营可扩展性和劳动力对齐——每位员工的收入、流程瓶颈以及您的团队结构是否支持下一阶段的增长。',
+        'elenivo.m6detail': '追踪您的创新管线健康——研发投资比率、上市速度以及您的产品开发节奏是否领先于市场需求。',
+        'elenivo.m7detail': '检测竞争定位变化和市场时机窗口——分析行业动能和条件是否有利于扩张、合并或战略转型。',
         'elenivo.tier.badge': '最受欢迎',
         'elenivo.tier.cta': '立即开始 →',
         'elenivo.tier.call': '预约电话 →',
@@ -821,6 +871,15 @@
         'footer.terms': '服务条款'
       }
     };
+
+    // Module expand/collapse
+    function toggleModule(card) {
+      const wasExpanded = card.classList.contains('expanded');
+      // Close all others
+      document.querySelectorAll('.module-card.expanded').forEach(c => c.classList.remove('expanded'));
+      // Toggle clicked card
+      if (!wasExpanded) card.classList.add('expanded');
+    }
 
     let currentLang = 'en';
 

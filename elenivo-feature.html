@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elenivo | Your Boardroom, On Demand | Signalyze Solutions</title>
+  <meta name="description" content="Elenivo: Your boardroom, on demand. The proprietary Strategic Decision Environment for high-stakes business decisions. Analyze, Certify, Simplify." />
+  <meta name="keywords" content="strategic decision intelligence, business analytics, decision support, Elenivo, Signalyze Solutions" />
+  <meta property="og:title" content="Elenivo | Your Boardroom, On Demand" />
+  <meta property="og:description" content="Elenivo: The proprietary Strategic Decision Environment platform." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://signalyzesolutions.com/elenivo-feature.html" />
+  <meta property="og:image" content="https://signalyzesolutions.com/favicon-512.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #121923;
+      color: #D1D5DB;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    :root {
+      --navy: #141E2B;
+      --navy-deep: #121923;
+      --teal: #1CA7A2;
+      --teal-glow: rgba(28, 167, 162, 0.3);
+      --silver: #D1D5DB;
+      --gold: #CDA434;
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --text-primary: #F3F4F6;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+    }
+    #particles-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    /* Navigation */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(18, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between; height: 72px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-icon { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; }
+    .nav-logo-text { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px; }
+    .nav-logo-text span { display: block; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
+    .nav-links { display: flex; gap: 0; list-style: none; flex-wrap: nowrap; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-secondary); font-size: 0.78rem; font-weight: 500;
+      padding: 0.5rem 0.65rem; border-radius: 6px; transition: color 0.2s, background 0.2s; letter-spacing: 0.1px;
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); background: rgba(28, 167, 162, 0.08); }
+    .nav-right { display: flex; align-items: center; gap: 0.6rem; }
+    .lang-switcher { display: flex; gap: 4px; align-items: center; }
+    .lang-btn {
+      background: none; border: 1px solid transparent; color: var(--text-muted);
+      font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+      cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .lang-btn:hover { color: var(--text-secondary); border-color: var(--glass-border); }
+    .lang-btn.active { color: var(--teal); border-color: var(--teal); background: rgba(28, 167, 162, 0.08); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.5rem 1.1rem;
+      background: transparent; border: 1.5px solid var(--teal); border-radius: 50px;
+      color: var(--teal); font-size: 0.78rem; font-weight: 600; text-decoration: none;
+      transition: all 0.3s; letter-spacing: 0.2px; white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--teal); color: #fff; box-shadow: 0 0 20px var(--teal-glow); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
+    /* Sections */
+    .section { position: relative; z-index: 1; padding: 6rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.2; }
+    /* Hero */
+    .hero {
+      min-height: 90vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 2rem 5rem;
+      background: radial-gradient(ellipse at 50% 30%, rgba(28, 167, 162, 0.06) 0%, transparent 60%);
+    }
+    .hero-content { max-width: 900px; }
+    .hero-logo { font-size: 3.5rem; margin-bottom: 2rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 6vw, 4rem); font-weight: 600; color: var(--text-primary); line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero-sub { font-size: clamp(1rem, 2vw, 1.3rem); color: var(--text-secondary); margin-bottom: 3rem; font-weight: 300; line-height: 1.8; }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px; padding: 1rem 2.5rem;
+      background: var(--teal); border: none; border-radius: 50px;
+      color: #fff; font-size: 0.95rem; font-weight: 600; text-decoration: none;
+      transition: all 0.3s; cursor: pointer;
+    }
+    .btn-primary:hover { background: #17938f; box-shadow: 0 0 30px var(--teal-glow); transform: translateY(-2px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px; padding: 1rem 2.5rem;
+      background: transparent; border: 1.5px solid var(--glass-border); border-radius: 50px;
+      color: var(--text-secondary); font-size: 0.95rem; font-weight: 500; text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+    /* Framework Section */
+    .framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
+    .framework-card {
+      padding: 2.5rem 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 16px; transition: all 0.3s; text-align: center;
+    }
+    .framework-card:hover { border-color: rgba(28, 167, 162, 0.3); transform: translateY(-4px); }
+    .framework-icon { font-size: 2.8rem; margin-bottom: 1.5rem; }
+    .framework-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--teal); font-weight: 600; margin-bottom: 1rem; }
+    .framework-card p { color: var(--text-secondary); line-height: 1.8; }
+    /* Modules Section */
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+    .module-card {
+      padding: 1.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 10px; text-align: center; transition: all 0.3s;
+    }
+    .module-card:hover { border-color: rgba(28, 167, 162, 0.3); background: rgba(28, 167, 162, 0.05); }
+    .module-label { font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 1px; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .module-name { font-size: 0.95rem; color: var(--text-primary); font-weight: 600; }
+    .module-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; }
+    /* Tier Cards */
+    .tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 4rem; }
+    .tier-card {
+      padding: 2.5rem 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 16px; display: flex; flex-direction: column; transition: all 0.3s;
+    }
+    .tier-card:hover { border-color: rgba(28, 167, 162, 0.25); transform: translateY(-4px); }
+    .tier-card.featured { border-color: var(--teal); background: rgba(28, 167, 162, 0.04); position: relative; }
+    .tier-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--teal); color: #fff; font-size: 0.7rem; font-weight: 600;
+      padding: 4px 16px; border-radius: 50px; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .tier-name { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); font-weight: 600; margin-bottom: 0.8rem; }
+    .tier-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text-primary); font-weight: 600; margin-bottom: 1.2rem; }
+    .tier-price { font-size: 2.2rem; color: var(--teal); font-weight: 700; margin-bottom: 0.25rem; }
+    .tier-setup { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+    .tier-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; flex-grow: 1; }
+    .tier-features { list-style: none; margin-bottom: 2rem; }
+    .tier-features li {
+      font-size: 0.85rem; color: var(--text-muted); padding: 0.5rem 0;
+      padding-left: 1.5rem; position: relative;
+    }
+    .tier-features li::before {
+      content: '✓'; position: absolute; left: 0; top: 0.2rem;
+      color: var(--teal); font-weight: 700; opacity: 0.8;
+    }
+    .tier-cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 0.9rem;
+      font-weight: 600; text-decoration: none; transition: all 0.3s; text-align: center;
+    }
+    .tier-cta.primary {
+      background: var(--teal); color: #fff; border: none;
+    }
+    .tier-cta.primary:hover {
+      background: #17938f; box-shadow: 0 0 20px var(--teal-glow);
+    }
+    .tier-cta.outline {
+      background: transparent; border: 1.5px solid var(--glass-border);
+      color: var(--text-secondary);
+    }
+    .tier-cta.outline:hover {
+      border-color: var(--teal); color: var(--teal);
+    }
+    /* Security Section */
+    .security-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 3rem; }
+    .security-item {
+      padding: 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 12px; text-align: center;
+    }
+    .security-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .security-item h4 { font-size: 1rem; color: var(--text-primary); font-weight: 600; margin-bottom: 0.8rem; }
+    .security-item p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+    /* Footer */
+    .footer {
+      text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--glass-border);
+      position: relative; z-index: 1; background: rgba(18, 25, 35, 0.5);
+    }
+    .footer p { font-size: 0.75rem; color: var(--text-muted); }
+    .footer-links {
+      margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);
+    }
+    .footer-links a {
+      color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+    .footer-links .sep { margin: 0 0.5rem; opacity: 0.5; }
+    /* Back Link */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px; color: var(--teal);
+      text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      transition: all 0.2s; margin-bottom: 2rem;
+    }
+    .back-link:hover { gap: 10px; }
+    /* Fade-up Animation */
+    .fade-up { opacity: 0; transform: translateY(20px); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links { gap: 0.2rem; }
+      .section { padding: 4rem 2rem; }
+      .hero { padding: 6rem 2rem 4rem; min-height: 80vh; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-sub { font-size: 1rem; }
+      .tiers-grid { grid-template-columns: 1fr; }
+      .framework-grid { gap: 1.5rem; }
+      .security-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .nav-inner { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-right { gap: 0.3rem; }
+      .hero { padding: 5rem 1.5rem 3rem; }
+      .hero h1 { font-size: 1.8rem; }
+      .section-title { font-size: 1.6rem; }
+      .security-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="favicon-192.png" alt="Signalyze" class="nav-logo-icon" />
+        <div class="nav-logo-text">
+          Signalyze
+          <span>Solutions</span>
+        </div>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#hero">Home</a></li>
+        <li><a href="/#services" class="active">Elenivo</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" onclick="setLang('fr')">FR</button>
+          <button class="lang-btn" onclick="setLang('zh')">ZH</button>
+        </div>
+        <button class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Back Link -->
+  <section class="section" style="padding: 6rem 2rem 2rem; text-align: left;">
+    <div class="section-inner">
+      <a href="/" class="back-link">← Back to Home</a>
+    </div>
+  </section>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content fade-up">
+      <div class="hero-logo">🎯</div>
+      <h1 data-i18n="elenivo.hero.title">Your Boardroom, On Demand</h1>
+      <p class="hero-sub" data-i18n="elenivo.hero.sub">The proprietary Strategic Decision Environment that transforms raw business data into certified, ranked recommendations. Analyze complex metrics. Certify your decisions. Simplify execution.</p>
+      <div class="hero-buttons">
+        <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" class="btn-primary" data-i18n="elenivo.hero.cta">Book a Strategy Call →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analyze. Certify. Simplify Framework -->
+  <section class="section" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
+    <div class="section-inner fade-up">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-label" data-i18n="elenivo.framework.label">How It Works</div>
+        <div class="section-title" data-i18n="elenivo.framework.title">Analyze. Certify. Simplify.</div>
+      </div>
+      <div class="framework-grid">
+        <div class="framework-card">
+          <div class="framework-icon">📊</div>
+          <h3 data-i18n="elenivo.framework.analyze">Analyze</h3>
+          <p data-i18n="elenivo.framework.analyzeDesc">Your data flows through EDN (Electronic Data Normalization), normalized to 0.0-1.0 scores across up to 7 strategic dimensions: Performance, Risk, Capital Structure, Customer Health, Talent & Operations, Innovation Pipeline, and Market Timing.</p>
+        </div>
+        <div class="framework-card">
+          <div class="framework-icon">✅</div>
+          <h3 data-i18n="elenivo.framework.certify">Certify</h3>
+          <p data-i18n="elenivo.framework.certifyDesc">Every recommendation comes with confidence scores, flip conditions (the data points that would change it), and key drivers—not opinions. Every decision is supported by scored analytics and transparent reasoning.</p>
+        </div>
+        <div class="framework-card">
+          <div class="framework-icon">🚀</div>
+          <h3 data-i18n="elenivo.framework.simplify">Simplify</h3>
+          <p data-i18n="elenivo.framework.simplifyDesc">AI-enhanced executive narratives translate complex analytics into clear, ranked actions your team can execute today. No dashboards. No noise. Just decisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modules -->
+  <section class="section">
+    <div class="section-inner fade-up">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-label" data-i18n="elenivo.modules.label">SDE Engine</div>
+        <div class="section-title" data-i18n="elenivo.modules.title">7 Strategic Dimensions</div>
+        <p style="max-width: 700px; margin: 1rem auto 0; color: var(--text-secondary);" data-i18n="elenivo.modules.desc">Each tier unlocks different modules, from foundational capacity tracking to full-spectrum market position analysis.</p>
+      </div>
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="module-label">M1</div>
+          <div class="module-name" data-i18n="elenivo.m1">Performance</div>
+          <div class="module-desc" data-i18n="elenivo.m1desc">Capacity & utilization</div>
+        </div>
+        <div class="module-card">
+          <div class="module-label">M2</div>
+          <div class="module-name" data-i18n="elenivo.m2">Risk</div>
+          <div class="module-desc" data-i18n="elenivo.m2desc">Tolerance & exposure</div>
+        </div>
+        <div class="module-card">
+          <div class="module-label">M3</div>
+          <div class="module-name" data-i18n="elenivo.m3">Capital Structure</div>
+          <div class="module-desc" data-i18n="elenivo.m3desc">Allocation & efficiency</div>
+        </div>
+        <div class="module-card">
+          <div class="module-label">M4</div>
+          <div class="module-name" data-i18n="elenivo.m4">Customer Health</div>
+          <div class="module-desc" data-i18n="elenivo.m4desc">Churn & retention</div>
+        </div>
+        <div class="module-card">
+          <div class="module-label">M5</div>
+          <div class="module-name" data-i18n="elenivo.m5">Talent & Ops</div>
+          <div class="module-desc" data-i18n="elenivo.m5desc">Efficiency & scaling</div>
+        </div>
+        <div class="module-card">
+          <div class="module-label">M6</div>
+          <div class="module-name" data-i18n="elenivo.m6">Innovation</div>
+          <div class="module-desc" data-i18n="elenivo.m6desc">Pipeline & timing</div>
+        </div>
+        <div class="module-card">
+          <div class="module-label">M7</div>
+          <div class="module-name" data-i18n="elenivo.m7">Market Timing</div>
+          <div class="module-desc" data-i18n="elenivo.m7desc">Positioning & shifts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tier Comparison -->
+  <section class="section" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
+    <div class="section-inner fade-up">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-label" data-i18n="elenivo.tiers.label">Plans & Pricing</div>
+        <div class="section-title" data-i18n="elenivo.tiers.title">Choose Your Tier</div>
+      </div>
+      <div class="tiers-grid">
+        <!-- Tier 1 -->
+        <div class="tier-card">
+          <div class="tier-name">TIER 1</div>
+          <div class="tier-title" data-i18n="elenivo.t1.title">Business Analytics Foundation</div>
+          <div class="tier-price">$1,500<span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">/mo</span></div>
+          <div class="tier-setup" data-i18n="elenivo.t1.setup">$3,000 setup fee</div>
+          <p class="tier-desc" data-i18n="elenivo.t1.desc">Essential analytics coverage. Perfect for leaders seeking clarity on capacity and spend efficiency without full strategic depth.</p>
+          <ul class="tier-features">
+            <li data-i18n="elenivo.t1.f1">2-dimension proprietary assessment</li>
+            <li data-i18n="elenivo.t1.f2">5 decision assessments per month</li>
+            <li data-i18n="elenivo.t1.f3">Executive narrative summaries</li>
+            <li data-i18n="elenivo.t1.f4">KPI mapping & baseline</li>
+            <li data-i18n="elenivo.t1.f5">Follow-up consultation</li>
+            <li data-i18n="elenivo.t1.f6">Monthly review</li>
+          </ul>
+          <a href="https://buy.stripe.com/3cI5kC6gB2l80bcf7l83C0d" target="_blank" class="tier-cta outline" data-i18n="elenivo.tier.cta">Start Now →</a>
+        </div>
+
+        <!-- Tier 2 (Featured) -->
+        <div class="tier-card featured">
+          <div class="tier-badge" data-i18n="elenivo.tier.badge">Most Popular</div>
+          <div class="tier-name">TIER 2</div>
+          <div class="tier-title" data-i18n="elenivo.t2.title">Strategic Decision Architecture</div>
+          <div class="tier-price">$3,500<span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">/mo</span></div>
+          <div class="tier-setup" data-i18n="elenivo.t2.setup">$5,000 setup fee</div>
+          <p class="tier-desc" data-i18n="elenivo.t2.desc">Full strategic coverage across 5 dimensions. The go-to tier for scaling leaders making regular high-stakes decisions.</p>
+          <ul class="tier-features">
+            <li data-i18n="elenivo.t2.f1">5-dimension proprietary assessment</li>
+            <li data-i18n="elenivo.t2.f2">Unlimited decision assessments</li>
+            <li data-i18n="elenivo.t2.f3">AI-enhanced executive narratives</li>
+            <li data-i18n="elenivo.t2.f4">Unlimited follow-up consultations</li>
+            <li data-i18n="elenivo.t2.f5">Real-time performance visibility</li>
+            <li data-i18n="elenivo.t2.f6">Priority support & direct access</li>
+          </ul>
+          <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" class="tier-cta primary" data-i18n="elenivo.tier.call">Book a Call →</a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="tier-card">
+          <div class="tier-name">TIER 3</div>
+          <div class="tier-title" data-i18n="elenivo.t3.title">Enterprise Decision Intelligence</div>
+          <div class="tier-price">$7,500<span style="font-size: 0.9rem; font-weight: 400; color: var(--text-muted);">/mo</span></div>
+          <div class="tier-setup" data-i18n="elenivo.t3.setup">$10,000 setup fee</div>
+          <p class="tier-desc" data-i18n="elenivo.t3.desc">Full-spectrum strategic intelligence. All 7 dimensions including market position and competitive shift detection.</p>
+          <ul class="tier-features">
+            <li data-i18n="elenivo.t3.f1">Full 7-dimension assessment</li>
+            <li data-i18n="elenivo.t3.f2">Unlimited assessments & follow-ups</li>
+            <li data-i18n="elenivo.t3.f3">Premium AI-generated narratives</li>
+            <li data-i18n="elenivo.t3.f4">Market & competitive analysis</li>
+            <li data-i18n="elenivo.t3.f5">Strategic pivot detection</li>
+            <li data-i18n="elenivo.t3.f6">Dedicated strategic support</li>
+          </ul>
+          <a href="https://buy.stripe.com/00weVcawRf7U1fgcZd83C0f" target="_blank" class="tier-cta outline" data-i18n="elenivo.tier.cta">Start Now →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security & Trust -->
+  <section class="section">
+    <div class="section-inner fade-up">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-label" data-i18n="elenivo.security.label">Protection</div>
+        <div class="section-title" data-i18n="elenivo.security.title">Enterprise-Grade Security</div>
+        <p style="max-width: 700px; margin: 1rem auto 0; color: var(--text-secondary); font-size: 1rem;" data-i18n="elenivo.security.tagline">Your raw data never touches our database. Ephemeral processing. Certified protection.</p>
+      </div>
+      <div class="security-grid">
+        <div class="security-item">
+          <div class="security-icon">🔐</div>
+          <h4 data-i18n="elenivo.security.s1">AES-256 Encryption</h4>
+          <p data-i18n="elenivo.security.s1desc">Data encrypted at rest with AES-256 encryption</p>
+        </div>
+        <div class="security-item">
+          <div class="security-icon">⚡</div>
+          <h4 data-i18n="elenivo.security.s2">Ephemeral Architecture</h4>
+          <p data-i18n="elenivo.security.s2desc">Raw inputs discarded after normalization; never persisted</p>
+        </div>
+        <div class="security-item">
+          <div class="security-icon">🛡️</div>
+          <h4 data-i18n="elenivo.security.s3">RLS & Isolation</h4>
+          <p data-i18n="elenivo.security.s3desc">Row-level security with multi-tenant isolation</p>
+        </div>
+        <div class="security-item">
+          <div class="security-icon">✍️</div>
+          <h4 data-i18n="elenivo.security.s4">HMAC-SHA512</h4>
+          <p data-i18n="elenivo.security.s4desc">Message authentication & integrity signing</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section" style="text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.06) 0%, transparent 80%);">
+    <div class="section-inner fade-up">
+      <div class="section-title" data-i18n="elenivo.cta.title">Ready to Make Clearer Decisions?</div>
+      <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;" data-i18n="elenivo.cta.sub">Schedule a conversation with Edward to explore how Elenivo can transform your decision-making.</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" class="btn-primary" data-i18n="elenivo.cta.button">Book a Strategy Call →</a>
+        <a href="mailto:support@signalyzesolutions.com" class="btn-secondary" data-i18n="elenivo.cta.email">Email Support</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 Signalyze Solutions LLC. <span data-i18n="footer">All rights reserved.</span></p>
+    <p class="footer-links">
+      <a href="privacy-policy.html" data-i18n="footer.privacy">Privacy Policy</a>
+      <span class="sep">|</span>
+      <a href="terms-of-service.html" data-i18n="footer.terms">Terms of Service</a>
+    </p>
+  </footer>
+
+  <script>
+    // Translations
+    const T = {
+      en: {
+        'elenivo.hero.title': 'Your Boardroom, On Demand',
+        'elenivo.hero.sub': 'The proprietary Strategic Decision Environment that transforms raw business data into certified, ranked recommendations. Analyze complex metrics. Certify your decisions. Simplify execution.',
+        'elenivo.hero.cta': 'Book a Strategy Call →',
+        'elenivo.framework.label': 'How It Works',
+        'elenivo.framework.title': 'Analyze. Certify. Simplify.',
+        'elenivo.framework.analyze': 'Analyze',
+        'elenivo.framework.analyzeDesc': 'Your data flows through EDN (Electronic Data Normalization), normalized to 0.0-1.0 scores across up to 7 strategic dimensions.',
+        'elenivo.framework.certify': 'Certify',
+        'elenivo.framework.certifyDesc': 'Every recommendation comes with confidence scores, flip conditions, and key drivers—not opinions.',
+        'elenivo.framework.simplify': 'Simplify',
+        'elenivo.framework.simplifyDesc': 'AI-enhanced executive narratives translate complex analytics into clear, ranked actions your team can execute today.',
+        'elenivo.modules.label': 'SDE Engine',
+        'elenivo.modules.title': '7 Strategic Dimensions',
+        'elenivo.modules.desc': 'Each tier unlocks different modules, from foundational capacity tracking to full-spectrum market position analysis.',
+        'elenivo.m1': 'Performance',
+        'elenivo.m1desc': 'Capacity & utilization',
+        'elenivo.m2': 'Risk',
+        'elenivo.m2desc': 'Tolerance & exposure',
+        'elenivo.m3': 'Capital Structure',
+        'elenivo.m3desc': 'Allocation & efficiency',
+        'elenivo.m4': 'Customer Health',
+        'elenivo.m4desc': 'Churn & retention',
+        'elenivo.m5': 'Talent & Ops',
+        'elenivo.m5desc': 'Efficiency & scaling',
+        'elenivo.m6': 'Innovation',
+        'elenivo.m6desc': 'Pipeline & timing',
+        'elenivo.m7': 'Market Timing',
+        'elenivo.m7desc': 'Positioning & shifts',
+        'elenivo.tiers.label': 'Plans & Pricing',
+        'elenivo.tiers.title': 'Choose Your Tier',
+        'elenivo.t1.title': 'Business Analytics Foundation',
+        'elenivo.t1.setup': '$3,000 setup fee',
+        'elenivo.t1.desc': 'Essential analytics coverage. Perfect for leaders seeking clarity on capacity and spend efficiency without full strategic depth.',
+        'elenivo.t1.f1': '2-dimension proprietary assessment',
+        'elenivo.t1.f2': '5 decision assessments per month',
+        'elenivo.t1.f3': 'Executive narrative summaries',
+        'elenivo.t1.f4': 'KPI mapping & baseline',
+        'elenivo.t1.f5': 'Follow-up consultation',
+        'elenivo.t1.f6': 'Monthly review',
+        'elenivo.t2.title': 'Strategic Decision Architecture',
+        'elenivo.t2.setup': '$5,000 setup fee',
+        'elenivo.t2.desc': 'Full strategic coverage across 5 dimensions. The go-to tier for scaling leaders making regular high-stakes decisions.',
+        'elenivo.t2.f1': '5-dimension proprietary assessment',
+        'elenivo.t2.f2': 'Unlimited decision assessments',
+        'elenivo.t2.f3': 'AI-enhanced executive narratives',
+        'elenivo.t2.f4': 'Unlimited follow-up consultations',
+        'elenivo.t2.f5': 'Real-time performance visibility',
+        'elenivo.t2.f6': 'Priority support & direct access',
+        'elenivo.t3.title': 'Enterprise Decision Intelligence',
+        'elenivo.t3.setup': '$10,000 setup fee',
+        'elenivo.t3.desc': 'Full-spectrum strategic intelligence. All 7 dimensions including market position and competitive shift detection.',
+        'elenivo.t3.f1': 'Full 7-dimension assessment',
+        'elenivo.t3.f2': 'Unlimited assessments & follow-ups',
+        'elenivo.t3.f3': 'Premium AI-generated narratives',
+        'elenivo.t3.f4': 'Market & competitive analysis',
+        'elenivo.t3.f5': 'Strategic pivot detection',
+        'elenivo.t3.f6': 'Dedicated strategic support',
+        'elenivo.tier.badge': 'Most Popular',
+        'elenivo.tier.cta': 'Start Now →',
+        'elenivo.tier.call': 'Book a Call →',
+        'elenivo.security.label': 'Protection',
+        'elenivo.security.title': 'Enterprise-Grade Security',
+        'elenivo.security.tagline': 'Your raw data never touches our database. Ephemeral processing. Certified protection.',
+        'elenivo.security.s1': 'AES-256 Encryption',
+        'elenivo.security.s1desc': 'Data encrypted at rest with AES-256 encryption',
+        'elenivo.security.s2': 'Ephemeral Architecture',
+        'elenivo.security.s2desc': 'Raw inputs discarded after normalization; never persisted',
+        'elenivo.security.s3': 'RLS & Isolation',
+        'elenivo.security.s3desc': 'Row-level security with multi-tenant isolation',
+        'elenivo.security.s4': 'HMAC-SHA512',
+        'elenivo.security.s4desc': 'Message authentication & integrity signing',
+        'elenivo.cta.title': 'Ready to Make Clearer Decisions?',
+        'elenivo.cta.sub': 'Schedule a conversation with Edward to explore how Elenivo can transform your decision-making.',
+        'elenivo.cta.button': 'Book a Strategy Call →',
+        'elenivo.cta.email': 'Email Support',
+        'footer': 'All rights reserved.',
+        'footer.privacy': 'Privacy Policy',
+        'footer.terms': 'Terms of Service'
+      },
+      es: {
+        'elenivo.hero.title': 'Tu Sala de Juntas, Bajo Demanda',
+        'elenivo.hero.sub': 'El Strategic Decision Environment propietario que transforma datos brutos en recomendaciones certificadas y clasificadas.',
+        'elenivo.hero.cta': 'Reserva una Llamada Estratégica →',
+        'elenivo.framework.label': 'Cómo Funciona',
+        'elenivo.framework.title': 'Analiza. Certifica. Simplifica.',
+        'elenivo.framework.analyze': 'Analiza',
+        'elenivo.framework.analyzeDesc': 'Tus datos fluyen a través de EDN (Normalización Electrónica de Datos), normalizados a puntuaciones 0.0-1.0.',
+        'elenivo.framework.certify': 'Certifica',
+        'elenivo.framework.certifyDesc': 'Cada recomendación viene con puntuaciones de confianza, condiciones de cambio y conductores clave—no opiniones.',
+        'elenivo.framework.simplify': 'Simplifica',
+        'elenivo.framework.simplifyDesc': 'Narrativas ejecutivas mejoradas con IA traducen análisis complejos en acciones claras y clasificadas.',
+        'elenivo.modules.label': 'Motor SDE',
+        'elenivo.modules.title': '7 Dimensiones Estratégicas',
+        'elenivo.modules.desc': 'Cada tier desbloquea diferentes módulos.',
+        'elenivo.m1': 'Rendimiento',
+        'elenivo.m1desc': 'Capacidad y utilización',
+        'elenivo.m2': 'Riesgo',
+        'elenivo.m2desc': 'Tolerancia y exposición',
+        'elenivo.m3': 'Estructura de Capital',
+        'elenivo.m3desc': 'Asignación y eficiencia',
+        'elenivo.m4': 'Salud del Cliente',
+        'elenivo.m4desc': 'Churn y retención',
+        'elenivo.m5': 'Talento y Ops',
+        'elenivo.m5desc': 'Eficiencia y escalado',
+        'elenivo.m6': 'Innovación',
+        'elenivo.m6desc': 'Pipeline y timing',
+        'elenivo.m7': 'Market Timing',
+        'elenivo.m7desc': 'Posicionamiento y cambios',
+        'elenivo.tiers.label': 'Planes y Precios',
+        'elenivo.tiers.title': 'Elige Tu Tier',
+        'elenivo.t1.title': 'Fundación de Análisis Empresarial',
+        'elenivo.t1.setup': 'Tarifa de configuración $3,000',
+        'elenivo.t1.desc': 'Cobertura de análisis esencial.',
+        'elenivo.t1.f1': 'Evaluación de 2 dimensiones',
+        'elenivo.t1.f2': '5 evaluaciones de decisiones por mes',
+        'elenivo.t1.f3': 'Resúmenes narrativos ejecutivos',
+        'elenivo.t1.f4': 'Mapeo de KPI y línea base',
+        'elenivo.t1.f5': 'Consulta de seguimiento',
+        'elenivo.t1.f6': 'Revisión mensual',
+        'elenivo.t2.title': 'Arquitectura de Decisiones Estratégicas',
+        'elenivo.t2.setup': 'Tarifa de configuración $5,000',
+        'elenivo.t2.desc': 'Cobertura estratégica completa en 5 dimensiones.',
+        'elenivo.t2.f1': 'Evaluación de 5 dimensiones',
+        'elenivo.t2.f2': 'Evaluaciones de decisiones ilimitadas',
+        'elenivo.t2.f3': 'Narrativas ejecutivas mejoradas con IA',
+        'elenivo.t2.f4': 'Consultas de seguimiento ilimitadas',
+        'elenivo.t2.f5': 'Visibilidad de rendimiento en tiempo real',
+        'elenivo.t2.f6': 'Soporte prioritario y acceso directo',
+        'elenivo.t3.title': 'Inteligencia de Decisión Empresarial',
+        'elenivo.t3.setup': 'Tarifa de configuración $10,000',
+        'elenivo.t3.desc': 'Inteligencia estratégica de espectro completo. Todas las 7 dimensiones.',
+        'elenivo.t3.f1': 'Evaluación completa de 7 dimensiones',
+        'elenivo.t3.f2': 'Evaluaciones y seguimientos ilimitados',
+        'elenivo.t3.f3': 'Narrativas premium generadas con IA',
+        'elenivo.t3.f4': 'Análisis de mercado y competencia',
+        'elenivo.t3.f5': 'Detección de giros estratégicos',
+        'elenivo.t3.f6': 'Soporte estratégico dedicado',
+        'elenivo.tier.badge': 'Más Popular',
+        'elenivo.tier.cta': 'Comienza Ahora →',
+        'elenivo.tier.call': 'Reserva una Llamada →',
+        'elenivo.security.label': 'Protección',
+        'elenivo.security.title': 'Seguridad de Nivel Empresarial',
+        'elenivo.security.tagline': 'Tus datos brutos nunca tocan nuestra base de datos.',
+        'elenivo.security.s1': 'Encriptación AES-256',
+        'elenivo.security.s1desc': 'Datos encriptados en reposo con AES-256',
+        'elenivo.security.s2': 'Arquitectura Efímera',
+        'elenivo.security.s2desc': 'Entradas brutos descartadas después de la normalización',
+        'elenivo.security.s3': 'RLS e Aislamiento',
+        'elenivo.security.s3desc': 'Seguridad a nivel de fila con aislamiento multiinquilino',
+        'elenivo.security.s4': 'HMAC-SHA512',
+        'elenivo.security.s4desc': 'Autenticación de mensajes y firma de integridad',
+        'elenivo.cta.title': 'Listo para Tomar Decisiones Más Claras?',
+        'elenivo.cta.sub': 'Programa una conversación con Edward.',
+        'elenivo.cta.button': 'Reserva una Llamada Estratégica →',
+        'elenivo.cta.email': 'Correo de Soporte',
+        'footer': 'Todos los derechos reservados.',
+        'footer.privacy': 'Política de Privacidad',
+        'footer.terms': 'Términos de Servicio'
+      },
+      fr: {
+        'elenivo.hero.title': 'Votre Salle de Réunion, Sur Demande',
+        'elenivo.hero.sub': 'L\'Environnement Stratégique de Décision propriétaire qui transforme les données brutes en recommandations certifiées et classées.',
+        'elenivo.hero.cta': 'Réservez un Appel Stratégique →',
+        'elenivo.framework.label': 'Comment Ça Marche',
+        'elenivo.framework.title': 'Analyser. Certifier. Simplifier.',
+        'elenivo.framework.analyze': 'Analyser',
+        'elenivo.framework.analyzeDesc': 'Vos données passent par EDN (Normalisation Électronique des Données), normalisées en scores 0,0-1,0.',
+        'elenivo.framework.certify': 'Certifier',
+        'elenivo.framework.certifyDesc': 'Chaque recommandation s\'accompagne de scores de confiance, de conditions de basculement et de facteurs clés.',
+        'elenivo.framework.simplify': 'Simplifier',
+        'elenivo.framework.simplifyDesc': 'Les narratifs exécutifs améliorés par l\'IA traduisent les analyses complexes en actions claires et classées.',
+        'elenivo.modules.label': 'Moteur SDE',
+        'elenivo.modules.title': '7 Dimensions Stratégiques',
+        'elenivo.modules.desc': 'Chaque tier déverrouille différents modules.',
+        'elenivo.m1': 'Performance',
+        'elenivo.m1desc': 'Capacité et utilisation',
+        'elenivo.m2': 'Risque',
+        'elenivo.m2desc': 'Tolérance et exposition',
+        'elenivo.m3': 'Structure Capitale',
+        'elenivo.m3desc': 'Allocation et efficacité',
+        'elenivo.m4': 'Santé Client',
+        'elenivo.m4desc': 'Churn et rétention',
+        'elenivo.m5': 'Talent et Ops',
+        'elenivo.m5desc': 'Efficacité et mise à l\'échelle',
+        'elenivo.m6': 'Innovation',
+        'elenivo.m6desc': 'Pipeline et timing',
+        'elenivo.m7': 'Timing Marché',
+        'elenivo.m7desc': 'Positionnement et changements',
+        'elenivo.tiers.label': 'Plans et Tarification',
+        'elenivo.tiers.title': 'Choisissez Votre Tier',
+        'elenivo.t1.title': 'Fondation d\'Analyse Commerciale',
+        'elenivo.t1.setup': 'Frais de configuration $3,000',
+        'elenivo.t1.desc': 'Couverture d\'analyse essentielle.',
+        'elenivo.t1.f1': 'Évaluation à 2 dimensions',
+        'elenivo.t1.f2': '5 évaluations de décision par mois',
+        'elenivo.t1.f3': 'Résumés narratifs exécutifs',
+        'elenivo.t1.f4': 'Cartographie des KPI et ligne de base',
+        'elenivo.t1.f5': 'Consultation de suivi',
+        'elenivo.t1.f6': 'Examen mensuel',
+        'elenivo.t2.title': 'Architecture des Décisions Stratégiques',
+        'elenivo.t2.setup': 'Frais de configuration $5,000',
+        'elenivo.t2.desc': 'Couverture stratégique complète sur 5 dimensions.',
+        'elenivo.t2.f1': 'Évaluation à 5 dimensions',
+        'elenivo.t2.f2': 'Évaluations de décision illimitées',
+        'elenivo.t2.f3': 'Narratifs exécutifs améliorés par l\'IA',
+        'elenivo.t2.f4': 'Consultations de suivi illimitées',
+        'elenivo.t2.f5': 'Visibilité des performances en temps réel',
+        'elenivo.t2.f6': 'Support prioritaire et accès direct',
+        'elenivo.t3.title': 'Intelligence de Décision Entreprise',
+        'elenivo.t3.setup': 'Frais de configuration $10,000',
+        'elenivo.t3.desc': 'Intelligence stratégique de spectre complet. Les 7 dimensions.',
+        'elenivo.t3.f1': 'Évaluation complète à 7 dimensions',
+        'elenivo.t3.f2': 'Évaluations et suivis illimités',
+        'elenivo.t3.f3': 'Narratifs premium générés par l\'IA',
+        'elenivo.t3.f4': 'Analyse du marché et de la concurrence',
+        'elenivo.t3.f5': 'Détection des changements stratégiques',
+        'elenivo.t3.f6': 'Support stratégique dédié',
+        'elenivo.tier.badge': 'Plus Populaire',
+        'elenivo.tier.cta': 'Commencer Maintenant →',
+        'elenivo.tier.call': 'Réservez un Appel →',
+        'elenivo.security.label': 'Protection',
+        'elenivo.security.title': 'Sécurité de Niveau Entreprise',
+        'elenivo.security.tagline': 'Vos données brutes ne touchent jamais notre base de données.',
+        'elenivo.security.s1': 'Chiffrement AES-256',
+        'elenivo.security.s1desc': 'Données chiffrées au repos avec AES-256',
+        'elenivo.security.s2': 'Architecture Éphémère',
+        'elenivo.security.s2desc': 'Entrées brutes éliminées après normalisation',
+        'elenivo.security.s3': 'RLS et Isolation',
+        'elenivo.security.s3desc': 'Sécurité au niveau des lignes avec isolation multi-locataire',
+        'elenivo.security.s4': 'HMAC-SHA512',
+        'elenivo.security.s4desc': 'Authentification des messages et signature d\'intégrité',
+        'elenivo.cta.title': 'Prêt à Prendre des Décisions Plus Claires?',
+        'elenivo.cta.sub': 'Planifiez une conversation avec Edward.',
+        'elenivo.cta.button': 'Réservez un Appel Stratégique →',
+        'elenivo.cta.email': 'Courrier d\'assistance',
+        'footer': 'Tous droits réservés.',
+        'footer.privacy': 'Politique de Confidentialité',
+        'footer.terms': 'Conditions d\'Utilisation'
+      },
+      zh: {
+        'elenivo.hero.title': '您的董事会，随需应变',
+        'elenivo.hero.sub': '专有战略决策环境，将原始业务数据转化为经过认证的排序建议。',
+        'elenivo.hero.cta': '预约战略电话 →',
+        'elenivo.framework.label': '工作原理',
+        'elenivo.framework.title': '分析。认证。简化。',
+        'elenivo.framework.analyze': '分析',
+        'elenivo.framework.analyzeDesc': '您的数据通过EDN（电子数据规范化）流动，标准化为0.0-1.0分数。',
+        'elenivo.framework.certify': '认证',
+        'elenivo.framework.certifyDesc': '每项建议都附带信心分数、翻转条件和关键驱动因素。',
+        'elenivo.framework.simplify': '简化',
+        'elenivo.framework.simplifyDesc': 'AI增强的执行摘要将复杂分析转化为明确的排序行动。',
+        'elenivo.modules.label': 'SDE引擎',
+        'elenivo.modules.title': '7个战略维度',
+        'elenivo.modules.desc': '每个级别解锁不同的模块。',
+        'elenivo.m1': '性能',
+        'elenivo.m1desc': '容量和利用率',
+        'elenivo.m2': '风险',
+        'elenivo.m2desc': '容差和风险敞口',
+        'elenivo.m3': '资本结构',
+        'elenivo.m3desc': '分配和效率',
+        'elenivo.m4': '客户健康',
+        'elenivo.m4desc': '流失和保留',
+        'elenivo.m5': '人才和运营',
+        'elenivo.m5desc': '效率和扩展',
+        'elenivo.m6': '创新',
+        'elenivo.m6desc': '管道和时机',
+        'elenivo.m7': '市场时机',
+        'elenivo.m7desc': '定位和转变',
+        'elenivo.tiers.label': '计划和定价',
+        'elenivo.tiers.title': '选择您的级别',
+        'elenivo.t1.title': '业务分析基础',
+        'elenivo.t1.setup': '设置费$3,000',
+        'elenivo.t1.desc': '基本分析覆盖。',
+        'elenivo.t1.f1': '2维专有评估',
+        'elenivo.t1.f2': '每月5次决策评估',
+        'elenivo.t1.f3': '执行摘要',
+        'elenivo.t1.f4': 'KPI映射和基线',
+        'elenivo.t1.f5': '后续咨询',
+        'elenivo.t1.f6': '月度审核',
+        'elenivo.t2.title': '战略决策架构',
+        'elenivo.t2.setup': '设置费$5,000',
+        'elenivo.t2.desc': '5个维度的全面战略覆盖。',
+        'elenivo.t2.f1': '5维专有评估',
+        'elenivo.t2.f2': '无限决策评估',
+        'elenivo.t2.f3': 'AI增强的执行摘要',
+        'elenivo.t2.f4': '无限后续咨询',
+        'elenivo.t2.f5': '实时性能可见性',
+        'elenivo.t2.f6': '优先支持和直接访问',
+        'elenivo.t3.title': '企业决策智能',
+        'elenivo.t3.setup': '设置费$10,000',
+        'elenivo.t3.desc': '全谱战略智能。所有7个维度。',
+        'elenivo.t3.f1': '完整的7维评估',
+        'elenivo.t3.f2': '无限评估和后续',
+        'elenivo.t3.f3': 'AI生成的高级摘要',
+        'elenivo.t3.f4': '市场和竞争分析',
+        'elenivo.t3.f5': '战略转变检测',
+        'elenivo.t3.f6': '专属战略支持',
+        'elenivo.tier.badge': '最受欢迎',
+        'elenivo.tier.cta': '立即开始 →',
+        'elenivo.tier.call': '预约电话 →',
+        'elenivo.security.label': '保护',
+        'elenivo.security.title': '企业级安全',
+        'elenivo.security.tagline': '您的原始数据永远不会接触我们的数据库。',
+        'elenivo.security.s1': 'AES-256加密',
+        'elenivo.security.s1desc': '使用AES-256加密的静态数据',
+        'elenivo.security.s2': '临时架构',
+        'elenivo.security.s2desc': '规范化后丢弃的原始输入',
+        'elenivo.security.s3': 'RLS和隔离',
+        'elenivo.security.s3desc': '带有多租户隔离的行级安全',
+        'elenivo.security.s4': 'HMAC-SHA512',
+        'elenivo.security.s4desc': '消息认证和完整性签名',
+        'elenivo.cta.title': '准备做出更清晰的决策了吗？',
+        'elenivo.cta.sub': '与Edward安排一次对话。',
+        'elenivo.cta.button': '预约战略电话 →',
+        'elenivo.cta.email': '电子邮件支持',
+        'footer': '版权所有。',
+        'footer.privacy': '隐私政策',
+        'footer.terms': '服务条款'
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (T[lang] && T[lang][key]) {
+          el.innerHTML = T[lang][key];
+        }
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+      });
+      localStorage && localStorage.setItem && localStorage.setItem('signalyze-lang', lang);
+    }
+
+    (function() {
+      const saved = localStorage && localStorage.getItem && localStorage.getItem('signalyze-lang');
+      if (saved && T[saved]) { setLang(saved); return; }
+      const browserLang = (navigator.language || '').slice(0, 2).toLowerCase();
+      if (T[browserLang]) setLang(browserLang);
+    })();
+
+    // Particle System
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = []; let w, h;
+      function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight * 3; }
+      window.addEventListener('resize', resize); resize();
+      function createParticles() {
+        particles = [];
+        const count = Math.floor((w * h) / 12000);
+        for (let i = 0; i < count; i++) {
+          const isBright = Math.random() < 0.15;
+          particles.push({
+            x: Math.random() * w, y: Math.random() * h,
+            r: isBright ? Math.random() * 2.5 + 1.5 : Math.random() * 1.8 + 0.5,
+            dx: (Math.random() - 0.5) * 0.2, dy: (Math.random() - 0.5) * 0.15,
+            opacity: isBright ? Math.random() * 0.5 + 0.4 : Math.random() * 0.35 + 0.15,
+            pulse: Math.random() * Math.PI * 2, pulseSpeed: Math.random() * 0.015 + 0.005, isBright
+          });
+        }
+      }
+      createParticles();
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => {
+          p.pulse += p.pulseSpeed;
+          const flicker = p.isBright ? Math.sin(p.pulse) * 0.15 : Math.sin(p.pulse) * 0.08;
+          const op = Math.max(0.05, p.opacity + flicker);
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.isBright ? `rgba(28,167,162,${op})` : `rgba(200,215,230,${op})`; ctx.fill();
+          if (p.isBright) { ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2); ctx.fillStyle = `rgba(28,167,162,${op * 0.15})`; ctx.fill(); }
+          p.x += p.dx; p.y += p.dy;
+          if (p.x < 0 || p.x > w) p.dx *= -1; if (p.y < 0 || p.y > h) p.dy *= -1;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // Mobile Menu
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // Scroll Fade-In
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

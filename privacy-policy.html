@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy | Signalyze Solutions</title>
+  <meta name="description" content="Signalyze Solutions Privacy Policy - Learn how we protect your data." />
+  <meta property="og:title" content="Privacy Policy | Signalyze Solutions" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body {
+      font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #121923;
+      color: #D1D5DB;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    :root {
+      --navy: #141E2B;
+      --navy-deep: #121923;
+      --teal: #1CA7A2;
+      --teal-glow: rgba(28, 167, 162, 0.3);
+      --silver: #D1D5DB;
+      --gold: #CDA434;
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --text-primary: #F3F4F6;
+      --text-secondary: #9CA3AF;
+      --text-muted: #6B7280;
+    }
+    #particles-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(18, 25, 35, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-inner {
+      max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between; height: 72px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo-icon { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; }
+    .nav-logo-text { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px; }
+    .nav-logo-text span { display: block; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
+    .nav-links { display: flex; gap: 0; list-style: none; flex-wrap: nowrap; }
+    .nav-links a {
+      text-decoration: none; color: var(--text-secondary); font-size: 0.78rem; font-weight: 500;
+      padding: 0.5rem 0.65rem; border-radius: 6px; transition: color 0.2s, background 0.2s; letter-spacing: 0.1px;
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); background: rgba(28, 167, 162, 0.08); }
+    .nav-right { display: flex; align-items: center; gap: 0.6rem; }
+    .lang-switcher { display: flex; gap: 4px; align-items: center; }
+    .lang-btn {
+      background: none; border: 1px solid transparent; color: var(--text-muted);
+      font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+      cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .lang-btn:hover { color: var(--text-secondary); border-color: var(--glass-border); }
+    .lang-btn.active { color: var(--teal); border-color: var(--teal); background: rgba(28, 167, 162, 0.08); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 6px; padding: 0.5rem 1.1rem;
+      background: transparent; border: 1.5px solid var(--teal); border-radius: 50px;
+      color: var(--teal); font-size: 0.78rem; font-weight: 600; text-decoration: none;
+      transition: all 0.3s; letter-spacing: 0.2px; white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--teal); color: #fff; box-shadow: 0 0 20px var(--teal-glow); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
+    .content {
+      position: relative; z-index: 1; padding: 120px 2rem 4rem;
+    }
+    .content-inner { max-width: 900px; margin: 0 auto; }
+    .content-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
+    .content-meta { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 3rem; }
+    .content h2 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-top: 2.5rem; margin-bottom: 1rem; }
+    .content h3 { font-size: 1.1rem; font-weight: 600; color: var(--teal); margin-top: 1.5rem; margin-bottom: 0.8rem; }
+    .content p { margin-bottom: 1rem; color: var(--text-secondary); line-height: 1.8; }
+    .content ul, .content ol { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    .content li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+    .content a { color: var(--teal); text-decoration: none; transition: color 0.2s; }
+    .content a:hover { color: #17938f; }
+    .footer {
+      text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--glass-border);
+      position: relative; z-index: 1; background: rgba(18, 25, 35, 0.5);
+    }
+    .footer p { font-size: 0.75rem; color: var(--text-muted); }
+    .footer-links {
+      margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted);
+    }
+    .footer-links a {
+      color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--teal); }
+    .footer-links .sep { margin: 0 0.5rem; opacity: 0.5; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px; color: var(--teal);
+      text-decoration: none; font-size: 0.85rem; font-weight: 500;
+      transition: all 0.2s; margin-bottom: 2rem;
+    }
+    .back-link:hover { gap: 10px; }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 1rem; }
+      .nav-links { gap: 0.2rem; }
+      .content { padding: 100px 1.5rem 3rem; }
+      .content-title { font-size: 1.8rem; }
+      .content h2 { font-size: 1.3rem; }
+    }
+    @media (max-width: 480px) {
+      .nav-inner { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .content { padding: 90px 1rem 3rem; }
+      .content-title { font-size: 1.5rem; }
+      .content h2 { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="favicon-192.png" alt="Signalyze" class="nav-logo-icon" />
+        <div class="nav-logo-text">
+          Signalyze
+          <span>Solutions</span>
+        </div>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#services">Elenivo</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" onclick="setLang('fr')">FR</button>
+          <button class="lang-btn" onclick="setLang('zh')">ZH</button>
+        </div>
+        <button class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="content">
+    <div class="content-inner">
+      <a href="/" class="back-link">← Back to Home</a>
+
+      <h1 class="content-title">Privacy Policy</h1>
+      <div class="content-meta">Effective Date: May 3, 2026 | Last Updated: May 3, 2026</div>
+
+      <h2>1. Introduction</h2>
+      <p>Signalyze Solutions LLC is committed to protecting your privacy through the Elenivo platform. This Privacy Policy explains our data practices.</p>
+
+      <h2>2. Information We Collect</h2>
+      <p>We collect the following types of information:</p>
+      <ul>
+        <li>Account information (name, email, organization)</li>
+        <li>Business metrics (session-scoped, ephemeral)</li>
+        <li>Decision records and client metadata</li>
+        <li>AI interaction data</li>
+        <li>Usage data and technical data</li>
+      </ul>
+
+      <h2>3. Ephemeral Data Architecture</h2>
+      <p>Raw data is never persisted to permanent storage. All inputs are normalized to 0.0-1.0 scores during processing, and raw inputs are automatically discarded after each session. This ensures your sensitive business data exists only in memory during active processing.</p>
+
+      <h2>4. How We Use Information</h2>
+      <p>We use collected information to:</p>
+      <ul>
+        <li>Operate and maintain the Elenivo platform</li>
+        <li>Maintain decision records for your reference</li>
+        <li>Improve service through aggregated analytics (never individual data)</li>
+        <li>Communicate with you about your account</li>
+        <li>Comply with legal obligations</li>
+        <li>Detect and prevent threats to security</li>
+      </ul>
+      <p>We do not use individual client data for AI model training. All AI interactions are stateless and scoped to the current session.</p>
+
+      <h2>5. Data Storage and Security</h2>
+      <p>We implement comprehensive security measures:</p>
+      <ul>
+        <li>AES-256 encryption at rest</li>
+        <li>TLS 1.2+ encryption in transit</li>
+        <li>Row-level security (RLS) isolation</li>
+        <li>HMAC-SHA512 message signing</li>
+        <li>API key hashing and JWT authentication</li>
+        <li>Comprehensive audit logging</li>
+        <li>Multi-tenant isolation by default</li>
+      </ul>
+
+      <h2>6. Sub-Processors</h2>
+      <p>We use the following sub-processors to operate the Elenivo platform:</p>
+      <ul>
+        <li><strong>Supabase</strong> (Database, US) — Postgres database hosting</li>
+        <li><strong>Anthropic Claude</strong> (AI, stateless, US) — AI-powered decision narratives (stateless, no training on individual data)</li>
+        <li><strong>Stripe</strong> (Payments, US) — Payment processing</li>
+        <li><strong>Vercel/Deno Deploy</strong> (Edge Functions, US) — API and edge function hosting</li>
+      </ul>
+      <p>We provide 30 days' notice before adding new sub-processors.</p>
+
+      <h2>7. Data Retention</h2>
+      <p>We retain data according to the following schedule:</p>
+      <ul>
+        <li>Decision Records: 7 years</li>
+        <li>Audit Logs: 1 year (auto-cleanup)</li>
+        <li>Client Profiles: 5 years</li>
+        <li>Session Exports: 1 year (auto-cleanup)</li>
+        <li>Conversation History: 90 days (auto-cleanup)</li>
+        <li>Idempotency Keys: 1 day (auto-cleanup)</li>
+      </ul>
+
+      <h2>8. Your Rights</h2>
+      <p>You have the following rights under GDPR and CCPA:</p>
+      <ul>
+        <li>Right to access your data</li>
+        <li>Right to rectify inaccurate data</li>
+        <li>Right to erasure (GDPR Art. 17, CCPA)</li>
+        <li>Right to data portability</li>
+        <li>Right to object to processing</li>
+        <li>Right to restrict processing</li>
+      </ul>
+      <p>To exercise these rights, contact <a href="mailto:e.taveras@signalyzesolutions.com">e.taveras@signalyzesolutions.com</a>. We will respond within 30 days.</p>
+
+      <h2>9. Data Sharing</h2>
+      <p>We do not sell your data. We share data only:</p>
+      <ul>
+        <li>With service providers under strict confidentiality agreements</li>
+        <li>When required by law</li>
+        <li>In case of business transfer (with notice)</li>
+        <li>With your explicit consent</li>
+      </ul>
+
+      <h2>10. Cookies</h2>
+      <p>We use only essential cookies for authentication and session management. We do not use advertising cookies, tracking pixels, or analytics that collect personally identifiable information.</p>
+
+      <h2>11. Children's Privacy</h2>
+      <p>Elenivo is not directed to persons under 18 years of age. We do not knowingly collect information from children.</p>
+
+      <h2>12. International Transfers</h2>
+      <p>Your data is processed in the United States (AWS us-east-1). Standard Contractual Clauses (SCCs) are available for international transfers.</p>
+
+      <h2>13. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy. Material changes will be communicated with 30 days' notice.</p>
+
+      <h2>14. Contact</h2>
+      <p>For privacy questions or to exercise your rights:</p>
+      <ul>
+        <li>Signalyze Solutions LLC</li>
+        <li>Edward Taveras</li>
+        <li><a href="mailto:e.taveras@signalyzesolutions.com">e.taveras@signalyzesolutions.com</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2026 Signalyze Solutions LLC. All rights reserved.</p>
+    <p class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <span class="sep">|</span>
+      <a href="terms-of-service.html">Terms of Service</a>
+    </p>
+  </footer>
+
+  <script>
+    // Particle System
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = []; let w, h;
+      function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight * 3; }
+      window.addEventListener('resize', resize); resize();
+      function createParticles() {
+        particles = [];
+        const count = Math.floor((w * h) / 12000);
+        for (let i = 0; i < count; i++) {
+          const isBright = Math.random() < 0.15;
+          particles.push({
+            x: Math.random() * w, y: Math.random() * h,
+            r: isBright ? Math.random() * 2.5 + 1.5 : Math.random() * 1.8 + 0.5,
+            dx: (Math.random() - 0.5) * 0.2, dy: (Math.random() - 0.5) * 0.15,
+            opacity: isBright ? Math.random() * 0.5 + 0.4 : Math.random() * 0.35 + 0.15,
+            pulse: Math.random() * Math.PI * 2, pulseSpeed: Math.random() * 0.015 + 0.005, isBright
+          });
+        }
+      }
+      createParticles();
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        particles.forEach(p => {
+          p.pulse += p.pulseSpeed;
+          const flicker = p.isBright ? Math.sin(p.pulse) * 0.15 : Math.sin(p.pulse) * 0.08;
+          const op = Math.max(0.05, p.opacity + flicker);
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.isBright ? `rgba(28,167,162,${op})` : `rgba(200,215,230,${op})`; ctx.fill();
+          if (p.isBright) { ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 2.5, 0, Math.PI * 2); ctx.fillStyle = `rgba(28,167,162,${op * 0.15})`; ctx.fill(); }
+          p.x += p.dx; p.y += p.dy;
+          if (p.x < 0 || p.x > w) p.dx *= -1; if (p.y < 0 || p.y > h) p.dy *= -1;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    function setLang(lang) { console.log('Language changed to:', lang); }
+  </script>
+</body>
+</html>

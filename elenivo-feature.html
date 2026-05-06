@@ -83,7 +83,7 @@
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
     /* Sections */
-    .section { position: relative; z-index: 1; padding: 6rem 2rem; }
+    .section { position: relative; z-index: 1; padding: 8rem 2rem; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
     .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.2; }
@@ -123,7 +123,7 @@
     .framework-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--teal); font-weight: 600; margin-bottom: 1rem; }
     .framework-card p { color: var(--text-secondary); line-height: 1.8; }
     /* Modules Section */
-    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.2rem; margin-top: 3rem; }
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.2rem; margin-top: 3rem; align-items: start; }
     .module-card {
       padding: 1.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
       border-radius: 10px; text-align: center; transition: all 0.3s;
@@ -214,13 +214,25 @@
       transition: all 0.2s; margin-bottom: 2rem;
     }
     .back-link:hover { gap: 10px; }
+    /* Page Entrance Animation */
+    @keyframes pageEntrance {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body { animation: pageEntrance 0.6s ease-out both; }
+    /* Section Divider */
+    .section-divider {
+      max-width: 120px; margin: 0 auto; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--teal), transparent);
+      opacity: 0.3;
+    }
     /* Fade-up Animation */
-    .fade-up { opacity: 0; transform: translateY(20px); }
-    .fade-up.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+    .fade-up { opacity: 0; transform: translateY(30px); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { gap: 0.2rem; }
-      .section { padding: 4rem 2rem; }
+      .section { padding: 5rem 2rem; }
       .hero { padding: 6rem 2rem 4rem; min-height: 80vh; }
       .hero h1 { font-size: 2.2rem; }
       .hero-sub { font-size: 1rem; }
@@ -297,6 +309,8 @@
     </div>
   </section>
 
+  <div class="section-divider"></div>
+
   <!-- Analyze. Certify. Simplify Framework -->
   <section class="section" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
     <div class="section-inner fade-up">
@@ -323,6 +337,8 @@
       </div>
     </div>
   </section>
+
+  <div class="section-divider"></div>
 
   <!-- Modules -->
   <section class="section">
@@ -385,6 +401,8 @@
       </div>
     </div>
   </section>
+
+  <div class="section-divider"></div>
 
   <!-- Tier Comparison -->
   <section class="section" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
@@ -452,6 +470,8 @@
     </div>
   </section>
 
+  <div class="section-divider"></div>
+
   <!-- Security & Trust -->
   <section class="section">
     <div class="section-inner fade-up">
@@ -485,9 +505,12 @@
     </div>
   </section>
 
+  <div class="section-divider"></div>
+
   <!-- Final CTA -->
   <section class="section" style="text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.06) 0%, transparent 80%);">
     <div class="section-inner fade-up">
+      <div class="section-label" data-i18n="elenivo.cta.label">Get Started</div>
       <div class="section-title" data-i18n="elenivo.cta.title">Ready to Make Clearer Decisions?</div>
       <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;" data-i18n="elenivo.cta.sub">Schedule a conversation with Edward to explore how Elenivo can transform your decision-making.</p>
       <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
@@ -943,6 +966,19 @@
       }
       draw();
     })();
+
+    // Page Transition (fade out before navigating)
+    document.querySelectorAll('a[href="/"], a[href="/#hero"], a.back-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href && !href.startsWith('#')) {
+          e.preventDefault();
+          document.body.style.transition = 'opacity 0.35s ease-out';
+          document.body.style.opacity = '0';
+          setTimeout(() => { window.location.href = href; }, 350);
+        }
+      });
+    });
 
     // Mobile Menu
     const hamburger = document.getElementById('hamburger');

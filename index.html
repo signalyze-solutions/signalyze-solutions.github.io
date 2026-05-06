@@ -127,7 +127,7 @@
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
     /* ── Sections ───────────────────────────── */
-    .section { position: relative; z-index: 1; padding: 7rem 2rem; }
+    .section { position: relative; z-index: 1; padding: 9rem 2rem; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
     .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.2; }
@@ -262,15 +262,27 @@
     @media (max-width: 600px) {
       .steps-grid { grid-template-columns: 1fr; }
       .hero h1 { font-size: 2rem; }
-      .section { padding: 5rem 1.5rem; }
+      .section { padding: 6rem 1.5rem; }
       .lang-switcher { gap: 2px; }
       .lang-btn { font-size: 0.6rem; padding: 2px 5px; }
     }
     @media (max-width: 480px) {
       .analytics-packages { grid-template-columns: 1fr; }
     }
-    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* Page Entrance Animation */
+    @keyframes pageEntrance {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body { animation: pageEntrance 0.6s ease-out both; }
+    /* Section Divider */
+    .section-divider {
+      max-width: 120px; margin: 0 auto; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--teal), transparent);
+      opacity: 0.3;
+    }
+    .fade-up { opacity: 0; transform: translateY(30px); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
   </style>
 </head>
 <body>
@@ -466,6 +478,8 @@
     </div>
   </section>
 
+  <div class="section-divider"></div>
+
   <!-- Elenivo — Decision Infrastructure -->
   <section class="section" id="services" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.04) 0%, transparent 70%);">
     <div class="section-inner fade-up">
@@ -509,6 +523,8 @@
       </div>
     </div>
   </section>
+
+  <div class="section-divider"></div>
 
   <!-- Transition -->
   <div class="transition-section">
@@ -557,8 +573,7 @@
     </div>
   </section>
 
-  <!-- Spacer before Contact -->
-  <div style="height: 4rem;"></div>
+  <div class="section-divider"></div>
 
   <!-- Contact -->
   <section class="contact-section" id="contact">
@@ -728,6 +743,19 @@
     }
     draw();
   })();
+
+  // ── Page Transition ─────────────────────────
+  document.querySelectorAll('a[href*="elenivo-feature"]').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && !href.startsWith('#')) {
+        e.preventDefault();
+        document.body.style.transition = 'opacity 0.35s ease-out';
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = href; }, 350);
+      }
+    });
+  });
 
   // ── Mobile Menu ──────────────────────────────
   const hamburger = document.getElementById('hamburger');

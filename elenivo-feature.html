@@ -327,27 +327,27 @@
       opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
     }
     .page-transition-overlay.entering {
-      animation: hudReveal 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: hudReveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .page-transition-overlay.entering .hud-core {
-      animation: arcReactorIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: arcReactorIn 2.4s cubic-bezier(0.12, 0.8, 0.3, 1) forwards;
     }
     .page-transition-overlay.entering .hud-ring {
-      animation: outerRingIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: outerRingIn 2.4s cubic-bezier(0.12, 0.8, 0.3, 1) forwards;
     }
     .page-transition-overlay.leaving {
       opacity: 0;
-      animation: hudClose 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: hudClose 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
     .page-transition-overlay.leaving .hud-core {
-      animation: arcReactorOut 0.8s ease-in forwards;
+      animation: arcReactorOut 1.2s cubic-bezier(0.12, 0.8, 0.3, 1) forwards;
     }
     .page-transition-overlay.leaving .hud-ring {
-      animation: outerRingOut 0.8s ease-in forwards;
+      animation: outerRingOut 1.2s cubic-bezier(0.12, 0.8, 0.3, 1) forwards;
     }
     @keyframes hudReveal {
       0% { opacity: 1; }
-      60% { opacity: 1; }
+      70% { opacity: 1; }
       100% { opacity: 0; }
     }
     @keyframes hudClose {
@@ -356,27 +356,31 @@
     }
     @keyframes arcReactorIn {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      15% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(60deg); }
-      40% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(150deg); }
-      70% { opacity: 0.6; transform: translate(-50%, -50%) scale(2) rotate(220deg); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(6) rotate(300deg); }
+      12% { opacity: 1; transform: translate(-50%, -50%) scale(0.8) rotate(40deg); }
+      30% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(100deg); }
+      55% { opacity: 1; transform: translate(-50%, -50%) scale(1.1) rotate(170deg); }
+      75% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.8) rotate(230deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(5) rotate(300deg); }
     }
     @keyframes outerRingIn {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      10% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.6) rotate(-30deg); }
-      35% { opacity: 0.7; transform: translate(-50%, -50%) scale(1) rotate(-120deg); }
-      65% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.5) rotate(-240deg); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(10) rotate(-360deg); }
+      10% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.5) rotate(-20deg); }
+      28% { opacity: 0.7; transform: translate(-50%, -50%) scale(0.9) rotate(-80deg); }
+      50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1) rotate(-160deg); }
+      72% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.6) rotate(-250deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(8) rotate(-360deg); }
     }
     @keyframes arcReactorOut {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(90deg); }
-      100% { opacity: 0.5; transform: translate(-50%, -50%) scale(5) rotate(240deg); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(0.9) rotate(50deg); }
+      50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2) rotate(120deg); }
+      100% { opacity: 0.4; transform: translate(-50%, -50%) scale(4) rotate(240deg); }
     }
     @keyframes outerRingOut {
       0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      30% { opacity: 0.6; transform: translate(-50%, -50%) scale(1) rotate(-60deg); }
-      100% { opacity: 0.3; transform: translate(-50%, -50%) scale(8) rotate(-240deg); }
+      20% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.8) rotate(-40deg); }
+      50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.2) rotate(-100deg); }
+      100% { opacity: 0.2; transform: translate(-50%, -50%) scale(6) rotate(-240deg); }
     }
     /* HUD scan line */
     .hud-scanline {
@@ -1248,7 +1252,7 @@
         overlay.classList.remove('entering');
         overlay.classList.add('leaving');
         scanline.classList.add('active');
-        setTimeout(() => { window.location.href = href; }, 800);
+        setTimeout(() => { window.location.href = href; }, 1200);
       });
     });
 

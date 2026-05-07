@@ -131,15 +131,54 @@
       min-height: 160px;
     }
     .module-card:hover { border-color: rgba(28, 167, 162, 0.3); background: rgba(28, 167, 162, 0.05); }
-    .module-card.expanded { border-color: rgba(28, 167, 162, 0.4); background: rgba(28, 167, 162, 0.06); }
+    .module-card.active-module { border-color: var(--teal); background: rgba(28, 167, 162, 0.08); box-shadow: 0 0 20px rgba(28, 167, 162, 0.15); }
     .module-label { font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 1px; margin-bottom: 0.5rem; text-transform: uppercase; }
     .module-name { font-size: 0.95rem; color: var(--text-primary); font-weight: 600; }
     .module-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; line-height: 1.4; }
-    .module-expand-icon { font-size: 0.7rem; color: var(--teal); margin-top: 0.6rem; transition: transform 0.3s; display: inline-block; }
-    .module-card.expanded .module-expand-icon { transform: rotate(180deg); }
-    .module-detail { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.3s ease, margin 0.3s ease; opacity: 0; margin-top: 0; }
-    .module-card.expanded .module-detail { max-height: 300px; opacity: 1; margin-top: 0.8rem; }
-    .module-detail p { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; text-align: left; padding: 0.5rem 0; border-top: 1px solid var(--glass-border); }
+    .module-expand-icon { font-size: 0.7rem; color: var(--teal); margin-top: auto; padding-top: 0.6rem; transition: transform 0.3s; display: inline-block; }
+    .module-card.active-module .module-expand-icon { transform: rotate(180deg); }
+    /* Hidden in-card detail (no longer used for display) */
+    .module-detail { display: none; }
+    /* Detail panel below grid */
+    .module-detail-panel {
+      margin-top: 2rem; overflow: hidden;
+      max-height: 0; opacity: 0;
+      transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, margin 0.3s ease;
+      will-change: max-height, opacity;
+    }
+    .module-detail-panel.open {
+      max-height: 400px; opacity: 1; margin-top: 2.5rem;
+    }
+    .module-detail-inner {
+      padding: 2rem 2.5rem;
+      background: rgba(28, 167, 162, 0.03);
+      border: 1px solid rgba(28, 167, 162, 0.2);
+      border-radius: 16px;
+      position: relative;
+    }
+    /* HUD corner accents on detail panel */
+    .module-detail-inner::before, .module-detail-inner::after {
+      content: ''; position: absolute; width: 20px; height: 20px;
+      border-color: var(--teal); border-style: solid; border-width: 0;
+      pointer-events: none; opacity: 0.6;
+    }
+    .module-detail-inner::before { top: -1px; left: -1px; border-top-width: 2px; border-left-width: 2px; border-radius: 16px 0 0 0; }
+    .module-detail-inner::after { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; border-radius: 0 0 16px 0; }
+    .module-detail-header {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
+    }
+    .module-detail-header .detail-label {
+      font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 2px; text-transform: uppercase;
+    }
+    .module-detail-header .detail-name {
+      font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text-primary); font-weight: 600;
+    }
+    .module-detail-header .detail-line {
+      flex: 1; height: 1px; background: linear-gradient(90deg, rgba(28,167,162,0.3), transparent);
+    }
+    .module-detail-body {
+      font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;
+    }
     /* Tier Cards */
     .tiers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 4rem; }
     .tier-card {
@@ -318,14 +357,13 @@
     .nav-links a.section-active { color: var(--teal); background: rgba(28, 167, 162, 0.08); }
     /* JARVIS data-materialize animation for sections */
     .fade-up {
-      opacity: 0; transform: translateY(30px);
-      filter: blur(4px);
+      opacity: 0; transform: translateY(24px);
+      will-change: opacity, transform;
     }
     .fade-up.visible {
-      opacity: 1; transform: translateY(0); filter: blur(0);
-      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.5s ease-out;
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
     /* HUD corner brackets on cards */
     .framework-card, .tier-card, .security-item {
@@ -357,7 +395,7 @@
       background: var(--teal); transform: translateX(-50%);
       transition: width 0.3s ease; opacity: 0.6;
     }
-    .module-card:hover::before, .module-card.expanded::before {
+    .module-card:hover::before, .module-card.active-module::before {
       width: 80%;
     }
     /* Responsive */
@@ -371,11 +409,16 @@
       .framework-grid { gap: 1.5rem; }
       .modules-grid { grid-template-columns: repeat(4, 1fr); }
       .security-grid { grid-template-columns: repeat(2, 1fr); }
+      .module-detail-inner { padding: 1.5rem; }
+      .module-detail-body { font-size: 0.95rem; }
+      .module-detail-header .detail-name { font-size: 1.2rem; }
     }
     @media (max-width: 480px) {
       .modules-grid { grid-template-columns: repeat(2, 1fr); }
       .nav-inner { padding: 0 1rem; }
       .nav-links { display: none; }
+      .module-detail-inner { padding: 1.2rem; }
+      .module-detail-body { font-size: 0.9rem; line-height: 1.7; }
       .hamburger { display: flex; }
       .nav-right { gap: 0.3rem; }
       .hero { padding: 5rem 1.5rem 3rem; }
@@ -530,6 +573,17 @@
           <div class="module-desc" data-i18n="elenivo.m7desc">Positioning & shifts</div>
           <div class="module-expand-icon">&#9660;</div>
           <div class="module-detail"><p data-i18n="elenivo.m7detail">Detects competitive positioning shifts and market timing windows — analyzing sector momentum, competitive movement, and whether conditions favor expansion, consolidation, or strategic pivots.</p></div>
+        </div>
+      </div>
+      <!-- Detail panel that opens below the grid -->
+      <div class="module-detail-panel" id="module-detail-panel">
+        <div class="module-detail-inner">
+          <div class="module-detail-header">
+            <span class="detail-label" id="detail-label"></span>
+            <span class="detail-name" id="detail-name"></span>
+            <span class="detail-line"></span>
+          </div>
+          <div class="module-detail-body" id="detail-body"></div>
         </div>
       </div>
     </div>
@@ -1022,13 +1076,35 @@
       }
     };
 
-    // Module expand/collapse
+    // Module expand/collapse — opens detail panel below grid
     function toggleModule(card) {
-      const wasExpanded = card.classList.contains('expanded');
-      // Close all others
-      document.querySelectorAll('.module-card.expanded').forEach(c => c.classList.remove('expanded'));
-      // Toggle clicked card
-      if (!wasExpanded) card.classList.add('expanded');
+      const panel = document.getElementById('module-detail-panel');
+      const wasActive = card.classList.contains('active-module');
+      // Remove active from all cards
+      document.querySelectorAll('.module-card.active-module').forEach(c => c.classList.remove('active-module'));
+      if (wasActive) {
+        // Close panel
+        panel.classList.remove('open');
+        return;
+      }
+      // Set active
+      card.classList.add('active-module');
+      // Get data from the card
+      const label = card.querySelector('.module-label').textContent;
+      const name = card.querySelector('.module-name').textContent;
+      const detail = card.querySelector('.module-detail p').textContent;
+      // Populate panel
+      document.getElementById('detail-label').textContent = label;
+      document.getElementById('detail-name').textContent = name;
+      document.getElementById('detail-body').textContent = detail;
+      // Animate open
+      if (!panel.classList.contains('open')) {
+        panel.classList.add('open');
+      }
+      // Smooth scroll to panel
+      setTimeout(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 150);
     }
 
     let currentLang = 'en';
@@ -1139,7 +1215,7 @@
       });
     });
 
-    // JARVIS-style staggered reveal on scroll
+    // JARVIS-style staggered reveal on scroll (fires once per section)
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1148,16 +1224,15 @@
           const cards = entry.target.querySelectorAll('.framework-card, .module-card, .tier-card, .security-item');
           cards.forEach((card, i) => {
             card.style.opacity = '0';
-            card.style.transform = 'translateY(20px) scale(0.97)';
-            card.style.filter = 'blur(3px)';
+            card.style.transform = 'translateY(16px)';
             card.style.transition = 'none';
             setTimeout(() => {
-              card.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease';
+              card.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
               card.style.opacity = '1';
-              card.style.transform = 'translateY(0) scale(1)';
-              card.style.filter = 'blur(0)';
-            }, 80 * i);
+              card.style.transform = 'translateY(0)';
+            }, 60 * i);
           });
+          observer.unobserve(entry.target); // Only animate once
         }
       });
     }, { threshold: 0.08 });

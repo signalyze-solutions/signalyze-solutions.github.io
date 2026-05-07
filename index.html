@@ -364,12 +364,11 @@
       20% { border-bottom-color: rgba(28,167,162,0.6); }
       100% { border-bottom-color: var(--glass-border); }
     }
-    .fade-up { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+    .fade-up { opacity: 0; transform: translateY(24px); will-change: opacity, transform; }
     .fade-up.visible {
-      opacity: 1; transform: translateY(0); filter: blur(0);
-      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.5s ease-out;
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
@@ -872,7 +871,7 @@
     });
   });
 
-  // ── JARVIS Scroll Fade-In ───────────────────────────
+  // ── JARVIS Scroll Fade-In (fires once per section) ───────────────────────────
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -880,16 +879,15 @@
         const cards = entry.target.querySelectorAll('.service-card, .metric-card');
         cards.forEach((card, i) => {
           card.style.opacity = '0';
-          card.style.transform = 'translateY(20px) scale(0.97)';
-          card.style.filter = 'blur(3px)';
+          card.style.transform = 'translateY(16px)';
           card.style.transition = 'none';
           setTimeout(() => {
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease';
+            card.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
             card.style.opacity = '1';
-            card.style.transform = 'translateY(0) scale(1)';
-            card.style.filter = 'blur(0)';
-          }, 80 * i);
+            card.style.transform = 'translateY(0)';
+          }, 60 * i);
         });
+        observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.08 });

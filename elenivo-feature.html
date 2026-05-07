@@ -83,7 +83,7 @@
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
     /* Sections */
-    .section { position: relative; z-index: 1; padding: 7rem 2rem; }
+    .section { position: relative; z-index: 1; padding: 8rem 2rem; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
     .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.2; }
@@ -218,17 +218,56 @@
     .page-transition-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: #121923; z-index: 9999; pointer-events: none;
-      opacity: 1; transition: opacity 0.5s ease-out;
+      opacity: 1;
     }
-    .page-transition-overlay.loaded { opacity: 0; }
-    .page-transition-overlay.leaving { opacity: 1; transition: opacity 0.4s ease-in; }
+    .page-transition-overlay::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 2px; height: 2px; border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 60px 30px rgba(28, 167, 162, 0.3), 0 0 120px 60px rgba(28, 167, 162, 0.1);
+      opacity: 0; transform: translate(-50%, -50%) scale(0);
+    }
+    .page-transition-overlay.entering {
+      animation: overlayReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.entering::after {
+      animation: pulseGlow 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.leaving {
+      opacity: 0;
+      animation: overlayClose 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.leaving::after {
+      animation: pulseGlowOut 0.5s ease-in forwards;
+    }
+    @keyframes overlayReveal {
+      0% { opacity: 1; }
+      60% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes overlayClose {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes pulseGlow {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+      30% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(3); }
+    }
+    @keyframes pulseGlowOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+      100% { opacity: 0.5; transform: translate(-50%, -50%) scale(4); }
+    }
+    /* Active nav highlight */
+    .nav-links a.section-active { color: var(--teal); background: rgba(28, 167, 162, 0.08); }
     /* Fade-up Animation */
     .fade-up { opacity: 0; transform: translateY(20px); }
     .fade-up.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { gap: 0.2rem; }
-      .section { padding: 4rem 2rem; }
+      .section { padding: 5rem 2rem; }
       .hero { padding: 6rem 2rem 4rem; min-height: 80vh; }
       .hero h1 { font-size: 2.2rem; }
       .hero-sub { font-size: 1rem; }
@@ -265,10 +304,11 @@
         </div>
       </a>
       <ul class="nav-links" id="nav-links">
-        <li><a href="/#hero">Home</a></li>
-        <li><a href="/#services" class="active">Elenivo</a></li>
-        <li><a href="/#about">About</a></li>
-        <li><a href="/#contact">Contact</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="#framework">How It Works</a></li>
+        <li><a href="#modules" class="active">Dimensions</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#security">Security</a></li>
       </ul>
       <div class="nav-right">
         <div class="lang-switcher">
@@ -309,7 +349,7 @@
   </section>
 
   <!-- Analyze. Certify. Simplify Framework -->
-  <section class="section" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
+  <section class="section" id="framework" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
     <div class="section-inner fade-up">
       <div style="text-align: center; margin-bottom: 3rem;">
         <div class="section-label" data-i18n="elenivo.framework.label">How It Works</div>
@@ -336,7 +376,7 @@
   </section>
 
   <!-- Modules -->
-  <section class="section">
+  <section class="section" id="modules">
     <div class="section-inner fade-up">
       <div style="text-align: center; margin-bottom: 3rem;">
         <div class="section-label" data-i18n="elenivo.modules.label">SDE Engine</div>
@@ -398,7 +438,7 @@
   </section>
 
   <!-- Tier Comparison -->
-  <section class="section" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
+  <section class="section" id="pricing" style="background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.03) 0%, transparent 80%);">
     <div class="section-inner fade-up">
       <div style="text-align: center; margin-bottom: 3rem;">
         <div class="section-label" data-i18n="elenivo.tiers.label">Plans & Pricing</div>
@@ -464,7 +504,7 @@
   </section>
 
   <!-- Security & Trust -->
-  <section class="section">
+  <section class="section" id="security">
     <div class="section-inner fade-up">
       <div style="text-align: center; margin-bottom: 3rem;">
         <div class="section-label" data-i18n="elenivo.security.label">Protection</div>
@@ -964,16 +1004,29 @@
 
     // Page Transition
     const overlay = document.getElementById('page-overlay');
-    window.addEventListener('load', () => { overlay.classList.add('loaded'); });
-    document.querySelectorAll('a[href="/"], a[href="/#hero"], a[href="/#services"], a.back-link').forEach(link => {
+    overlay.classList.add('entering');
+    // Navigate to home with transition
+    document.querySelectorAll('a[href="/"], a.back-link').forEach(link => {
       link.addEventListener('click', function(e) {
+        e.preventDefault();
         const href = this.getAttribute('href');
-        if (href && !href.startsWith('#') || href === '/' || href === '/#hero') {
-          e.preventDefault();
-          overlay.classList.remove('loaded');
-          overlay.classList.add('leaving');
-          setTimeout(() => { window.location.href = href; }, 400);
-        }
+        overlay.classList.remove('entering');
+        overlay.classList.add('leaving');
+        setTimeout(() => { window.location.href = href; }, 500);
+      });
+    });
+
+    // Active Nav on Scroll
+    const pageSections = document.querySelectorAll('section[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      pageSections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 150) current = sec.getAttribute('id');
+      });
+      navAnchors.forEach(a => {
+        a.classList.remove('active', 'section-active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('section-active');
       });
     });
 

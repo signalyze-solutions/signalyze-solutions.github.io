@@ -275,105 +275,82 @@
       background: #121923; z-index: 9999; pointer-events: none;
       opacity: 1; overflow: hidden;
     }
-    .page-transition-overlay::before {
-      content: ''; position: absolute; top: 50%; left: 50%;
+    .page-transition-overlay .hud-grid {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image:
+        linear-gradient(rgba(28,167,162,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(28,167,162,0.06) 1px, transparent 1px);
+      background-size: 60px 60px; opacity: 0;
+    }
+    .page-transition-overlay.entering .hud-grid { animation: gridFlash 1.8s ease-out forwards; }
+    .page-transition-overlay.leaving .hud-grid { animation: gridFlash 0.8s ease-in forwards; }
+    @keyframes gridFlash { 0%{opacity:0} 15%{opacity:0.8} 40%{opacity:0.4} 100%{opacity:0} }
+    .page-transition-overlay .hud-reticle {
+      position: absolute; top: 50%; left: 50%; width: 200px; height: 200px;
+      transform: translate(-50%, -50%); opacity: 0;
+    }
+    .page-transition-overlay .hud-reticle::before,
+    .page-transition-overlay .hud-reticle::after {
+      content: ''; position: absolute; background: rgba(28,167,162,0.5);
+    }
+    .page-transition-overlay .hud-reticle::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+    .page-transition-overlay .hud-reticle::after { top: 0; left: 50%; width: 1px; height: 100%; transform: translateX(-50%); }
+    .page-transition-overlay.entering .hud-reticle { animation: reticleIn 1.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes reticleIn { 0%{opacity:0;width:400px;height:400px} 20%{opacity:0.7;width:200px;height:200px} 50%{opacity:0.4;width:120px;height:120px} 80%{opacity:0.2;width:60px;height:60px} 100%{opacity:0;width:20px;height:20px} }
+    .page-transition-overlay .hud-core {
+      position: absolute; top: 50%; left: 50%;
       width: 80px; height: 80px; border-radius: 50%;
-      border: 2px solid rgba(28, 167, 162, 0.6);
-      box-shadow: 0 0 40px 10px rgba(28, 167, 162, 0.2), inset 0 0 20px 5px rgba(28, 167, 162, 0.1);
-      opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      border: 2px solid rgba(28,167,162,0.6);
+      box-shadow: 0 0 40px 10px rgba(28,167,162,0.2), inset 0 0 20px 5px rgba(28,167,162,0.1);
+      opacity: 0; transform: translate(-50%,-50%) scale(0) rotate(0deg);
     }
-    .page-transition-overlay::after {
-      content: ''; position: absolute; top: 50%; left: 50%;
+    .page-transition-overlay .hud-ring {
+      position: absolute; top: 50%; left: 50%;
       width: 140px; height: 140px; border-radius: 50%;
-      border: 1px solid rgba(28, 167, 162, 0.3);
-      border-top: 2px solid rgba(28, 167, 162, 0.8);
-      opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
+      border: 1px solid rgba(28,167,162,0.3); border-top: 2px solid rgba(28,167,162,0.8);
+      opacity: 0; transform: translate(-50%,-50%) scale(0) rotate(0deg);
     }
-    .page-transition-overlay.entering {
-      animation: hudReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .page-transition-overlay.entering::before {
-      animation: arcReactorIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .page-transition-overlay.entering::after {
-      animation: outerRingIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .page-transition-overlay.leaving {
-      opacity: 0;
-      animation: hudClose 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .page-transition-overlay.leaving::before {
-      animation: arcReactorOut 0.6s ease-in forwards;
-    }
-    .page-transition-overlay.leaving::after {
-      animation: outerRingOut 0.6s ease-in forwards;
-    }
-    @keyframes hudReveal {
-      0% { opacity: 1; }
-      50% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-    @keyframes hudClose {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
-    @keyframes arcReactorIn {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      20% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(90deg); }
-      60% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(180deg); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(8) rotate(270deg); }
-    }
-    @keyframes outerRingIn {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      15% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.8) rotate(-45deg); }
-      50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1) rotate(-180deg); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(12) rotate(-360deg); }
-    }
-    @keyframes arcReactorOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      40% { opacity: 1; transform: translate(-50%, -50%) scale(1.5) rotate(120deg); }
-      100% { opacity: 0.6; transform: translate(-50%, -50%) scale(6) rotate(270deg); }
-    }
-    @keyframes outerRingOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-      40% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2) rotate(-90deg); }
-      100% { opacity: 0.3; transform: translate(-50%, -50%) scale(10) rotate(-270deg); }
-    }
+    .page-transition-overlay.entering { animation: hudReveal 1.6s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .page-transition-overlay.entering .hud-core { animation: arcReactorIn 1.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .page-transition-overlay.entering .hud-ring { animation: outerRingIn 1.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .page-transition-overlay.leaving { opacity:0; animation: hudClose 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .page-transition-overlay.leaving .hud-core { animation: arcReactorOut 0.8s ease-in forwards; }
+    .page-transition-overlay.leaving .hud-ring { animation: outerRingOut 0.8s ease-in forwards; }
+    @keyframes hudReveal { 0%{opacity:1} 60%{opacity:1} 100%{opacity:0} }
+    @keyframes hudClose { 0%{opacity:0} 100%{opacity:1} }
+    @keyframes arcReactorIn { 0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(0deg)} 15%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(60deg)} 40%{opacity:1;transform:translate(-50%,-50%) scale(1.1) rotate(150deg)} 70%{opacity:0.6;transform:translate(-50%,-50%) scale(2) rotate(220deg)} 100%{opacity:0;transform:translate(-50%,-50%) scale(6) rotate(300deg)} }
+    @keyframes outerRingIn { 0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(0deg)} 10%{opacity:0.8;transform:translate(-50%,-50%) scale(0.6) rotate(-30deg)} 35%{opacity:0.7;transform:translate(-50%,-50%) scale(1) rotate(-120deg)} 65%{opacity:0.4;transform:translate(-50%,-50%) scale(1.5) rotate(-240deg)} 100%{opacity:0;transform:translate(-50%,-50%) scale(10) rotate(-360deg)} }
+    @keyframes arcReactorOut { 0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(0deg)} 30%{opacity:1;transform:translate(-50%,-50%) scale(1.2) rotate(90deg)} 100%{opacity:0.5;transform:translate(-50%,-50%) scale(5) rotate(240deg)} }
+    @keyframes outerRingOut { 0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(0deg)} 30%{opacity:0.6;transform:translate(-50%,-50%) scale(1) rotate(-60deg)} 100%{opacity:0.3;transform:translate(-50%,-50%) scale(8) rotate(-240deg)} }
     .hud-scanline {
       position: fixed; top: 0; left: 0; width: 100%; height: 2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(28,167,162,0.4) 20%, rgba(28,167,162,0.8) 50%, rgba(28,167,162,0.4) 80%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, rgba(28,167,162,0.3) 15%, rgba(28,167,162,0.7) 50%, rgba(28,167,162,0.3) 85%, transparent 100%);
       z-index: 9998; pointer-events: none; opacity: 0;
-      box-shadow: 0 0 15px 3px rgba(28,167,162,0.3);
+      box-shadow: 0 0 20px 4px rgba(28,167,162,0.25);
     }
-    .hud-scanline.active {
-      animation: scanDrop 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-    @keyframes scanDrop {
-      0% { top: 0; opacity: 0; }
-      5% { opacity: 1; }
-      90% { opacity: 0.6; }
-      100% { top: 100vh; opacity: 0; }
-    }
-    .nav { transition: box-shadow 0.6s ease; }
+    .hud-scanline.active { animation: scanDrop 2.8s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+    @keyframes scanDrop { 0%{top:0;opacity:0} 3%{opacity:1} 85%{opacity:0.5} 100%{top:100vh;opacity:0} }
+    .nav { transition: box-shadow 0.8s ease; }
     .nav.hud-glow {
       box-shadow: 0 1px 0 rgba(28,167,162,0.4), 0 4px 20px rgba(28,167,162,0.08);
-      animation: navScanLine 1.5s ease-out forwards;
+      animation: navScanLine 2s ease-out forwards;
     }
-    @keyframes navScanLine {
-      0% { border-bottom-color: transparent; }
-      20% { border-bottom-color: rgba(28,167,162,0.6); }
-      100% { border-bottom-color: var(--glass-border); }
-    }
+    @keyframes navScanLine { 0%{border-bottom-color:transparent} 15%{border-bottom-color:rgba(28,167,162,0.6)} 100%{border-bottom-color:var(--glass-border)} }
     .fade-up { opacity: 0; transform: translateY(24px); will-change: opacity, transform; }
     .fade-up.visible {
       opacity: 1; transform: translateY(0);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
 <body>
-  <div class="page-transition-overlay" id="page-overlay"></div>
+  <div class="page-transition-overlay" id="page-overlay">
+    <div class="hud-grid"></div>
+    <div class="hud-reticle"></div>
+    <div class="hud-core"></div>
+    <div class="hud-ring"></div>
+  </div>
   <div class="hud-scanline" id="hud-scanline"></div>
   <canvas id="particles-canvas"></canvas>
 
@@ -867,7 +844,7 @@
       overlay.classList.remove('entering');
       overlay.classList.add('leaving');
       scanline.classList.add('active');
-      setTimeout(() => { window.location.href = href; }, 600);
+      setTimeout(() => { window.location.href = href; }, 800);
     });
   });
 
@@ -882,10 +859,10 @@
           card.style.transform = 'translateY(16px)';
           card.style.transition = 'none';
           setTimeout(() => {
-            card.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1)';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
-          }, 60 * i);
+          }, 100 * i);
         });
         observer.unobserve(entry.target);
       }

@@ -269,57 +269,113 @@
     @media (max-width: 480px) {
       .analytics-packages { grid-template-columns: 1fr; }
     }
-    /* Page Transition Overlay */
+    /* Page Transition Overlay — JARVIS/HUD Style */
     .page-transition-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: #121923; z-index: 9999; pointer-events: none;
-      opacity: 1;
+      opacity: 1; overflow: hidden;
+    }
+    .page-transition-overlay::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 2px solid rgba(28, 167, 162, 0.6);
+      box-shadow: 0 0 40px 10px rgba(28, 167, 162, 0.2), inset 0 0 20px 5px rgba(28, 167, 162, 0.1);
+      opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
     }
     .page-transition-overlay::after {
       content: ''; position: absolute; top: 50%; left: 50%;
-      width: 2px; height: 2px; border-radius: 50%;
-      background: var(--teal);
-      box-shadow: 0 0 60px 30px rgba(28, 167, 162, 0.3), 0 0 120px 60px rgba(28, 167, 162, 0.1);
-      opacity: 0; transform: translate(-50%, -50%) scale(0);
+      width: 140px; height: 140px; border-radius: 50%;
+      border: 1px solid rgba(28, 167, 162, 0.3);
+      border-top: 2px solid rgba(28, 167, 162, 0.8);
+      opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
     }
     .page-transition-overlay.entering {
-      animation: overlayReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: hudReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.entering::before {
+      animation: arcReactorIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .page-transition-overlay.entering::after {
-      animation: pulseGlow 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: outerRingIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .page-transition-overlay.leaving {
       opacity: 0;
-      animation: overlayClose 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: hudClose 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.leaving::before {
+      animation: arcReactorOut 0.6s ease-in forwards;
     }
     .page-transition-overlay.leaving::after {
-      animation: pulseGlowOut 0.5s ease-in forwards;
+      animation: outerRingOut 0.6s ease-in forwards;
     }
-    @keyframes overlayReveal {
+    @keyframes hudReveal {
       0% { opacity: 1; }
-      60% { opacity: 1; }
+      50% { opacity: 1; }
       100% { opacity: 0; }
     }
-    @keyframes overlayClose {
+    @keyframes hudClose {
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
-    @keyframes pulseGlow {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-      30% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(3); }
+    @keyframes arcReactorIn {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(90deg); }
+      60% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(180deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(8) rotate(270deg); }
     }
-    @keyframes pulseGlowOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
-      100% { opacity: 0.5; transform: translate(-50%, -50%) scale(4); }
+    @keyframes outerRingIn {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      15% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.8) rotate(-45deg); }
+      50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1) rotate(-180deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(12) rotate(-360deg); }
     }
-    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    @keyframes arcReactorOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      40% { opacity: 1; transform: translate(-50%, -50%) scale(1.5) rotate(120deg); }
+      100% { opacity: 0.6; transform: translate(-50%, -50%) scale(6) rotate(270deg); }
+    }
+    @keyframes outerRingOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      40% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2) rotate(-90deg); }
+      100% { opacity: 0.3; transform: translate(-50%, -50%) scale(10) rotate(-270deg); }
+    }
+    .hud-scanline {
+      position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(28,167,162,0.4) 20%, rgba(28,167,162,0.8) 50%, rgba(28,167,162,0.4) 80%, transparent 100%);
+      z-index: 9998; pointer-events: none; opacity: 0;
+      box-shadow: 0 0 15px 3px rgba(28,167,162,0.3);
+    }
+    .hud-scanline.active {
+      animation: scanDrop 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes scanDrop {
+      0% { top: 0; opacity: 0; }
+      5% { opacity: 1; }
+      90% { opacity: 0.6; }
+      100% { top: 100vh; opacity: 0; }
+    }
+    .nav { transition: box-shadow 0.6s ease; }
+    .nav.hud-glow {
+      box-shadow: 0 1px 0 rgba(28,167,162,0.4), 0 4px 20px rgba(28,167,162,0.08);
+      animation: navScanLine 1.5s ease-out forwards;
+    }
+    @keyframes navScanLine {
+      0% { border-bottom-color: transparent; }
+      20% { border-bottom-color: rgba(28,167,162,0.6); }
+      100% { border-bottom-color: var(--glass-border); }
+    }
+    .fade-up { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+    .fade-up.visible {
+      opacity: 1; transform: translateY(0); filter: blur(0);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.5s ease-out;
+    }
   </style>
 </head>
 <body>
   <div class="page-transition-overlay" id="page-overlay"></div>
+  <div class="hud-scanline" id="hud-scanline"></div>
   <canvas id="particles-canvas"></canvas>
 
   <!-- Navigation -->
@@ -794,23 +850,49 @@
     navAnchors.forEach(a => { a.classList.remove('active'); if (a.getAttribute('href') === '#' + current) a.classList.add('active'); });
   });
 
-  // ── Page Transition ─────────────────────────
+  // ── JARVIS HUD Page Transition ─────────────────────────
   const overlay = document.getElementById('page-overlay');
+  const scanline = document.getElementById('hud-scanline');
+  const navEl = document.querySelector('.nav');
   overlay.classList.add('entering');
+  setTimeout(() => {
+    scanline.classList.add('active');
+    navEl.classList.add('hud-glow');
+  }, 300);
+  scanline.addEventListener('animationend', () => scanline.classList.remove('active'));
+
   document.querySelectorAll('a[href*="elenivo-feature"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const href = this.getAttribute('href');
       overlay.classList.remove('entering');
       overlay.classList.add('leaving');
-      setTimeout(() => { window.location.href = href; }, 500);
+      scanline.classList.add('active');
+      setTimeout(() => { window.location.href = href; }, 600);
     });
   });
 
-  // ── Scroll Fade-In ───────────────────────────
+  // ── JARVIS Scroll Fade-In ───────────────────────────
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const cards = entry.target.querySelectorAll('.service-card, .metric-card');
+        cards.forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px) scale(0.97)';
+          card.style.filter = 'blur(3px)';
+          card.style.transition = 'none';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0) scale(1)';
+            card.style.filter = 'blur(0)';
+          }, 80 * i);
+        });
+      }
+    });
+  }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   </script>
 </body>

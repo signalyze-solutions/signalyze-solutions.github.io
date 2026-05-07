@@ -83,7 +83,7 @@
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
     /* Sections */
-    .section { position: relative; z-index: 1; padding: 8rem 2rem; }
+    .section { position: relative; z-index: 1; padding: 12rem 2rem; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
     .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
     .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; color: var(--text-primary); margin-bottom: 1.5rem; line-height: 1.2; }
@@ -123,12 +123,13 @@
     .framework-card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--teal); font-weight: 600; margin-bottom: 1rem; }
     .framework-card p { color: var(--text-secondary); line-height: 1.8; }
     /* Modules Section */
-    .modules-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.2rem; margin-top: 3rem; align-items: start; }
+    .modules-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.2rem; margin-top: 3rem; }
     .module-card {
       padding: 1.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border);
-      border-radius: 10px; text-align: center; transition: all 0.3s;
+      border-radius: 10px; text-align: center; transition: all 0.3s; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      min-height: 160px;
     }
-    .module-card { cursor: pointer; }
     .module-card:hover { border-color: rgba(28, 167, 162, 0.3); background: rgba(28, 167, 162, 0.05); }
     .module-card.expanded { border-color: rgba(28, 167, 162, 0.4); background: rgba(28, 167, 162, 0.06); }
     .module-label { font-size: 0.8rem; font-weight: 700; color: var(--teal); letter-spacing: 1px; margin-bottom: 0.5rem; text-transform: uppercase; }
@@ -214,60 +215,155 @@
       transition: all 0.2s; margin-bottom: 2rem;
     }
     .back-link:hover { gap: 10px; }
-    /* Page Transition Overlay */
+    /* Page Transition Overlay — JARVIS/HUD Style */
     .page-transition-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: #121923; z-index: 9999; pointer-events: none;
-      opacity: 1;
+      opacity: 1; overflow: hidden;
     }
+    /* Arc reactor core */
+    .page-transition-overlay::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 80px; height: 80px; border-radius: 50%;
+      border: 2px solid rgba(28, 167, 162, 0.6);
+      box-shadow: 0 0 40px 10px rgba(28, 167, 162, 0.2), inset 0 0 20px 5px rgba(28, 167, 162, 0.1);
+      opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    }
+    /* Outer ring */
     .page-transition-overlay::after {
       content: ''; position: absolute; top: 50%; left: 50%;
-      width: 2px; height: 2px; border-radius: 50%;
-      background: var(--teal);
-      box-shadow: 0 0 60px 30px rgba(28, 167, 162, 0.3), 0 0 120px 60px rgba(28, 167, 162, 0.1);
-      opacity: 0; transform: translate(-50%, -50%) scale(0);
+      width: 140px; height: 140px; border-radius: 50%;
+      border: 1px solid rgba(28, 167, 162, 0.3);
+      border-top: 2px solid rgba(28, 167, 162, 0.8);
+      opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg);
     }
     .page-transition-overlay.entering {
-      animation: overlayReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: hudReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.entering::before {
+      animation: arcReactorIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .page-transition-overlay.entering::after {
-      animation: pulseGlow 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: outerRingIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .page-transition-overlay.leaving {
       opacity: 0;
-      animation: overlayClose 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: hudClose 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .page-transition-overlay.leaving::before {
+      animation: arcReactorOut 0.6s ease-in forwards;
     }
     .page-transition-overlay.leaving::after {
-      animation: pulseGlowOut 0.5s ease-in forwards;
+      animation: outerRingOut 0.6s ease-in forwards;
     }
-    @keyframes overlayReveal {
+    @keyframes hudReveal {
       0% { opacity: 1; }
-      60% { opacity: 1; }
+      50% { opacity: 1; }
       100% { opacity: 0; }
     }
-    @keyframes overlayClose {
+    @keyframes hudClose {
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
-    @keyframes pulseGlow {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-      30% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(3); }
+    @keyframes arcReactorIn {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(90deg); }
+      60% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(180deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(8) rotate(270deg); }
     }
-    @keyframes pulseGlowOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
-      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
-      100% { opacity: 0.5; transform: translate(-50%, -50%) scale(4); }
+    @keyframes outerRingIn {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      15% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.8) rotate(-45deg); }
+      50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1) rotate(-180deg); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(12) rotate(-360deg); }
+    }
+    @keyframes arcReactorOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      40% { opacity: 1; transform: translate(-50%, -50%) scale(1.5) rotate(120deg); }
+      100% { opacity: 0.6; transform: translate(-50%, -50%) scale(6) rotate(270deg); }
+    }
+    @keyframes outerRingOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+      40% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2) rotate(-90deg); }
+      100% { opacity: 0.3; transform: translate(-50%, -50%) scale(10) rotate(-270deg); }
+    }
+    /* HUD scan line (canvas-drawn, but CSS fallback) */
+    .hud-scanline {
+      position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(28,167,162,0.4) 20%, rgba(28,167,162,0.8) 50%, rgba(28,167,162,0.4) 80%, transparent 100%);
+      z-index: 9998; pointer-events: none; opacity: 0;
+      box-shadow: 0 0 15px 3px rgba(28,167,162,0.3);
+    }
+    .hud-scanline.active {
+      animation: scanDrop 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+    @keyframes scanDrop {
+      0% { top: 0; opacity: 0; }
+      5% { opacity: 1; }
+      90% { opacity: 0.6; }
+      100% { top: 100vh; opacity: 0; }
+    }
+    /* Nav bar HUD glow */
+    .nav { transition: box-shadow 0.6s ease; }
+    .nav.hud-glow {
+      box-shadow: 0 1px 0 rgba(28,167,162,0.4), 0 4px 20px rgba(28,167,162,0.08);
+      animation: navScanLine 1.5s ease-out forwards;
+    }
+    @keyframes navScanLine {
+      0% { border-bottom-color: transparent; }
+      20% { border-bottom-color: rgba(28,167,162,0.6); }
+      100% { border-bottom-color: var(--glass-border); }
     }
     /* Active nav highlight */
     .nav-links a.section-active { color: var(--teal); background: rgba(28, 167, 162, 0.08); }
-    /* Fade-up Animation */
-    .fade-up { opacity: 0; transform: translateY(20px); }
-    .fade-up.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease-out; }
+    /* JARVIS data-materialize animation for sections */
+    .fade-up {
+      opacity: 0; transform: translateY(30px);
+      filter: blur(4px);
+    }
+    .fade-up.visible {
+      opacity: 1; transform: translateY(0); filter: blur(0);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.5s ease-out;
+    }
+    /* HUD corner brackets on cards */
+    .framework-card, .tier-card, .security-item {
+      position: relative;
+    }
+    .framework-card::before, .framework-card::after,
+    .tier-card::before, .tier-card::after,
+    .security-item::before, .security-item::after {
+      content: ''; position: absolute; width: 12px; height: 12px;
+      border-color: rgba(28, 167, 162, 0); border-style: solid; border-width: 0;
+      transition: border-color 0.4s ease, width 0.3s ease, height 0.3s ease;
+      pointer-events: none;
+    }
+    .framework-card::before, .tier-card::before, .security-item::before {
+      top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; border-radius: 16px 0 0 0;
+    }
+    .framework-card::after, .tier-card::after, .security-item::after {
+      bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; border-radius: 0 0 16px 0;
+    }
+    .framework-card:hover::before, .framework-card:hover::after,
+    .tier-card:hover::before, .tier-card:hover::after,
+    .security-item:hover::before, .security-item:hover::after {
+      border-color: rgba(28, 167, 162, 0.5); width: 24px; height: 24px;
+    }
+    /* Module card HUD expand effect */
+    .module-card { position: relative; }
+    .module-card::before {
+      content: ''; position: absolute; top: 0; left: 50%; width: 0; height: 1px;
+      background: var(--teal); transform: translateX(-50%);
+      transition: width 0.3s ease; opacity: 0.6;
+    }
+    .module-card:hover::before, .module-card.expanded::before {
+      width: 80%;
+    }
     /* Responsive */
     @media (max-width: 768px) {
       .nav-links { gap: 0.2rem; }
-      .section { padding: 5rem 2rem; }
+      .section { padding: 8rem 2rem; }
       .hero { padding: 6rem 2rem 4rem; min-height: 80vh; }
       .hero h1 { font-size: 2.2rem; }
       .hero-sub { font-size: 1rem; }
@@ -291,6 +387,7 @@
 </head>
 <body>
   <div class="page-transition-overlay" id="page-overlay"></div>
+  <div class="hud-scanline" id="hud-scanline"></div>
   <canvas id="particles-canvas"></canvas>
 
   <!-- Navigation -->
@@ -309,6 +406,7 @@
         <li><a href="#modules" class="active">Dimensions</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="#security">Security</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="nav-right">
         <div class="lang-switcher">
@@ -537,7 +635,7 @@
   </section>
 
   <!-- Final CTA -->
-  <section class="section" style="text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.06) 0%, transparent 80%);">
+  <section class="section" id="contact" style="text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.06) 0%, transparent 80%);">
     <div class="section-inner fade-up">
       <div class="section-label" data-i18n="elenivo.cta.label">Get Started</div>
       <div class="section-title" data-i18n="elenivo.cta.title">Ready to Make Clearer Decisions?</div>
@@ -1002,9 +1100,19 @@
     hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
     navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
 
-    // Page Transition
+    // JARVIS HUD Page Transition
     const overlay = document.getElementById('page-overlay');
+    const scanline = document.getElementById('hud-scanline');
+    const navEl = document.querySelector('.nav');
     overlay.classList.add('entering');
+    // HUD scanline sweep + nav glow on page load
+    setTimeout(() => {
+      scanline.classList.add('active');
+      navEl.classList.add('hud-glow');
+    }, 300);
+    // Clean up scanline after animation
+    scanline.addEventListener('animationend', () => scanline.classList.remove('active'));
+
     // Navigate to home with transition
     document.querySelectorAll('a[href="/"], a.back-link').forEach(link => {
       link.addEventListener('click', function(e) {
@@ -1012,7 +1120,8 @@
         const href = this.getAttribute('href');
         overlay.classList.remove('entering');
         overlay.classList.add('leaving');
-        setTimeout(() => { window.location.href = href; }, 500);
+        scanline.classList.add('active');
+        setTimeout(() => { window.location.href = href; }, 600);
       });
     });
 
@@ -1030,10 +1139,28 @@
       });
     });
 
-    // Scroll Fade-In
+    // JARVIS-style staggered reveal on scroll
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Stagger child cards for data-materializing effect
+          const cards = entry.target.querySelectorAll('.framework-card, .module-card, .tier-card, .security-item');
+          cards.forEach((card, i) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px) scale(0.97)';
+            card.style.filter = 'blur(3px)';
+            card.style.transition = 'none';
+            setTimeout(() => {
+              card.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease';
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0) scale(1)';
+              card.style.filter = 'blur(0)';
+            }, 80 * i);
+          });
+        }
+      });
+    }, { threshold: 0.08 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
   </script>
 </body>

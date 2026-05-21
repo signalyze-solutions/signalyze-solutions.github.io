@@ -1,5 +1,5 @@
 // Elenivo PWA Service Worker v1.0
-const CACHE_NAME = 'elenivo-v3';
+const CACHE_NAME = 'elenivo-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -33,19 +33,22 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Fetch — network-first for API, cache-first for assets
+// Fetch — network-only for API, cache-first for assets
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Network-first for Supabase API calls
+  // Let Supabase API calls (auth, edge functions, REST) go straight to network
+  // Do NOT intercept — avoids null response errors on auth endpoints
   if (url.hostname.includes('supabase.co')) {
-    e.respondWith(
-      fetch(e.request).catch(() => caches.match(e.request))
-    );
+    return; // fall through to browser default fetch
+  }
+
+  // Also skip non-GET requests (POST login, form submissions, etc.)
+  if (e.request.method !== 'GET') {
     return;
   }
 
-  // Cache-first for everything else
+  // Cache-first for static assets only
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
@@ -56,6 +59,9 @@ self.addEventListener('fetch', e => {
         }
         return resp;
       });
+    }).catch(() => {
+      // Fallback: return a basic offline response instead of null
+      return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
     })
   );
 });

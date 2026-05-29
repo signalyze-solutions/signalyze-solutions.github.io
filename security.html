@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms of Service | Signalyze Solutions</title>
-  <meta name="description" content="Signalyze Solutions Terms of Service - Learn the terms of using our platform." />
-  <meta property="og:title" content="Terms of Service | Signalyze Solutions" />
+  <title>Security & Trust | Signalyzé Solutions</title>
+  <meta name="description" content="Signalyzé Solutions Security & Trust - Learn how we protect your data with enterprise-grade security." />
+  <meta property="og:title" content="Security & Trust | Signalyzé Solutions" />
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -109,12 +109,101 @@
       transition: all 0.2s; margin-bottom: 2rem;
     }
     .back-link:hover { gap: 10px; }
+
+    /* Shield icon */
+    .shield-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px; margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .shield-icon svg {
+      width: 56px; height: 56px;
+      filter: drop-shadow(0 0 12px var(--teal-glow));
+    }
+
+    /* Content subtitle */
+    .content-subtitle {
+      font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8;
+      margin-bottom: 2.5rem; max-width: 700px;
+    }
+
+    /* Vendor compliance table */
+    .compliance-table-wrapper {
+      overflow-x: auto; margin: 1.5rem 0 1rem; border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .compliance-table {
+      width: 100%; border-collapse: collapse; font-size: 0.88rem;
+      min-width: 580px;
+    }
+    .compliance-table thead th {
+      text-align: left; padding: 0.85rem 1.1rem;
+      font-weight: 600; font-size: 0.8rem; letter-spacing: 0.3px;
+      color: var(--text-primary);
+      background: rgba(28, 167, 162, 0.08);
+      border-bottom: 1px solid var(--glass-border);
+      white-space: nowrap;
+    }
+    .compliance-table tbody td {
+      padding: 0.75rem 1.1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+    .compliance-table tbody tr:last-child td { border-bottom: none; }
+    .compliance-table tbody tr:hover { background: rgba(28, 167, 162, 0.03); }
+    .compliance-table .vendor-name { font-weight: 600; color: var(--text-primary); }
+    .compliance-table .check { color: var(--teal); font-weight: 700; font-size: 1rem; }
+    .compliance-table .check-note { color: var(--text-muted); font-size: 0.75rem; font-weight: 400; }
+
+    /* Table note */
+    .table-note {
+      margin-top: 0.75rem; padding: 0.85rem 1.1rem;
+      background: rgba(28, 167, 162, 0.06);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* Policy list cards */
+    .policy-list {
+      list-style: none; margin-left: 0; padding: 0; margin-bottom: 1.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;
+    }
+    .policy-list li {
+      display: flex; align-items: center; gap: 10px;
+      padding: 0.7rem 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      font-size: 0.88rem; color: var(--text-secondary);
+      transition: border-color 0.2s;
+    }
+    .policy-list li:hover { border-color: rgba(28, 167, 162, 0.25); }
+    .policy-list li::before {
+      content: '';
+      display: inline-block; width: 6px; height: 6px;
+      background: var(--teal); border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Contact box */
+    .contact-box {
+      margin-top: 1rem; padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 10px;
+    }
+    .contact-box p { margin-bottom: 0; }
+
     @media (max-width: 768px) {
       .nav-inner { padding: 0 1rem; }
       .nav-links { gap: 0.2rem; }
       .content { padding: 100px 1.5rem 3rem; }
       .content-title { font-size: 1.8rem; }
       .content h2 { font-size: 1.3rem; }
+      .policy-list { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
       .nav-inner { padding: 0 1rem; }
@@ -123,6 +212,7 @@
       .content { padding: 90px 1rem 3rem; }
       .content-title { font-size: 1.5rem; }
       .content h2 { font-size: 1.1rem; }
+      .policy-list { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -134,7 +224,7 @@
       <a href="/" class="nav-logo">
         <img src="favicon-192.png" alt="Signalyze" class="nav-logo-icon" />
         <div class="nav-logo-text">
-          Signalyze
+          Signalyz&eacute;
           <span>Solutions</span>
         </div>
       </a>
@@ -162,99 +252,130 @@
 
   <div class="content">
     <div class="content-inner">
-      <a href="/" class="back-link">← Back to Home</a>
+      <a href="/" class="back-link">&larr; Back to Home</a>
 
-      <h1 class="content-title">Terms of Service</h1>
-      <div class="content-meta">Effective Date: May 3, 2026</div>
+      <div class="shield-icon">
+        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28 4L8 14V28C8 40.36 16.64 51.68 28 54C39.36 51.68 48 40.36 48 28V14L28 4Z" stroke="#1CA7A2" stroke-width="2.5" fill="rgba(28,167,162,0.08)"/>
+          <path d="M22 28L26 32L34 24" stroke="#1CA7A2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
 
-      <h2>1. Acceptance of Terms</h2>
-      <p>By accessing and using the Elenivo platform and related services ("Services"), you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the Services.</p>
+      <h1 class="content-title">Security &amp; Trust</h1>
+      <p class="content-subtitle">How we protect your data and maintain enterprise-grade security across our platform.</p>
 
-      <h2>2. Description of Service</h2>
-      <p>Signalyze Solutions provides two primary service lines through the Elenivo platform:</p>
+      <h2>1. Our Security Commitment</h2>
+      <p>At Signalyz&eacute; Solutions, security is built into every layer of our stack &mdash; not bolted on after the fact. From infrastructure design to application logic, every architectural decision is evaluated through the lens of data protection, access control, and resilience. We treat our clients' data with the same rigor and care we apply to our own, because earning and maintaining your trust is fundamental to everything we do.</p>
 
-      <h3>Strategic Decision Environment (SDE) + Analytics</h3>
-      <p>The proprietary SDE engine that delivers scored, ranked recommendations across up to 7 strategic dimensions using the Elenivo Data Network (EDN) and multi-factor analysis.</p>
-
-      <h3>Analytics Service Line</h3>
-      <p>One-time and recurring AI-enhanced business analytics packages covering financial health, sales pipeline, operations efficiency, and comprehensive diagnostics.</p>
-
-      <h2>3. Decision Support Disclaimer</h2>
-      <p>Elenivo provides decision support tools and analytics. While recommendations are scored and data-driven, all business decisions remain your responsibility. Elenivo's recommendations are tools to inform your judgment, not substitutes for independent professional advice. You are responsible for validating recommendations against your business context and objectives.</p>
-
-      <h2>4. AI Features</h2>
-      <p>Our AI features (powered by Anthropic Claude) are stateless and scoped to individual sessions. We do not use your data to train models. AI interactions are ephemeral and do not persist beyond the current session.</p>
-
-      <h2>5. Data Handling</h2>
-      <p>You acknowledge and agree that:</p>
+      <h2>2. Infrastructure &amp; Encryption</h2>
+      <p>Our platform is engineered with defense-in-depth principles to ensure your data is protected at every stage:</p>
       <ul>
-        <li>You own all business data you upload to Elenivo</li>
-        <li>Raw data inputs are normalized and discarded after processing</li>
-        <li>Decision records are retained for 7 years per our data retention policy</li>
-        <li>You are responsible for the accuracy and legality of data you provide</li>
-        <li>We implement industry-standard security measures (AES-256, TLS 1.2+, RLS, HMAC-SHA512)</li>
+        <li><strong>Encryption at rest</strong> &mdash; All data is encrypted using AES-256 via our Supabase/AWS infrastructure</li>
+        <li><strong>Encryption in transit</strong> &mdash; All data is encrypted with TLS 1.2+ across every service and API endpoint</li>
+        <li><strong>Row-Level Security (RLS)</strong> &mdash; Enforced on every database table to guarantee tenant isolation</li>
+        <li><strong>Role-based access control</strong> &mdash; Granular permissions with mandatory multi-factor authentication (MFA) for all team members</li>
+        <li><strong>Regular security audits</strong> &mdash; Ongoing penetration testing and vulnerability assessments to identify and remediate risks proactively</li>
       </ul>
 
-      <h2>6. Intellectual Property</h2>
-      <p>The Elenivo platform, SDE engine, EDN methodology, and all proprietary algorithms are owned by Signalyze Solutions LLC. Your license to use these is limited to the Services and cannot be transferred. You retain ownership of your data.</p>
+      <h2>3. Vendor Compliance</h2>
+      <p>We carefully vet every vendor in our supply chain. The following matrix summarizes the compliance posture of our core data-processing vendors:</p>
 
-      <h2>7. Account Access and Responsibility</h2>
-      <p>You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. You agree to notify us immediately of any unauthorized access.</p>
+      <div class="compliance-table-wrapper">
+        <table class="compliance-table">
+          <thead>
+            <tr>
+              <th>Vendor</th>
+              <th>Service</th>
+              <th>SOC 2 Type II</th>
+              <th>Encryption</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="vendor-name">Supabase</td>
+              <td>Database</td>
+              <td><span class="check">&check;</span></td>
+              <td>AES-256 / TLS 1.2+</td>
+            </tr>
+            <tr>
+              <td class="vendor-name">Stripe</td>
+              <td>Payments</td>
+              <td><span class="check">&check;</span> <span class="check-note">(PCI DSS Level 1)</span></td>
+              <td>AES-256 / TLS 1.2+</td>
+            </tr>
+            <tr>
+              <td class="vendor-name">HubSpot</td>
+              <td>CRM</td>
+              <td><span class="check">&check;</span></td>
+              <td>AES-256 / TLS 1.2+</td>
+            </tr>
+            <tr>
+              <td class="vendor-name">Vapi</td>
+              <td>AI Voice</td>
+              <td><span class="check">&check;</span> <span class="check-note">(HIPAA)</span></td>
+              <td>TLS 1.2+</td>
+            </tr>
+            <tr>
+              <td class="vendor-name">Resend</td>
+              <td>Email</td>
+              <td><span class="check">&check;</span></td>
+              <td>TLS 1.2+</td>
+            </tr>
+            <tr>
+              <td class="vendor-name">Anthropic</td>
+              <td>AI Engine</td>
+              <td><span class="check">&check;</span></td>
+              <td>TLS 1.2+</td>
+            </tr>
+            <tr>
+              <td class="vendor-name">GitHub</td>
+              <td>Version Control</td>
+              <td><span class="check">&check;</span></td>
+              <td>AES-256 / TLS 1.2+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-note">
+        7 of our 8 data-processing vendors hold SOC 2 Type II certification. Client data exclusively flows through SOC 2 certified services.
+      </div>
 
-      <h2>8. Tier Structure and Pricing</h2>
-      <p>Elenivo is offered in three tiers with the following pricing:</p>
+      <h2>4. Data Handling</h2>
 
-      <h3>Tier 1 — The Core</h3>
-      <ul>
-        <li>Monthly: $1,500</li>
-        <li>Setup Fee: $3,000</li>
-        <li>Features: 2-dimension assessment, 5 monthly assessments, narrative summaries, KPI mapping, consultation</li>
+      <h3>What We Collect</h3>
+      <p>We collect business metrics, contact information, and decision records necessary to operate the Elenivo platform. We do <strong>not</strong> store financial data &mdash; all payment information stays within Stripe's PCI-compliant environment and never touches our servers.</p>
+
+      <h3>Where It&rsquo;s Stored</h3>
+      <p>All client data is hosted on Supabase, which runs on AWS US-East infrastructure. Data remains within the United States and is subject to U.S. data protection laws.</p>
+
+      <h3>Data Retention</h3>
+      <p>Retention periods are configurable on a per-client basis. Automated deletion policies ensure data is purged according to your requirements. Clients may request full data deletion at any time, and we will comply within 30 days.</p>
+
+      <h3>Data Isolation</h3>
+      <p>Every client's data is isolated through Supabase Row-Level Security (RLS) policies enforced at the database layer. No client can access another client's data, regardless of application-layer logic.</p>
+
+      <h2>5. Security Policies</h2>
+      <p>Signalyz&eacute; Solutions maintains the following formal security policies:</p>
+      <ul class="policy-list">
+        <li>Information Security Policy</li>
+        <li>Acceptable Use Policy</li>
+        <li>Incident Response Plan</li>
+        <li>Data Retention &amp; Disposal Policy</li>
+        <li>Vendor Risk Management Policy</li>
+        <li>Business Continuity Plan</li>
       </ul>
+      <p>Our formal security policies are available upon request during the procurement process.</p>
 
-      <h3>Tier 2 — The Architect</h3>
-      <ul>
-        <li>Monthly: $3,500</li>
-        <li>Setup Fee: $5,000</li>
-        <li>Features: 5-dimension assessment, unlimited assessments, AI narratives, unlimited consultations, priority support</li>
-      </ul>
+      <h2>6. Contact</h2>
+      <div class="contact-box">
+        <p>For security questions, vulnerability reports, or to request our security documentation, contact us at <a href="mailto:security@signalyzesolutions.com">security@signalyzesolutions.com</a></p>
+      </div>
 
-      <h3>Tier 3 — The Élite</h3>
-      <ul>
-        <li>Monthly: $7,500</li>
-        <li>Setup Fee: $10,000</li>
-        <li>Features: Full 7-dimension assessment, unlimited assessments, premium narratives, market analysis, dedicated support</li>
-      </ul>
-
-      <h2>9. Analytics Service Packages</h2>
-      <p>One-time analytics packages ($2,500–$5,000) and monthly retainer services ($1,000–$3,000/month) are available. Pricing and scope are detailed at purchase.</p>
-
-      <h2>10. Payment Terms</h2>
-      <p>Payment is due according to the plan selected. We accept all major credit cards and process payments through Stripe. Invoices are issued upon enrollment. Late payments may result in service suspension.</p>
-
-      <h2>11. Limitation of Liability</h2>
-      <p>To the fullest extent permitted by law, Signalyze Solutions shall not be liable for indirect, incidental, special, or consequential damages arising from your use of or inability to use the Services, even if advised of the possibility of such damages.</p>
-
-      <h2>12. Indemnification</h2>
-      <p>You agree to indemnify and hold harmless Signalyze Solutions, its officers, and employees from any claims, damages, or costs arising from your violation of these Terms or your use of the Services.</p>
-
-      <h2>13. Termination</h2>
-      <p>Either party may terminate the service agreement with 30 days' written notice. Upon termination, your access to the platform will be revoked. Your data will be retained per our data retention policy or deleted upon your request.</p>
-
-      <h2>14. Governing Law</h2>
-      <p>These Terms are governed by and construed in accordance with the laws of the State of Florida, without regard to its conflict of law provisions.</p>
-
-      <h2>15. Contact</h2>
-      <p>For questions about these Terms, contact:</p>
-      <ul>
-        <li>Signalyze Solutions LLC</li>
-        <li>Edward Taveras</li>
-        <li><a href="mailto:e.taveras@signalyzesolutions.com">e.taveras@signalyzesolutions.com</a></li>
-      </ul>
     </div>
   </div>
 
   <footer class="footer">
-    <p>&copy; 2026 Signalyze Solutions LLC. All rights reserved.</p>
+    <p>&copy; 2026 Signalyz&eacute; Solutions LLC. All rights reserved.</p>
     <p class="footer-links">
       <a href="privacy-policy.html">Privacy Policy</a>
       <span class="sep">|</span>

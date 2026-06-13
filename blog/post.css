@@ -25,7 +25,15 @@
     .lang-btn { background: none; border: 1px solid transparent; color: var(--text-muted); font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; text-transform: uppercase; }
     .lang-btn:hover { color: var(--text-secondary); border-color: var(--glass-border); }
     .lang-btn.active { color: var(--teal); border-color: var(--teal); background: rgba(28,167,162,0.08); }
-    @media (max-width: 860px) { .nav-links, .lang-switcher { display: none; } }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(18,25,35,0.97); backdrop-filter: blur(20px); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--glass-border); }
+      .nav-links.open a { padding: 0.8rem 0; font-size: 1rem; }
+    }
 
     .article { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 3.5rem 1.5rem 1rem; }
     .back { display: inline-block; font-size: 0.8rem; color: var(--text-muted); text-decoration: none; margin-bottom: 1.6rem; transition: color 0.2s; }

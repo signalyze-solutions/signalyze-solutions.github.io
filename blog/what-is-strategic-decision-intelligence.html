@@ -64,7 +64,7 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .hamburger { display: flex; }
-      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 72px; left: 0; right: 0; background: rgba(18,25,35,0.97); backdrop-filter: blur(20px); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--glass-border); }
+      .nav-links.open { display: flex; flex-direction: column; align-items: flex-start; position: absolute; top: 72px; left: 0; right: 0; background: rgba(18,25,35,0.97); backdrop-filter: blur(20px); padding: 1rem 2rem 2rem; border-bottom: 1px solid var(--glass-border); }
       .nav-links.open a { padding: 0.8rem 0; font-size: 1rem; }
     }
 
@@ -107,8 +107,11 @@
       <ul class="nav-links">
         <li><a href="/#what-we-do">What We Do</a></li>
         <li><a href="/#how-it-works">How It Works</a></li>
+        <li><a href="/#analytics">Analytics</a></li>
         <li><a href="/#services">Elenivo</a></li>
+        <li><a href="/#about">About</a></li>
         <li><a href="/blog/" class="active">Insights</a></li>
+        <li><a href="/#tools">Tools</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>
       <div class="nav-right"><div class="lang-switcher"><button class="lang-btn active" onclick="blogSetLang('en')">EN</button><button class="lang-btn" onclick="blogSetLang('es')">ES</button><button class="lang-btn" onclick="blogSetLang('fr')">FR</button><button class="lang-btn" onclick="blogSetLang('zh')">ZH</button></div><a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" rel="noopener" class="nav-cta">Book a Strategy Call &rarr;</a></div>

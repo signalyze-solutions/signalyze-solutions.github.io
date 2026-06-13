@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insights | Signalyze Solutions</title>
+  <meta name="description" content="Field notes on Strategic Decision Intelligence Infrastructure (SDI) — how founders and leadership teams turn data into high-stakes decisions with clarity. From Signalyze Solutions." />
+  <meta name="keywords" content="strategic decision intelligence, SDI, decision intelligence, business analytics, founder decisions, Signalyze Solutions" />
+  <meta property="og:title" content="Insights | Signalyze Solutions" />
+  <meta property="og:description" content="Field notes on Strategic Decision Intelligence — turning data into high-stakes decisions with clarity." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://signalyzesolutions.com/blog/" />
+  <meta property="og:image" content="https://signalyzesolutions.com/favicon-512.png" />
+  <meta property="og:site_name" content="Signalyze Solutions" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="canonical" href="https://signalyzesolutions.com/blog/" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="512x512" href="/favicon-512.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --navy: #141E2B; --navy-deep: #121923; --teal: #1CA7A2; --teal-glow: rgba(28,167,162,0.3);
+      --gold: #CDA434; --glass-bg: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+      --text-primary: #F3F4F6; --text-secondary: #9CA3AF; --text-muted: #6B7280;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* nav */
+    .nav { position: sticky; top: 0; z-index: 50; background: rgba(18,25,35,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
+    .nav-inner { max-width: 1080px; margin: 0 auto; padding: 0.9rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .nav-logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .nav-logo-icon { width: 34px; height: 34px; border-radius: 8px; }
+    .nav-logo-text { font-size: 1.1rem; font-weight: 600; color: var(--text-primary); letter-spacing: 0.5px; }
+    .nav-logo-text span { display: block; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
+    .nav-links { display: flex; list-style: none; gap: 0.3rem; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 0.78rem; font-weight: 500; padding: 0.5rem 0.7rem; border-radius: 8px; transition: all 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--teal); background: rgba(28,167,162,0.08); }
+    .nav-cta { background: transparent; border: 1.5px solid var(--teal); border-radius: 50px; color: var(--teal); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; transition: all 0.3s; white-space: nowrap; }
+    .nav-cta:hover { background: var(--teal); color: #fff; box-shadow: 0 0 20px var(--teal-glow); }
+    @media (max-width: 760px) { .nav-links { display: none; } }
+
+    /* hero */
+    .hero { padding: 4.5rem 0 2.5rem; border-bottom: 1px solid var(--glass-border); }
+    .section-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4.5vw, 3.2rem); font-weight: 600; line-height: 1.15; margin-bottom: 1.1rem; }
+    .hero p { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-secondary); font-weight: 300; max-width: 640px; }
+
+    /* posts */
+    .posts { padding: 3rem 0 4rem; }
+    .post-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    .post-card { display: flex; flex-direction: column; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.6rem; text-decoration: none; transition: all 0.25s; min-height: 220px; }
+    .post-card:hover { border-color: var(--teal); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.35); }
+    .post-tag { display: inline-block; align-self: flex-start; font-size: 0.65rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); border: 1px solid var(--teal); border-radius: 50px; padding: 0.25rem 0.7rem; margin-bottom: 1rem; }
+    .post-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.7rem; color: var(--text-primary); }
+    .post-excerpt { font-size: 0.9rem; color: var(--text-secondary); font-weight: 300; flex: 1; }
+    .post-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 1.2rem; letter-spacing: 0.5px; }
+    .empty { color: var(--text-muted); font-size: 0.95rem; padding: 2rem 0; }
+
+    /* footer */
+    .footer { text-align: center; padding: 2.5rem 1.5rem; border-top: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.85rem; }
+    .footer-links { margin-top: 0.6rem; }
+    .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.8rem; }
+    .footer-links a:hover { color: var(--teal); }
+    .footer-links .sep { margin: 0 0.6rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="/favicon-192.png" alt="Signalyze" class="nav-logo-icon" />
+        <div class="nav-logo-text">Signalyze<span>Solutions</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#what-we-do">What We Do</a></li>
+        <li><a href="/#how-it-works">How It Works</a></li>
+        <li><a href="/#services">Elenivo</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/blog/" class="active">Insights</a></li>
+        <li><a href="/#contact">Contact</a></li>
+      </ul>
+      <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" rel="noopener" class="nav-cta">Book a Strategy Call &rarr;</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="section-label">Insights</div>
+      <h1>Strategic Decision Intelligence Infrastructure, in practice.</h1>
+      <p>Field notes for founders and leadership teams on turning data into high-stakes decisions with clarity &mdash; the category behind everything Signalyze Solutions delivers through Elenivo.</p>
+    </div>
+  </header>
+
+  <main class="posts">
+    <div class="wrap">
+      <div class="post-grid" id="post-grid">
+        <p class="empty" id="empty">Loading insights&hellip;</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Signalyze Solutions LLC. All rights reserved.</p>
+    <p class="footer-links">
+      <a href="/privacy-policy.html">Privacy Policy</a><span class="sep">|</span>
+      <a href="/terms-of-service.html">Terms of Service</a><span class="sep">|</span>
+      <a href="/security.html">Security</a>
+    </p>
+  </footer>
+
+  <script>
+    // Renders post cards from posts.json. Diego appends new entries to that file.
+    fetch('/blog/posts.json', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (posts) {
+        var grid = document.getElementById('post-grid');
+        if (!posts || !posts.length) { document.getElementById('empty').textContent = 'New insights coming soon.'; return; }
+        // newest first
+        posts.sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+        grid.innerHTML = posts.map(function (p) {
+          var date = p.date ? new Date(p.date + 'T00:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+          var meta = [date, p.readTime].filter(Boolean).join('  ·  ');
+          return '<a class="post-card" href="/blog/' + encodeURIComponent(p.slug) + '.html">' +
+            (p.tag ? '<span class="post-tag">' + p.tag + '</span>' : '') +
+            '<div class="post-title">' + p.title + '</div>' +
+            '<div class="post-excerpt">' + (p.excerpt || '') + '</div>' +
+            '<div class="post-meta">' + meta + '</div>' +
+          '</a>';
+        }).join('');
+      })
+      .catch(function () { document.getElementById('empty').textContent = 'New insights coming soon.'; });
+  </script>
+</body>
+</html>

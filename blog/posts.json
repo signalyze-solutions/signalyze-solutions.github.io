@@ -1,18 +1,10 @@
 [
   {
-    "slug": "why-a-decision-framework-needs-an-output-not-just-a-process",
-    "title": "Why a Decision Framework Needs an Output, Not Just a Process",
-    "excerpt": "Most decision frameworks organize thinking well but stop short of producing a defensible answer — and that gap has real consequences.",
-    "date": "2026-06-15",
-    "tag": "Decisions",
-    "readTime": "5 min read"
-  },
-  {
     "slug": "what-is-strategic-decision-intelligence",
-    "title": "What Is Strategic Decision Intelligence Infrastructure?",
-    "excerpt": "For many companies, the challenge isn't a lack of data — it's turning it into clear decisions. Here's the category that closes that gap, and why it's infrastructure rather than a service.",
+    "title": "What Is Decision Intelligence — and Why It Beats a Dashboard",
+    "excerpt": "For many companies, the challenge isn't a lack of data — it's turning it into clear decisions. Here's what decision intelligence is, how it differs from business intelligence, and why a ranked recommendation beats another dashboard.",
     "date": "2026-06-12",
-    "tag": "Category",
+    "tag": "Decision Intelligence",
     "readTime": "5 min read"
   }
 ]

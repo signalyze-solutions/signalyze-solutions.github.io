@@ -4,10 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Insights | Signalyze Solutions</title>
-  <meta name="description" content="Field notes on Strategic Decision Intelligence Infrastructure (SDI) — how founders and leadership teams turn data into high-stakes decisions with clarity. From Signalyze Solutions." />
-  <meta name="keywords" content="strategic decision intelligence, SDI, decision intelligence, business analytics, founder decisions, Signalyze Solutions" />
+  <meta name="description" content="Field notes on decision intelligence — how founders and leadership teams turn data into high-stakes decisions with clarity. From Signalyze Solutions." />
+  <meta name="keywords" content="decision intelligence, business analytics, founder decisions, high-stakes decisions, Signalyze Solutions" />
   <meta property="og:title" content="Insights | Signalyze Solutions" />
-  <meta property="og:description" content="Field notes on Strategic Decision Intelligence — turning data into high-stakes decisions with clarity." />
+  <meta property="og:description" content="Field notes on decision intelligence — turning data into high-stakes decisions with clarity." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://signalyzesolutions.com/blog/" />
   <meta property="og:image" content="https://signalyzesolutions.com/favicon-512.png" />
@@ -29,8 +29,9 @@
     }
     body { font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; padding-top: 72px; overflow-x: hidden; }
     a { color: inherit; }
-    #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     .wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+    #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
     /* nav */
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(18,25,35,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border); }
@@ -42,13 +43,13 @@
     .nav-links { display: flex; list-style: none; gap: 0; align-items: center; flex-wrap: nowrap; }
     .nav-links a { text-decoration: none; color: var(--text-secondary); font-size: 0.78rem; font-weight: 500; padding: 0.5rem 0.65rem; border-radius: 6px; transition: color 0.2s, background 0.2s; letter-spacing: 0.1px; white-space: nowrap; }
     .nav-links a:hover, .nav-links a.active { color: var(--teal); background: rgba(28,167,162,0.08); }
-    .nav-cta { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1.5px solid var(--teal); border-radius: 50px; color: var(--teal); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; transition: all 0.3s; white-space: nowrap; }
-    .nav-cta:hover { background: var(--teal); color: #fff; box-shadow: 0 0 20px var(--teal-glow); }
     .nav-right { display: flex; align-items: center; gap: 0.6rem; }
     .lang-switcher { display: flex; gap: 4px; align-items: center; }
     .lang-btn { background: none; border: 1px solid transparent; color: var(--text-muted); font-size: 0.7rem; font-weight: 600; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px; text-transform: uppercase; }
     .lang-btn:hover { color: var(--text-secondary); border-color: var(--glass-border); }
     .lang-btn.active { color: var(--teal); border-color: var(--teal); background: rgba(28,167,162,0.08); }
+    .nav-cta { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1.5px solid var(--teal); border-radius: 50px; color: var(--teal); font-size: 0.78rem; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; transition: all 0.3s; white-space: nowrap; }
+    .nav-cta:hover { background: var(--teal); color: #fff; box-shadow: 0 0 20px var(--teal-glow); }
     .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
     .hamburger span { width: 24px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: all 0.3s; }
     @media (max-width: 860px) {
@@ -102,7 +103,15 @@
         <li><a href="/#tools">Tools</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>
-      <div class="nav-right"><div class="lang-switcher"><button class="lang-btn active" onclick="blogSetLang('en')">EN</button><button class="lang-btn" onclick="blogSetLang('es')">ES</button><button class="lang-btn" onclick="blogSetLang('fr')">FR</button><button class="lang-btn" onclick="blogSetLang('zh')">ZH</button></div><a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" rel="noopener" class="nav-cta">Book a Strategy Call &rarr;</a></div>
+      <div class="nav-right">
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="blogSetLang('en')">EN</button>
+          <button class="lang-btn" onclick="blogSetLang('es')">ES</button>
+          <button class="lang-btn" onclick="blogSetLang('fr')">FR</button>
+          <button class="lang-btn" onclick="blogSetLang('zh')">ZH</button>
+        </div>
+        <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" rel="noopener" class="nav-cta">Book a Strategy Call &rarr;</a>
+      </div>
       <button class="hamburger" id="nav-hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
@@ -110,8 +119,8 @@
   <header class="hero">
     <div class="wrap">
       <div class="section-label">Insights</div>
-      <h1>Strategic Decision Intelligence Infrastructure, in practice.</h1>
-      <p>Field notes for founders and leadership teams on turning data into high-stakes decisions with clarity &mdash; the category behind everything Signalyze Solutions delivers through Elenivo.</p>
+      <h1>Decision intelligence, in practice.</h1>
+      <p>Field notes for founders and leadership teams on turning data into high-stakes decisions with clarity &mdash; how Signalyze Solutions delivers decision intelligence through Elenivo.</p>
     </div>
   </header>
 
@@ -154,29 +163,60 @@
       })
       .catch(function () { document.getElementById('empty').textContent = 'New insights coming soon.'; });
   </script>
+
   <script>
     var BT={
-"en":{"nav.whatWeDo":"What We Do","nav.howItWorks":"How It Works","nav.analytics":"Analytics","nav.services":"Elenivo","nav.about":"About","nav.insights":"Insights","nav.tools":"Tools","nav.contact":"Contact","nav.cta":"Book a Strategy Call &rarr;","blog.label":"Insights","blog.title":"Strategic Decision Intelligence Infrastructure, in practice.","blog.sub":"Field notes for founders and leadership teams on turning data into high-stakes decisions with clarity — the category behind everything Signalyze Solutions delivers through Elenivo.","footer.privacy":"Privacy Policy","footer.terms":"Terms of Service","blog.security":"Security","blog.copy":"© 2026 Signalyze Solutions LLC. All rights reserved.","blog.back":"← All Insights","blog.ctaTitle":"Facing a high-stakes call?","blog.ctaSub":"See what Strategic Decision Intelligence Infrastructure looks like applied to your business."},
-"es":{"nav.whatWeDo":"Qué Hacemos","nav.howItWorks":"Cómo Funciona","nav.analytics":"Analítica","nav.services":"Elenivo","nav.about":"Nosotros","nav.insights":"Perspectivas","nav.tools":"Herramientas","nav.contact":"Contacto","nav.cta":"Agendar Llamada Estratégica &rarr;","blog.label":"Perspectivas","blog.title":"Infraestructura de Inteligencia de Decisiones Estratégicas, en la práctica.","blog.sub":"Notas de campo para fundadores y equipos directivos sobre cómo convertir los datos en decisiones de alto riesgo con claridad — la categoría detrás de todo lo que Signalyze Solutions ofrece a través de Elenivo.","footer.privacy":"Política de Privacidad","footer.terms":"Términos de Servicio","blog.security":"Seguridad","blog.copy":"© 2026 Signalyze Solutions LLC. Todos los derechos reservados.","blog.back":"← Todas las Perspectivas","blog.ctaTitle":"¿Enfrenta una decisión de alto riesgo?","blog.ctaSub":"Vea cómo se aplica la Infraestructura de Inteligencia de Decisiones Estratégicas a su negocio."},
-"fr":{"nav.whatWeDo":"Nos Services","nav.howItWorks":"Comment Ça Marche","nav.analytics":"Analytique","nav.services":"Elenivo","nav.about":"À Propos","nav.insights":"Perspectives","nav.tools":"Outils","nav.contact":"Contact","nav.cta":"Réserver un Appel &rarr;","blog.label":"Perspectives","blog.title":"L'Infrastructure d'Intelligence Décisionnelle Stratégique, en pratique.","blog.sub":"Notes de terrain pour les fondateurs et les équipes de direction sur la transformation des données en décisions à enjeux élevés avec clarté — la catégorie derrière tout ce que Signalyze Solutions propose via Elenivo.","footer.privacy":"Politique de Confidentialité","footer.terms":"Conditions d'Utilisation","blog.security":"Sécurité","blog.copy":"© 2026 Signalyze Solutions LLC. Tous droits réservés.","blog.back":"← Toutes les Perspectives","blog.ctaTitle":"Face à une décision à enjeux élevés ?","blog.ctaSub":"Découvrez à quoi ressemble l'Infrastructure d'Intelligence Décisionnelle Stratégique appliquée à votre entreprise."},
-"zh":{"nav.whatWeDo":"服务内容","nav.howItWorks":"工作流程","nav.analytics":"数据分析","nav.services":"Elenivo","nav.about":"关于我们","nav.insights":"见解","nav.tools":"工具","nav.contact":"联系我们","nav.cta":"预约战略咨询 &rarr;","blog.label":"见解","blog.title":"战略决策智能基础设施，实践中。","blog.sub":"为创始人和领导团队提供的实战笔记，关于如何清晰地将数据转化为高风险决策——这是 Signalyze Solutions 通过 Elenivo 所提供的一切背后的类别。","footer.privacy":"隐私政策","footer.terms":"服务条款","blog.security":"安全","blog.copy":"© 2026 Signalyze Solutions LLC. 版权所有。","blog.back":"← 所有见解","blog.ctaTitle":"面临高风险决策？","blog.ctaSub":"了解战略决策智能基础设施应用于您的业务时的样子。"}
+"en":{"nav.whatWeDo":"What We Do","nav.howItWorks":"How It Works","nav.analytics":"Analytics","nav.services":"Elenivo","nav.about":"About","nav.insights":"Insights","nav.tools":"Tools","nav.contact":"Contact","nav.cta":"Book a Strategy Call &rarr;","blog.label":"Insights","blog.title":"Decision intelligence, in practice.","blog.sub":"Field notes for founders and leadership teams on turning data into high-stakes decisions with clarity — how Signalyze Solutions delivers decision intelligence through Elenivo.","footer.privacy":"Privacy Policy","footer.terms":"Terms of Service","blog.security":"Security","blog.copy":"© 2026 Signalyze Solutions LLC. All rights reserved.","blog.back":"← All Insights","blog.ctaTitle":"Facing a high-stakes call?","blog.ctaSub":"See what decision intelligence looks like applied to your business."},
+"es":{"nav.whatWeDo":"Qué Hacemos","nav.howItWorks":"Cómo Funciona","nav.analytics":"Analítica","nav.services":"Elenivo","nav.about":"Nosotros","nav.insights":"Perspectivas","nav.tools":"Herramientas","nav.contact":"Contacto","nav.cta":"Agendar Llamada Estratégica &rarr;","blog.label":"Perspectivas","blog.title":"Inteligencia de decisiones, en la práctica.","blog.sub":"Notas de campo para fundadores y equipos directivos sobre cómo convertir los datos en decisiones de alto riesgo con claridad — cómo Signalyze Solutions ofrece inteligencia de decisiones a través de Elenivo.","footer.privacy":"Política de Privacidad","footer.terms":"Términos de Servicio","blog.security":"Seguridad","blog.copy":"© 2026 Signalyze Solutions LLC. Todos los derechos reservados.","blog.back":"← Todas las Perspectivas","blog.ctaTitle":"¿Enfrenta una decisión de alto riesgo?","blog.ctaSub":"Vea cómo se aplica la inteligencia de decisiones a su negocio."},
+"fr":{"nav.whatWeDo":"Nos Services","nav.howItWorks":"Comment Ça Marche","nav.analytics":"Analytique","nav.services":"Elenivo","nav.about":"À Propos","nav.insights":"Perspectives","nav.tools":"Outils","nav.contact":"Contact","nav.cta":"Réserver un Appel &rarr;","blog.label":"Perspectives","blog.title":"L'intelligence décisionnelle, en pratique.","blog.sub":"Notes de terrain pour les fondateurs et les équipes de direction sur la transformation des données en décisions à enjeux élevés avec clarté — comment Signalyze Solutions propose l'intelligence décisionnelle via Elenivo.","footer.privacy":"Politique de Confidentialité","footer.terms":"Conditions d'Utilisation","blog.security":"Sécurité","blog.copy":"© 2026 Signalyze Solutions LLC. Tous droits réservés.","blog.back":"← Toutes les Perspectives","blog.ctaTitle":"Face à une décision à enjeux élevés ?","blog.ctaSub":"Découvrez à quoi ressemble l'intelligence décisionnelle appliquée à votre entreprise."},
+"zh":{"nav.whatWeDo":"服务内容","nav.howItWorks":"工作流程","nav.analytics":"数据分析","nav.services":"Elenivo","nav.about":"关于我们","nav.insights":"见解","nav.tools":"工具","nav.contact":"联系我们","nav.cta":"预约战略咨询 &rarr;","blog.label":"见解","blog.title":"决策智能，实践中。","blog.sub":"为创始人和领导团队提供的实战笔记，关于如何清晰地将数据转化为高风险决策——Signalyze Solutions 如何通过 Elenivo 提供决策智能。","footer.privacy":"隐私政策","footer.terms":"服务条款","blog.security":"安全","blog.copy":"© 2026 Signalyze Solutions LLC. 版权所有。","blog.back":"← 所有见解","blog.ctaTitle":"面临高风险决策？","blog.ctaSub":"了解决策智能应用于您的业务时的样子。"}
 };
-function blogSetLang(l){ var d=BT[l]; if(!d){ return; } try{ localStorage.setItem('signalyze-lang', l); }catch(e){}
-var nk=["nav.whatWeDo","nav.howItWorks","nav.analytics","nav.services","nav.about","nav.insights","nav.tools","nav.contact"];
-document.querySelectorAll(".nav-links a").forEach(function(a,i){ if(d[nk[i]]) a.innerHTML=d[nk[i]]; });
-function S(sel,key,html){ var e=document.querySelector(sel); if(e&&d[key]!=null){ if(html){e.innerHTML=d[key];}else{e.textContent=d[key];} } }
-S(".nav-cta","nav.cta",true); S(".section-label","blog.label",false); S(".hero h1","blog.title",false); S(".hero p","blog.sub",true);
-S(".back","blog.back",false); S(".end-cta-inner h3","blog.ctaTitle",false); S(".end-cta-inner p","blog.ctaSub",false); S(".end-cta-inner .btn-primary","nav.cta",true); S(".footer p","blog.copy",false);
-document.querySelectorAll(".footer-links a").forEach(function(a){ var h=a.getAttribute("href")||""; if(/privacy/.test(h)&&d["footer.privacy"])a.textContent=d["footer.privacy"]; else if(/terms/.test(h)&&d["footer.terms"])a.textContent=d["footer.terms"]; else if(/security/.test(h)&&d["blog.security"])a.textContent=d["blog.security"]; });
-document.documentElement.lang=l;
-document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.toggle("active", b.textContent.trim().toLowerCase()===l); });
-}
-(function(){ try{ var s=localStorage.getItem("signalyze-lang"); if(s&&BT[s]&&s!=="en"){ blogSetLang(s); } }catch(e){} })();
-    (function(){var c=document.getElementById("particles-canvas");if(!c)return;var x=c.getContext("2d");var ps=[],w,h;
-    function rs(){w=c.width=window.innerWidth;h=c.height=window.innerHeight*3;}window.addEventListener("resize",rs);rs();
-    (function(){ps=[];var n=Math.floor((w*h)/12000);for(var i=0;i<n;i++){var b=Math.random()<0.15;ps.push({x:Math.random()*w,y:Math.random()*h,r:b?Math.random()*2.5+1.5:Math.random()*1.8+0.5,dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.15,o:b?Math.random()*0.5+0.4:Math.random()*0.35+0.15,p:Math.random()*Math.PI*2,s:Math.random()*0.015+0.005,b:b});}})();
-    (function d(){x.clearRect(0,0,w,h);ps.forEach(function(p){p.p+=p.s;var f=p.b?Math.sin(p.p)*0.15:Math.sin(p.p)*0.08;var o=Math.max(0.05,p.o+f);x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle=p.b?"rgba(28,167,162,"+o+")":"rgba(200,215,230,"+o+")";x.fill();if(p.b){x.beginPath();x.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);x.fillStyle="rgba(28,167,162,"+(o*0.15)+")";x.fill();}p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>w)p.dx*=-1;if(p.y<0||p.y>h)p.dy*=-1;});requestAnimationFrame(d);})();})();
+    function blogSetLang(l){ var d=BT[l]; if(!d){ return; } try{ localStorage.setItem('signalyze-lang', l); }catch(e){}
+      var nk=["nav.whatWeDo","nav.howItWorks","nav.analytics","nav.services","nav.about","nav.insights","nav.tools","nav.contact"];
+      document.querySelectorAll(".nav-links a").forEach(function(a,i){ if(d[nk[i]]) a.innerHTML=d[nk[i]]; });
+      function S(sel,key,html){ var e=document.querySelector(sel); if(e&&d[key]!=null){ if(html){e.innerHTML=d[key];}else{e.textContent=d[key];} } }
+      S(".nav-cta","nav.cta",true); S(".section-label","blog.label",false); S(".hero h1","blog.title",false); S(".hero p","blog.sub",true);
+      S(".back","blog.back",false); S(".end-cta-inner h3","blog.ctaTitle",false); S(".end-cta-inner p","blog.ctaSub",false); S(".end-cta-inner .btn-primary","nav.cta",true); S(".footer p","blog.copy",false);
+      document.querySelectorAll(".footer-links a").forEach(function(a){ var h=a.getAttribute("href")||""; if(/privacy/.test(h)&&d["footer.privacy"])a.textContent=d["footer.privacy"]; else if(/terms/.test(h)&&d["footer.terms"])a.textContent=d["footer.terms"]; else if(/security/.test(h)&&d["blog.security"])a.textContent=d["blog.security"]; });
+      document.documentElement.lang=l;
+      document.querySelectorAll(".lang-btn").forEach(function(b){ b.classList.toggle("active", b.textContent.trim().toLowerCase()===l); });
+    }
+    (function(){ try{ var s=localStorage.getItem("signalyze-lang"); if(s&&BT[s]&&s!=="en"){ blogSetLang(s); } }catch(e){} })();
+    (function(){
+      var hb = document.getElementById('nav-hamburger'); var nl = document.querySelector('.nav-links');
+      if(hb && nl){ hb.addEventListener('click', function(){ nl.classList.toggle('open'); });
+        nl.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ nl.classList.remove('open'); }); }); }
+    })();
+    (function(){
+      const canvas = document.getElementById('particles-canvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [], w, h;
+      function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight * 3; }
+      window.addEventListener('resize', resize); resize();
+      (function createParticles(){
+        particles = [];
+        const count = Math.floor((w * h) / 12000);
+        for(let i=0;i<count;i++){
+          const isBright = Math.random() < 0.15;
+          particles.push({ x: Math.random()*w, y: Math.random()*h, r: isBright ? Math.random()*2.5+1.5 : Math.random()*1.8+0.5, dx: (Math.random()-0.5)*0.2, dy: (Math.random()-0.5)*0.15, opacity: isBright ? Math.random()*0.5+0.4 : Math.random()*0.35+0.15, pulse: Math.random()*Math.PI*2, pulseSpeed: Math.random()*0.015+0.005, isBright });
+        }
+      })();
+      (function draw(){
+        ctx.clearRect(0,0,w,h);
+        particles.forEach(p => {
+          p.pulse += p.pulseSpeed;
+          const flicker = p.isBright ? Math.sin(p.pulse)*0.15 : Math.sin(p.pulse)*0.08;
+          const op = Math.max(0.05, p.opacity + flicker);
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fillStyle = p.isBright ? 'rgba(28,167,162,'+op+')' : 'rgba(200,215,230,'+op+')'; ctx.fill();
+          if(p.isBright){ ctx.beginPath(); ctx.arc(p.x, p.y, p.r*2.5, 0, Math.PI*2); ctx.fillStyle = 'rgba(28,167,162,'+(op*0.15)+')'; ctx.fill(); }
+          p.x += p.dx; p.y += p.dy;
+          if(p.x < 0 || p.x > w) p.dx *= -1; if(p.y < 0 || p.y > h) p.dy *= -1;
+        });
+        requestAnimationFrame(draw);
+      })();
+    })();
   </script>
-<script>(function(){var hb=document.getElementById('nav-hamburger');var nl=document.querySelector('.nav-links');if(hb&&nl){hb.addEventListener('click',function(){nl.classList.toggle('open');});nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){nl.classList.remove('open');});});}})();</script>
 </body>
 </html>

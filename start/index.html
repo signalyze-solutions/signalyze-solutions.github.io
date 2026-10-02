@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Signalyzé Solutions — Start a Conversation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#1CA7A2;--teal2:#24c9c3;--navy:#141E2B;--navy2:#1a2538;--surface:#0f1722;--gold:#CDA434;--text:#F3F4F6;--dim:#9CA3AF;--line:#2a3654;--card:#141E2B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--text);font-family:'Inter',-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5;padding:18px}
+.wrap{max-width:620px;margin:0 auto}
+.hd{background:linear-gradient(135deg,var(--navy),#1d2b3d);padding:26px 26px;border-radius:12px 12px 0 0}
+.hd .nm{font-size:22px;font-weight:800}.hd .sl{color:var(--teal);font-size:13px;margin-top:4px}
+.bar{height:5px;background:linear-gradient(90deg,var(--teal),var(--gold))}
+.bd{background:var(--card);border:1px solid var(--line);border-top:none;border-radius:0 0 12px 12px;padding:28px 26px}
+h1{font-size:23px;font-weight:800;margin-bottom:6px}.lede{color:var(--dim);font-size:14px;margin-bottom:22px}
+label{display:block;font-size:13px;font-weight:600;margin:16px 0 6px}
+.req{color:var(--gold)}
+input,select,textarea{width:100%;background:#0e1620;border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:15px;padding:11px 13px;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal)}
+textarea{min-height:88px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;width:0;height:0}
+.chip span{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:8px 14px;font-size:13px;cursor:pointer;color:var(--dim);user-select:none}
+.chip input:checked+span{background:rgba(28,167,162,.16);border-color:var(--teal);color:var(--teal2)}
+.radios{display:flex;gap:12px;margin-top:6px}
+.radio{flex:1}
+.radio input{position:absolute;opacity:0}
+.radio span{display:block;text-align:center;border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;font-weight:600;font-size:14px;color:var(--dim)}
+.radio input:checked+span{background:rgba(28,167,162,.16);border-color:var(--teal);color:var(--teal2)}
+.btn{width:100%;margin-top:24px;background:var(--teal);color:#05231f;border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:800;cursor:pointer}
+.btn:disabled{opacity:.6;cursor:default}
+.ft{color:#6B7280;font-size:11px;margin-top:16px;text-align:center}
+.ok{display:none;text-align:center;padding:40px 10px}
+.ok .big{font-size:44px}.ok h2{font-size:22px;margin:14px 0 8px}.ok p{color:var(--dim);font-size:14px}
+.err{color:#f0808a;font-size:13px;margin-top:10px;display:none}
+</style></head>
+<body><div class="wrap">
+<div class="hd"><div class="nm">Signalyz&eacute; Solutions</div><div class="sl">Analyze. Certify. Simplify.</div></div>
+<div class="bar"></div>
+<div class="bd">
+<div id="formWrap">
+<h1>Let's turn your numbers into decisions.</h1>
+<div class="lede">Tell us a little about your business and what you're trying to figure out. We'll follow up to scope the right diagnostic — standard or custom.</div>
+<form id="f">
+<label>Full name <span class="req">*</span></label><input name="name" required>
+<label>Company <span class="req">*</span></label><input name="company" required>
+<label>Work email <span class="req">*</span></label><input name="email" type="email" required>
+<label>Phone</label><input name="phone" type="tel" placeholder="Needed if you'd like a call">
+<label>Industry</label>
+<select name="industry"><option value="">Select…</option><option>Hospitality</option><option>Healthcare</option><option>Logistics / Supply Chain</option><option>Professional Services</option><option>Retail / E-commerce</option><option>Manufacturing</option><option>Technology / SaaS</option><option>Other</option></select>
+<label>What are you interested in? <span style="color:#6B7280;font-weight:400">(select any)</span></label>
+<div class="chips">
+<label class="chip"><input type="checkbox" name="interests" value="Financial Health Scan"><span>Financial Health Scan</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Sales Pipeline Audit"><span>Sales Pipeline Audit</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Ops Efficiency Review"><span>Ops Efficiency Review</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Industry Diagnostic"><span>Industry Diagnostic</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Full Business Diagnostic"><span>Full Business Diagnostic</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Monthly Retainer"><span>Monthly Retainer</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Interactive Dashboard"><span>Interactive Dashboard</span></label>
+<label class="chip"><input type="checkbox" name="interests" value="Not sure / Custom"><span>Not sure / Custom</span></label>
+</div>
+<label>What are you hoping to figure out?</label><textarea name="challenge" placeholder="e.g. where margin is leaking, why deals stall, where ops bottlenecks are…"></textarea>
+<label>How would you like us to follow up? <span class="req">*</span></label>
+<div class="radios">
+<label class="radio"><input type="radio" name="preference" value="call" required><span>📞 A quick call</span></label>
+<label class="radio"><input type="radio" name="preference" value="email"><span>✉️ By email</span></label>
+</div>
+<button class="btn" id="sb" type="submit">Send</button>
+<div class="err" id="er">Something went wrong — please try again or email support@signalyzesolutions.com.</div>
+</form>
+</div>
+<div class="ok" id="ok"><div class="big">✓</div><h2>Thank you — we've got it.</h2><p>We'll be in touch shortly to scope the right fit for your business.</p></div>
+<div class="ft">Signalyz&eacute; Solutions LLC &middot; Your information is kept confidential.</div>
+</div></div>
+<script>
+var f=document.getElementById('f'),sb=document.getElementById('sb'),er=document.getElementById('er');
+f.addEventListener('submit',function(e){e.preventDefault();er.style.display='none';sb.disabled=true;sb.textContent='Sending…';
+var fd=new FormData(f),o={interests:[]};fd.forEach(function(v,k){if(k==='interests')o.interests.push(v);else o[k]=v;});
+fetch('https://n8n.srv1633898.hstgr.cloud/webhook/lead-form-submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(o)})
+.then(function(r){if(!r.ok)throw 0;document.getElementById('formWrap').style.display='none';document.getElementById('ok').style.display='block';window.scrollTo(0,0);})
+.catch(function(){er.style.display='block';sb.disabled=false;sb.textContent='Send';});});
+</script></body></html>

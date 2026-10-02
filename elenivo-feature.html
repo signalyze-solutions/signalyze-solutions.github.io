@@ -574,8 +574,9 @@
       <h1 data-i18n="elenivo.hero.title" style="margin-bottom:1rem;">Your Boardroom, On Demand.</h1>
       <p style="font-size:1.2rem; color:var(--text-primary); font-weight:400; font-style:italic; margin-bottom:2rem; letter-spacing:0.3px;" data-i18n="elenivo.hero.tagline">Not a simulator. Not a dashboard. A system for making the right decision.</p>
       <p class="hero-sub" data-i18n="elenivo.hero.sub">Every leader believes they make data-driven decisions. Almost none of them actually do. Elenivo changes that — a 7-module strategic engine that ingests your real business data, weighs it across multiple dimensions simultaneously, and delivers scored recommendations with confidence levels, the key drivers behind them, and the exact conditions that would flip the answer. This is not another analytics tool repackaged as strategy. This is an entirely different category — and once you see it, everything else feels like guessing.</p>
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(205,164,52,0.12);border:1px solid rgba(205,164,52,0.45);color:var(--gold);font-size:0.9rem;font-weight:600;padding:10px 18px;border-radius:999px;margin-bottom:1.75rem;">🚧 In active development — join the early-access waitlist to be first in line.</div>
       <div class="hero-buttons">
-        <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" class="btn-primary" data-i18n="elenivo.hero.cta">Book a Strategy Call &rarr;</a>
+        <a href="#waitlist" class="btn-primary">Join the Waitlist &rarr;</a>
         <a href="#modules" class="btn-secondary" data-i18n="elenivo.hero.learn">See the 7 Dimensions &darr;</a>
       </div>
     </div>
@@ -704,7 +705,7 @@
             <li data-i18n="elenivo.t1.f5">Follow-up consultation</li>
             <li data-i18n="elenivo.t1.f6">Monthly review</li>
           </ul>
-          <a href="https://buy.stripe.com/3cI5kC6gB2l80bcf7l83C0d" target="_blank" class="tier-cta outline" data-i18n="elenivo.tier.cta">Start Now →</a>
+          <a href="#waitlist" class="tier-cta outline">Join the Waitlist →</a>
         </div>
 
         <!-- Tier 2 (Featured) -->
@@ -723,7 +724,7 @@
             <li data-i18n="elenivo.t2.f5">Real-time performance visibility</li>
             <li data-i18n="elenivo.t2.f6">Priority support & direct access</li>
           </ul>
-          <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" class="tier-cta primary" data-i18n="elenivo.tier.call">Book a Call →</a>
+          <a href="#waitlist" class="tier-cta primary">Join the Waitlist →</a>
         </div>
 
         <!-- Tier 3 -->
@@ -741,7 +742,7 @@
             <li data-i18n="elenivo.t3.f5">Strategic pivot detection</li>
             <li data-i18n="elenivo.t3.f6">Dedicated strategic support</li>
           </ul>
-          <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" target="_blank" class="tier-cta outline" data-i18n="elenivo.tier.call">Book a Call →</a>
+          <a href="#waitlist" class="tier-cta outline">Join the Waitlist →</a>
         </div>
       </div>
     </div>
@@ -780,18 +781,65 @@
     </div>
   </section>
 
-  <!-- Final CTA -->
-  <section class="section" id="contact" style="text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.06) 0%, transparent 80%);">
+  <!-- Waitlist -->
+  <a id="contact"></a>
+  <section class="section" id="waitlist" style="text-align: center; background: radial-gradient(ellipse at 50% 50%, rgba(28, 167, 162, 0.06) 0%, transparent 80%);">
+    <style>
+      .ewl-wrap{max-width:560px;margin:0 auto;text-align:left}
+      .ewl-form label{display:block;font-size:0.82rem;font-weight:600;color:var(--text-primary,#F3F4F6);margin:16px 0 6px}
+      .ewl-req{color:var(--gold,#CDA434)}
+      .ewl-form input,.ewl-form select,.ewl-form textarea{width:100%;box-sizing:border-box;background:rgba(10,18,28,0.6);border:1px solid rgba(255,255,255,0.14);border-radius:9px;color:#F3F4F6;font-size:15px;padding:12px 14px;font-family:inherit}
+      .ewl-form input:focus,.ewl-form select:focus,.ewl-form textarea:focus{outline:none;border-color:var(--teal,#1CA7A2)}
+      .ewl-form textarea{min-height:84px;resize:vertical}
+      .ewl-btn{width:100%;margin-top:22px;background:var(--teal,#1CA7A2);color:#05231f;border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:800;cursor:pointer}
+      .ewl-btn:disabled{opacity:.6;cursor:default}
+      .ewl-ft{color:#8A94A6;font-size:11px;margin-top:14px;text-align:center}
+      .ewl-ok{display:none;text-align:center;padding:30px 10px}
+      .ewl-ok .big{font-size:44px;color:var(--teal,#1CA7A2)}
+      .ewl-err{display:none;color:#f0808a;font-size:13px;margin-top:10px;text-align:center}
+    </style>
     <div class="section-inner fade-up">
-      <div class="section-label" data-i18n="elenivo.cta.label">Get Started</div>
-      <div class="section-title" data-i18n="elenivo.cta.title">Ready to Make Clearer Decisions?</div>
-      <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;" data-i18n="elenivo.cta.sub">Schedule a conversation with Edward to explore how Elenivo can transform your decision-making.</p>
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="https://outlook.office.com/book/SignalyzeSolutions1@signalyzesolutions.com/?ismsaljsauthenabled" class="btn-primary" data-i18n="elenivo.cta.button">Book a Strategy Call →</a>
-        <a href="mailto:support@signalyzesolutions.com" class="btn-secondary" data-i18n="elenivo.cta.email">Email Support</a>
+      <div class="section-label">The Waitlist</div>
+      <div class="section-title">Be First Through the Door</div>
+      <p style="font-size: 1.1rem; color: var(--text-secondary,#B9C2CF); margin-bottom: 2.25rem; max-width: 620px; margin-left: auto; margin-right: auto;">Elenivo is in active development and onboarding a limited first group. Join the waitlist and we'll reach out personally as soon as early access opens — tell us which tier fits and we'll prioritize accordingly.</p>
+      <div class="ewl-wrap">
+        <form id="ewlForm" class="ewl-form">
+          <label>Full name <span class="ewl-req">*</span></label><input name="name" required>
+          <label>Work email <span class="ewl-req">*</span></label><input name="email" type="email" required>
+          <label>Company</label><input name="company">
+          <label>Which tier interests you most?</label>
+          <select name="tier">
+            <option value="">Not sure yet</option>
+            <option>The Core — $1,500/mo</option>
+            <option>The Architect — $4,500/mo</option>
+            <option>The Élite — $12,000/mo</option>
+          </select>
+          <label>Anything you'd like us to know? <span style="color:#6B7280;font-weight:400">(optional)</span></label>
+          <textarea name="note" placeholder="What decisions are you hoping Elenivo could help you make?"></textarea>
+          <button class="ewl-btn" id="ewlBtn" type="submit">Join the Waitlist</button>
+          <div class="ewl-err" id="ewlErr">Something went wrong — please try again or email support@signalyzesolutions.com.</div>
+        </form>
+        <div class="ewl-ok" id="ewlOk">
+          <div class="big">✓</div>
+          <h3 style="margin:12px 0 8px;color:#F3F4F6;">You're on the list.</h3>
+          <p style="color:var(--text-secondary,#B9C2CF);font-size:14px;">Thanks for your interest in Elenivo. We'll be in touch personally as soon as early access opens. Check your inbox for a confirmation.</p>
+        </div>
+        <div class="ewl-ft">Signalyzé Solutions LLC · Your information is kept confidential.</div>
       </div>
     </div>
   </section>
+  <script>
+    (function(){
+      var f=document.getElementById('ewlForm'),b=document.getElementById('ewlBtn'),er=document.getElementById('ewlErr');
+      if(!f)return;
+      f.addEventListener('submit',function(e){e.preventDefault();er.style.display='none';b.disabled=true;b.textContent='Joining…';
+        var fd=new FormData(f),o={source:'elenivo-page'};fd.forEach(function(v,k){o[k]=v;});
+        fetch('https://n8n.srv1633898.hstgr.cloud/webhook/elenivo-waitlist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(o)})
+        .then(function(r){if(!r.ok)throw 0;f.style.display='none';document.getElementById('ewlOk').style.display='block';})
+        .catch(function(){er.style.display='block';b.disabled=false;b.textContent='Join the Waitlist';});
+      });
+    })();
+  </script>
 
   <!-- Footer -->
   <footer class="footer">

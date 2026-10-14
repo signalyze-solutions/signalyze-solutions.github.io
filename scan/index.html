@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Free Business Health Check — Signalyzé Solutions</title>
+<meta name="description" content="A free 2-minute check of how exposed your revenue is to client concentration — the risk your P&L will never flag. No cost, no obligation.">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#1CA7A2;--teal2:#24c9c3;--navy:#141E2B;--navy2:#1a2538;--surface:#0f1722;--gold:#CDA434;--text:#F3F4F6;--dim:#9CA3AF;--line:#2a3654;--card:#141E2B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--surface);color:var(--text);font-family:'Inter',-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5;padding:18px}
+.wrap{max-width:620px;margin:0 auto}
+.hd{background:linear-gradient(135deg,var(--navy),#1d2b3d);padding:26px 26px;border-radius:12px 12px 0 0}
+.hd .nm{font-size:22px;font-weight:800}.hd .sl{color:var(--teal);font-size:13px;margin-top:4px}
+.bar{height:5px;background:linear-gradient(90deg,var(--teal),var(--gold))}
+.bd{background:var(--card);border:1px solid var(--line);border-top:none;border-radius:0 0 12px 12px;padding:28px 26px}
+h1{font-size:23px;font-weight:800;margin-bottom:6px}.lede{color:var(--dim);font-size:14px;margin-bottom:12px}
+.steps{color:var(--dim);font-size:12.5px;margin-bottom:20px;line-height:1.6}
+label{display:block;font-size:13px;font-weight:600;margin:16px 0 6px}
+.req{color:var(--gold)}
+input{width:100%;background:#0e1620;border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:15px;padding:11px 13px;font-family:inherit}
+input:focus{outline:none;border-color:var(--teal)}
+input[type=file]{padding:9px}
+.hint{color:#6B7280;font-size:11.5px;margin-top:5px}
+.btn{width:100%;margin-top:24px;background:var(--teal);color:#05231f;border:none;border-radius:10px;padding:15px;font-size:16px;font-weight:800;cursor:pointer}
+.btn:disabled{opacity:.6;cursor:default}
+.ft{color:#6B7280;font-size:11px;margin-top:16px;text-align:center}
+.ft a{color:#6B7280}
+.err{color:#f0808a;font-size:13px;margin-top:12px;display:none}
+#resultWrap{display:none}#resultWrap h2{font-size:18px;margin:4px 0 14px;color:var(--text)}
+.again{text-align:center;margin-top:18px}.again a{color:var(--teal);font-size:13px;text-decoration:none;font-weight:600}
+</style></head>
+<body><div class="wrap">
+<div class="hd"><div class="nm">Signalyz&eacute; Solutions</div><div class="sl">Analyze. Certify. Simplify.</div></div>
+<div class="bar"></div>
+<div class="bd">
+<div id="formWrap">
+<h1>Free 2-Minute Business Health Check</h1>
+<div class="lede">Upload one business file and get a sharp, specific read on your numbers in about two minutes — the kind of finding most owners miss. No cost, no obligation.</div>
+<div class="steps">Export any one of these as a CSV — we auto-detect it and check what matters most in it:<br>&bull; <b>Revenue by client</b> (or by product / category) &rarr; concentration risk<br>&bull; A <b>profit &amp; loss statement</b> &rarr; margin snapshot<br>&bull; <b>Monthly revenue</b> &rarr; growth &amp; volatility<br>&bull; <b>Open invoices / AR aging</b> &rarr; what's outstanding &amp; overdue<br>Two columns (a label and an amount) is usually all it takes.</div>
+<form id="f">
+<label>Full name <span class="req">*</span></label><input id="in_name" required>
+<label>Company <span class="req">*</span></label><input id="in_company" required>
+<label>Work email <span class="req">*</span></label><input id="in_email" type="email" required>
+<label>Phone <span style="color:#6B7280;font-weight:400">(optional — if you want a call)</span></label><input id="in_phone" type="tel">
+<label>Your business data (CSV) <span class="req">*</span></label><input id="in_file" type="file" accept=".csv,.txt" required>
+<div class="hint">Any of the files above, exported as CSV from your accounting tool or a quick spreadsheet. Stays confidential.</div>
+<button class="btn" id="sb" type="submit">Run my free scan</button>
+<div class="err" id="er"></div>
+</form>
+</div>
+<div id="resultWrap"><h2>Your Business Health Check</h2><div id="result"></div>
+<div class="again"><a href="/start">Want the full picture? Book a diagnostic &rarr;</a></div></div>
+<div class="ft">Signalyz&eacute; Solutions LLC &middot; Your information is kept confidential. &middot; <a href="/privacy-policy.html">Privacy</a></div>
+</div></div>
+<script>
+var f=document.getElementById('f'),sb=document.getElementById('sb'),er=document.getElementById('er');
+function qp(k){try{return new URLSearchParams(window.location.search).get(k)||'';}catch(e){return '';}}
+f.addEventListener('submit',function(e){e.preventDefault();er.style.display='none';
+var file=document.getElementById('in_file').files[0];
+if(!file){er.textContent='Please attach your CSV file.';er.style.display='block';return;}
+sb.disabled=true;sb.textContent='Running your scan…';
+var reader=new FileReader();
+reader.onload=function(){
+var o={name:document.getElementById('in_name').value,company:document.getElementById('in_company').value,email:document.getElementById('in_email').value,phone:document.getElementById('in_phone').value,fileName:file.name,fileText:reader.result,source:qp('utm_source')||'website'};
+fetch('https://n8n.srv1633898.hstgr.cloud/webhook/mini-scan-submit',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(o)})
+.then(function(r){return r.json();})
+.then(function(d){document.getElementById('formWrap').style.display='none';document.getElementById('result').innerHTML=(d&&d.onscreen)||'';document.getElementById('resultWrap').style.display='block';window.scrollTo(0,0);})
+.catch(function(){er.textContent='Something went wrong — please try again or email support@signalyzesolutions.com.';er.style.display='block';sb.disabled=false;sb.textContent='Run my free scan';});
+};
+reader.readAsText(file);
+});
+</script></body></html>
